@@ -11,11 +11,12 @@ export const LogInSignUp = () => {
 
     useEffect(()=> {
         let token = window.sessionStorage.getItem("token");
-        if(token !== null) {
+        if(token === null) {
             // var decoded = jwt_decode(token);
             // setCredentials(decoded)
             // console.log(decoded);
-            window.location = "/landing"
+            // window.location = "/landing"
+            console.log(token)
         }
     },[])
 
@@ -109,11 +110,11 @@ export const LogInSignUp = () => {
 
     return(<>
     
-    <div className='container'>
+    <div className='containerOld'>
         <img src='https://dthezntil550i.cloudfront.net/u1/latest/u12108230856157280000169619/1280_960/4ab19acf-13cd-402c-a966-38f815c3c43f.png'/>
         <div className='loginsignupContainer'>
 
-            <div className='formContainer'>
+            <div className='formContainerOld'>
                 {toggle ? 
                     <form onSubmit={registerSubmit}>
                         <h1>Not Twitter</h1>

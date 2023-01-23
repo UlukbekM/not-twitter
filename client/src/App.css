@@ -16,14 +16,27 @@ body {
   font-family: 'Barlow', sans-serif;
 }
 
-.container {
+@media screen and (max-width: 600px) {
+  .mobileCol {
+    display: none;
+  }
+
+  .formContainer {
+    text-align: center;
+  }
+}
+
+.formContainer {
+  margin-top: 50%;
+}
+
+.containerOld {
   background-color: #DD5353;
   height: 100vh;
   margin: 0;
-
 }
 
-.container img {
+.containerOld img {
   width: 20%;
   position: absolute;
   top: 25%;
@@ -39,11 +52,11 @@ body {
   align-items: center;
 }
 
-.formContainer {
+.formContainerOld {
   display: flex;
   flex-direction: column;
 }
 
-.formContainer form > *{
+.formContainerOld form > *{
   margin-top: 0.6rem;
 }

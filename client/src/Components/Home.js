@@ -1,22 +1,26 @@
 import React, {useEffect, useState} from 'react'
 import jwt_decode from "jwt-decode";
+import Button from 'react-bootstrap/Button';
 
 export const Home = () => {
     const [user, setUser] = useState("");
 
     useEffect(()=> {
-        let token = window.sessionStorage.getItem("credential");
-        if(token !== null) {
-            var decoded = jwt_decode(token);
-            setUser(decoded)
-            // console.log(decoded);
-        } else {
+        let token = window.sessionStorage.getItem("token");
+        if(token === null) {
             window.location = "/landing"
+        } else {
+            var decoded = jwt_decode(token);
+            console.log(decoded);
         }
     },[])
 
+    const logout = () => {
+        sessionStorage.removeItem('token');
+        window.location.reload();
+    }
 
     return(<>
-    Hello
+            <Button variant="primary" onClick={logout}>Log Out</Button>
     </>)
 }
