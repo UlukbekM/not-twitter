@@ -151,3 +151,40 @@ export const LogInSignUp = () => {
     </div>
     </>)
 }
+
+app.post("/newUser", async (req,res) => {
+    const user = req.body
+    const newUser = new UserModel(user)
+    await newUser.save()
+    res.json(user)
+})
+
+
+app.get("/checkEmail/:email", (req, res) => {
+    try {
+        UserModel.find({email: req.params.email}, (err, result) => {
+            if(err) {
+                res.json(err)
+            } else {
+                res.json(result)
+            }
+        })
+    } catch {
+        res.send({error: 'email not found!'})
+    }
+})
+
+
+app.get("/checkUsername/:username", (req, res) => {
+    try {
+        UserModel.find({username: req.params.username}, (err, result) => {
+            if(err) {
+                res.json(err)
+            } else {
+                res.json(result)
+            }
+        })
+    } catch {
+        res.send({error: 'username not found!'})
+    }
+})

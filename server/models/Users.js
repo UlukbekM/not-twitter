@@ -37,10 +37,10 @@ const UserSchema = new mongoose.Schema({
             type: Date,
             required: true
         },
-        likes: {
-            type: Number,
+        likes: [{
+            type: String,
             required: true
-        },
+        }],
         comments: [{
             content: {
                 type: String,

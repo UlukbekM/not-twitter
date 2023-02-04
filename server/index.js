@@ -3,6 +3,8 @@ const app = express()
 const UserModel = require("./models/Users")
 require('dotenv').config()
 
+const auth = require("./auth");
+
 const cors = require('cors')
 app.use(express.json())
 app.use(cors())
@@ -53,7 +55,7 @@ app.post("/register", async (req,res) => {
 })
 
 
-app.get("/login", (req,res) => {
+app.get("/login", async (req,res) => {
     try {
         UserModel.find({email: req.query.email}, (err, result) => {
             if(result.length > 0) {
@@ -77,48 +79,121 @@ app.get("/login", (req,res) => {
     }
 })
 
+app.get("/suggestedUsers", async (req,res) => {
+    UserModel.find({username: req.query.username}, (err, result) => {
+        if(err) {
+            res.json(err)
+        } else {
+            let followingList = []
+            result[0].following.forEach(element => followingList.push(element.username))
+
+            UserModel.find({}, (err, result) => {
+                if(err) {
+                    res.json(err)
+                } else {
+                    let array = []
+                    for(let i = 0; i < result.length; i++) {
+                        if(result[i].username !== req.query.username && followingList.indexOf(result[i].username) < 0) {
+                            array.push({username:result[i].username,email:result[i].email})
+                        }
+                    }
+                    res.send(array)
+                }
+            })
+        }
+    })
+})
+
+app.put("/followUser", async (req,res) => {
+    try {
+        const { follower, following } = req.body
+
+        let doc = await UserModel.findOne({username: follower})
+        doc.following.push({
+            username: following
+        })
+        doc.save()
+
+        doc = await UserModel.findOne({username: following})
+        doc.followers.push({
+            username: follower
+        })
+        doc.save()
+        
+        res.send('user followed')
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.post("/newTweet", auth, async (req,res) => {
+    try {
+        const { username , tweet } = req.body
+
+        let doc = await UserModel.findOne({username: username})
+        doc.tweets.push({
+            content: tweet,
+            date: Date.now(),
+            likes: []
+        })
+        doc.save()
+
+        res.send('tweet posted')
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.get("/getTweets", async (req,res) => {
+    try {
+        let doc = await UserModel.findOne({username: req.query.username})
+        res.send(doc.tweets)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.put("/likeTweet/:id", auth, async (req,res) => {
+    try {
+        // console.log(req.body, req.params)
+
+        // let doc = await UserModel.findById(req.params.id)
+        // res.send(doc.tweets)
+        // console.log(doc)
+        let doc = await UserModel.findOne({'tweets': {$elemMatch: {'field': '_id', 'value': req.params.id}}})
+        console.log(doc.tweets)
+    } catch (error) {
+        res.send(error)
+    }
+}) 
+
+// app.put("/unfollowUser", async (req,res) => {
+//     try {
+//         const { follower, following } = req.body
+
+//         let doc = await UserModel.findOne({username: follower})
+//         doc.following.push({
+//             username: following
+//         })
+//         doc.save()
+
+//         doc = await UserModel.findOne({username: following})
+//         doc.followers.push({
+//             username: follower
+//         })
+//         doc.save()
+//         // console.log(doc)
+//         // res.send("following")
+//         res.send('user followed')
+//     } catch (error) {
+//         res.send(error)
+//     }
+// })
+
 
 app.get("/test", (req,res) => {
     res.send('Hello World!')
 })
-
-app.post("/newUser", async (req,res) => {
-    const user = req.body
-    const newUser = new UserModel(user)
-    await newUser.save()
-    res.json(user)
-})
-
-
-app.get("/checkEmail/:email", (req, res) => {
-    try {
-        UserModel.find({email: req.params.email}, (err, result) => {
-            if(err) {
-                res.json(err)
-            } else {
-                res.json(result)
-            }
-        })
-    } catch {
-        res.send({error: 'email not found!'})
-    }
-})
-
-
-app.get("/checkUsername/:username", (req, res) => {
-    try {
-        UserModel.find({username: req.params.username}, (err, result) => {
-            if(err) {
-                res.json(err)
-            } else {
-                res.json(result)
-            }
-        })
-    } catch {
-        res.send({error: 'username not found!'})
-    }
-})
-
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {
