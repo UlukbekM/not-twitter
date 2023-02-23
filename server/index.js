@@ -134,11 +134,14 @@ app.post("/newTweet", auth, async (req,res) => {
         doc.tweets.push({
             content: tweet,
             date: Date.now(),
-            likes: []
+            likes: [],
+            postedBy: username
         })
+
         doc.save()
 
         res.send('tweet posted')
+
     } catch (error) {
         res.send(error)
     }
@@ -147,25 +150,77 @@ app.post("/newTweet", auth, async (req,res) => {
 app.get("/getTweets", async (req,res) => {
     try {
         let doc = await UserModel.findOne({username: req.query.username})
-        res.send(doc.tweets)
+
+        let array = []
+        doc.tweets.forEach(e => array.push(e))
+
+        for(let i = 0; i < doc.following.length; i++) {
+            let tempUser = await UserModel.findOne({username: doc.following[i].username})
+            tempUser.tweets.forEach(e => array.push(e))
+        }
+
+        res.send(array)
     } catch (error) {
         res.send(error)
     }
 })
 
-app.put("/likeTweet/:id", auth, async (req,res) => {
-    try {
-        // console.log(req.body, req.params)
-
-        // let doc = await UserModel.findById(req.params.id)
-        // res.send(doc.tweets)
-        // console.log(doc)
-        let doc = await UserModel.findOne({'tweets': {$elemMatch: {'field': '_id', 'value': req.params.id}}})
-        console.log(doc.tweets)
+app.get("/getUser", async (req,res) => {
+    try{
+        let doc = await UserModel.findOne({username: req.query.username})
+        res.send(doc)
     } catch (error) {
         res.send(error)
     }
-}) 
+})
+
+// app.get("/getUserFollowing", async (req,res) => {
+//     try {
+//         let doc = await UserModel.findOne({username: req.query.username})
+//         res.send({...doc.following, ...doc.username})
+//         // console.log(doc.following)
+//     } catch (error) {
+//         res.send(error)
+//     }
+// })
+
+app.put("/likeTweet/:id", auth, async (req,res) => {
+    try {
+        let doc = await UserModel.findOne({username: req.body.postedBy})
+        doc.tweets.find((tweet) => {
+            if (tweet._id == req.params.id) {
+                tweet.likes.push(req.body.username)
+            }
+        });
+        doc.save()
+
+        res.send('liked tweet')
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.put("/unlikeTweet/:id", auth, async (req,res) => {
+    try {
+        // let doc = await UserModel.findOne({'tweets': {$elemMatch: {'field': '_id', 'value': req.params.id}}})
+        // console.log(req.body, req.params)
+        
+        let doc = await UserModel.findOne({username: req.body.postedBy})
+        doc.tweets.find((tweet) => {
+            if (tweet._id == req.params.id) {
+                const index = tweet.likes.indexOf(req.body.username);
+                if (index > -1) {
+                    tweet.likes.splice(index,1)
+                }
+            }
+        });
+        doc.save()
+
+        res.send('unliked tweet')
+    } catch (error) {
+        res.send(error)
+    }
+})
 
 // app.put("/unfollowUser", async (req,res) => {
 //     try {

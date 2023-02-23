@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Axios from 'axios';
 import { SuggestedUsers } from './SuggestedUsers';
 import { Tweet } from './Tweet';
+import { MenuColumn } from "./MenuColumn";
 
 const color = "#000"
 const colorBg = "#232946"
@@ -45,8 +46,9 @@ export const Home = () => {
             }
         })
         .then((response)=> {
+            console.log(response)
+            response.data.sort((a,b) => new Date(b.date) - new Date(a.date))
             setUserFeed(response.data)
-            console.log(response.data)
         })
     }
 
@@ -89,6 +91,7 @@ export const Home = () => {
             token: token
         }).then((response)=> {
             console.log(response)
+            getFeed(user.username)
         })
         setTweet("")
     }
@@ -96,9 +99,7 @@ export const Home = () => {
     return(<>
         <Container fluid style={{color: color}}>
             <Row>
-                <Col style={{background: colorBg}} className="mobileCol" lg={3}>
-
-                </Col>
+                <MenuColumn/>
 
                 <Col style={{background: colorMain, minHeight: "100vh" }} lg={6}>
                     <Row>

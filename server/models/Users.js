@@ -41,6 +41,10 @@ const UserSchema = new mongoose.Schema({
             type: String,
             required: true
         }],
+        postedBy: {
+            type: String,
+            required: true
+        },
         comments: [{
             content: {
                 type: String,

@@ -13,19 +13,20 @@ export const SuggestedUsers = (user) => {
 
     const followUser = () => {
         if(text !== "Following") {
-            console.log(currentUser + " is going to follow " + email)
             Axios.put(`${api}/followUser`, {
                 follower: currentUser,
                 following: username
             }).then((response)=> {
-                // saveToken(response.data.token)
-                console.log(response)
                 if(response.data === "user followed") {
                     setText("Following")
                 }
             })
         }
     }
+
+    // const unfollowUser = () => {
+
+    // }
 
     return (<>
         <Row style={{

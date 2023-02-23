@@ -4,45 +4,104 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Axios from 'axios';
+import { Link } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 export const Tweet = (tweet) => {
+    const location = useLocation();
     const [liked, setLiked] = useState(false)
+    const [likes, setLikes] = useState(0)
+    const [ownPage, setOwnPage] = useState(false)
 
-    // useEffect(()=> {
-    //     if(twe)
-    // },[])
+    const checkLocation = (name) => {
+        if(window.location.pathname.includes(name)){
+            setOwnPage(true)
+        } else {
+            setOwnPage(false)
+        }
+    }
+
+    useEffect(() => {
+        checkLocation(tweet.postedBy)
+    }, [location]);
+
+    useEffect(()=> {
+        setLikes(tweet.likes.length)
+        if(tweet.likes.includes(tweet.username)) {
+            setLiked(true)
+        }
+    },[])
 
     const api = 'http://localhost:3001'
 
     const clickButton = () => {
-        // setLiked(!liked)
-        Axios.put(`${api}/likeTweet/${tweet._id}`, { 
-            username: tweet.username,
-            token: window.sessionStorage.getItem("token")
-        })
-        // .then(()=> {
-        //     getTasks()
-        // })
+        if(liked) {
+            Axios.put(`${api}/unlikeTweet/${tweet._id}`, { 
+                username: tweet.username,
+                token: window.sessionStorage.getItem("token"),
+                postedBy: tweet.postedBy
+            })
+            .then((response)=> {
+                console.log(response)
+                if(response.data === 'unliked tweet') {
+                    setLiked(false)
+                    setLikes(likes-1)
+                }
+            })
+        } else {
+            Axios.put(`${api}/likeTweet/${tweet._id}`, { 
+                username: tweet.username,
+                token: window.sessionStorage.getItem("token"),
+                postedBy: tweet.postedBy
+            })
+            .then((response)=> {
+                console.log(response)
+                if(response.data === 'liked tweet') {
+                    setLiked(true)
+                    setLikes(likes+1)
+                }
+            })
+        }
     }
-
-    // console.log(tweet.date.toString())
 
     return(<>
     <Container style={{backgroundColor: "#fffffe", margin: "1em 0", borderRadius: "5px", padding: 0}} lg={10}>
         <Row>
-            <h5 style={{margin: "1em"}}>
-                {tweet.content}
-            </h5>
-        </Row>
-        <Row>
-            <Col>
-            <Button onClick={clickButton}>
-                { liked ? <i className="bi bi-heart-fill"/>:<i className="bi bi-heart"/>}
-            </Button>
-                {tweet.likes.length}
+            <Col xs={2} lg={1} style={{display: "flex", alignItems:"center", justifyContent:"center", padding: 0}}>
+                <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/>
+                {/* <i class="bi bi-person-circle" style={{fontSize: "2rem"}}></i> */}
             </Col>
-            <Col>
-                {tweet.date}
+
+            <Col xs={10} lg={11}>
+                <Row style={{}}>
+                    <div style={{}}>
+                        {ownPage ? <p style={{cursor: "pointer",display: "inline", margin: "0.2em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : <Link to={tweet.postedBy}>@{tweet.postedBy}</Link> }
+                    </div>
+                </Row>
+
+                <Row style={{margin: 0, overflow: "hidden", whiteSpace: "nowrap", width: "95%", height: "auto"}}>
+                    <p style={{margin: 0, padding: 0, textOverflow: "ellipsis"}}>
+                        {tweet.content}
+                    </p>
+                </Row>
+
+                <Row style={{}}>
+                    <Col>
+                        <i className="bi bi-chat"/>
+                    </Col>
+                    <Col>
+                        { liked ? 
+                        <div className="buttonLiked likeButton" onClick={clickButton}>
+                            <i className="bi bi-heart-fill"/>
+                            { likes }
+                        </div>
+                        :
+                        <div className="buttonNotLiked likeButton" onClick={clickButton}>
+                            <i className="bi bi-heart"/>
+                            { likes }
+                        </div> }
+                    </Col>
+                </Row>
             </Col>
         </Row>
     </Container>
