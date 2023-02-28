@@ -9,6 +9,7 @@ import Axios from 'axios';
 import { SuggestedUsers } from './SuggestedUsers';
 import { Tweet } from './Tweet';
 import { MenuColumn } from "./MenuColumn";
+import { Footer } from './Footer';
 
 const color = "#000"
 const colorBg = "#232946"
@@ -98,10 +99,10 @@ export const Home = () => {
 
     return(<>
         <Container fluid style={{color: color}}>
-            <Row>
+            <Row style={{display: "flex", justifyContent: "center"}}>
                 <MenuColumn/>
 
-                <Col style={{background: colorMain, minHeight: "100vh" }} lg={6}>
+                <Col style={{background: colorMain, minHeight: "100vh"}} lg={6}>
                     <Row>
                         <h2>Home</h2>
                     </Row>
@@ -132,7 +133,7 @@ export const Home = () => {
                     ))}
                 </Col>
 
-                <Col style={{background: colorBg}} className="mobileCol" lg={3}>
+                <Col style={{background: colorBg, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3}>
                     <Container style={{background: colorSide, borderRadius: "5px", marginTop: "10%", padding: "1em"}}>
                         <Row><h3>Who to follow</h3></Row>
                         {suggestedUsers.length > 0 &&
@@ -144,5 +145,7 @@ export const Home = () => {
                 </Col>
             </Row>
         </Container>
+
+        <Footer username={user.username}/>
     </>)
 }

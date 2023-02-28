@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { Tweet } from './Tweet';
 import { Link } from "react-router-dom";
 import { useNavigate} from "react-router-dom";
+import { Footer } from "./Footer";
 
 
 const color = "#000"
@@ -49,7 +50,7 @@ export const UserPage = () => {
 
     return(<>
         <Container fluid style={{color: color}}>
-            <Row>
+            <Row style={{display: "flex", justifyContent: "center"}}>
                 <MenuColumn/>
                 
                 <Col style={{background: colorMain, minHeight: "100vh" , padding: 0}} lg={6}>
@@ -87,13 +88,13 @@ export const UserPage = () => {
                         <Row>
                             <Col xs={4} lg={2}>
                                 {user.following?
-                                    <Link to="following">
+                                    <Link to="following" className="userFollow">
                                         <p style={{display: "inline"}}>{user.following.length} following</p>
                                     </Link>:<></>}
                             </Col>
                             <Col xs={4} lg={2}>
                                 {user.followers?
-                                    <Link to="followers">
+                                    <Link to="followers" className="userFollow">
                                             <p style={{display: "inline"}}>{user.followers.length} followers</p>
                                     </Link>:<></>}
                             </Col>
@@ -123,10 +124,12 @@ export const UserPage = () => {
                     }
                 </Col>
 
-                <Col style={{background: colorBg}} className="mobileCol" lg={3}>
+                <Col style={{background: colorBg, position: "fixed", right: 0, minHeight: "100vh"}} className="mobileCol" lg={3}>
                     
                 </Col>
             </Row>
         </Container>
+
+        <Footer username={user.username}/>
     </>)
 }

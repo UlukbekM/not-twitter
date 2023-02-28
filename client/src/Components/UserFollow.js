@@ -10,6 +10,7 @@ import Stack from 'react-bootstrap/Stack'
 import { Link } from "react-router-dom";
 import { MiniUser } from "./MiniUser";
 import { useNavigate} from "react-router-dom";
+import { Footer } from "./Footer";
 
 const color = "#000"
 const colorBg = "#232946"
@@ -53,88 +54,89 @@ export const UserFollow = () => {
 
 
     return(<>
-    <Container fluid style={{color: color}}>
-        <Row>
-            <MenuColumn/>
-            
-            <Col style={{background: colorMain, minHeight: "100vh", padding: 0 }} lg={6}>
-                { !user ? 
-                "user doesnt exist"
-                :
-                <>
-                    <Stack gap={4} style={{padding: "0.5em 1em"}}>
-                        {user.username? 
-                            <Row>
-                            <Col xs={2} lg={1} className="backIcon" onClick={() => navigate(-1)} style={{display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer",}} >
-                                <i className="bi bi-arrow-left" style={{fontSize: "2em"}}/>
-                            </Col>
-                            <Col xs={4} lg={5}>
-                                <Row>
-                                    {user.username? <h4 style={{margin: 0}}>{user.username}</h4>:"temp"}
-                                </Row>
-                                <Row>
-                                    {user.tweets ? <p style={{margin: 0}}>{user.tweets.length} Tweets</p> : "temp"}
-                                </Row>
-                            </Col>
-                            <Col xs={6} lg={6}></Col>
-                        </Row>
-                        :<></>}
-                        <Row style={{fontWeight: "bold", textAlign: "center"}}>
-                            <Col>
-                                { page == "followers" ? 
-                                <div style={{display: "flex", flexDirection: "column", justifyContent: "center",  alignItems: "center"}}>
-                                    <p style={{color: "#fff", cursor: "pointer", fontSize: "18px", marginBottom: "0.2em"}}>
-                                        Followers
-                                    </p>
-                                    <div style={{height: "1px", color: "black", width: "25%", border: "2px solid rgb(29, 155, 240)",borderRadius: "10px"}}></div>
-                                </div>
-                                : 
-                                <Link to="./../followers" style={{textDecoration: "none", color: "inherit", fontSize: "18px"}}>
-                                    Followers
-                                </Link>
-                                }
-                            </Col>
-                            <Col>
-                                { page == "following" ? 
-                                <div style={{display: "flex", flexDirection: "column", justifyContent: "center",  alignItems: "center"}}>
-                                    <p style={{color: "#fff", cursor: "pointer", fontSize: "18px", marginBottom: "0.2em"}}>
-                                        Following
-                                    </p>
-                                    <div style={{height: "1px", color: "black", width: "25%", border: "2px solid rgb(29, 155, 240)",borderRadius: "10px"}}></div>
-                                </div>
-                                : 
-                                <Link to="./../following" style={{textDecoration: "none", color: "inherit", fontSize: "18px"}}>
-                                    Following
-                                </Link>
-                                }
-                            </Col>
-                        </Row>
-                    </Stack>
-                    <div style={{borderBottom: "3px solid black", width: "110%", marginBottom: "1em"}}></div>
-
-                    { user.following && page == "following"
-                        ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
-                            {user.following.length > 0 &&
-                            user.following.map((item) => (
-                                <MiniUser {...item} key={item._id}/>))}
-                        </Stack> 
-                    :<></> }
-                    
-                    { user.followers && page == "followers"
-                        ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
-                            {user.followers.length > 0 &&
-                            user.followers.map((item) => (
-                                <MiniUser {...item} key={item._id}/>))}
-                        </Stack>
-                    :<></> }
-                </>
-                }
-            </Col>
-
-            <Col style={{background: colorBg}} className="mobileCol" lg={3}>
+        <Container fluid style={{color: color}}>
+            <Row style={{display: "flex", justifyContent: "center"}}>
+                <MenuColumn/>
                 
-            </Col>
-        </Row>
-    </Container>
+                <Col style={{background: colorMain, minHeight: "100vh", padding: 0 }} lg={6}>
+                    { !user ? 
+                    "user doesnt exist"
+                    :
+                    <>
+                        <Stack gap={4} style={{padding: "0.5em 1em"}}>
+                            {user.username? 
+                                <Row>
+                                <Col xs={2} lg={1} className="backIcon" onClick={() => navigate(-1)} style={{display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer",}} >
+                                    <i className="bi bi-arrow-left" style={{fontSize: "2em"}}/>
+                                </Col>
+                                <Col xs={4} lg={5}>
+                                    <Row>
+                                        {user.username? <h4 style={{margin: 0}}>{user.username}</h4>:"temp"}
+                                    </Row>
+                                    <Row>
+                                        {user.tweets ? <p style={{margin: 0}}>{user.tweets.length} Tweets</p> : "temp"}
+                                    </Row>
+                                </Col>
+                                <Col xs={6} lg={6}></Col>
+                            </Row>
+                            :<></>}
+                            <Row style={{fontWeight: "bold", textAlign: "center"}}>
+                                <Col>
+                                    { page == "followers" ? 
+                                    <div style={{display: "flex", flexDirection: "column", justifyContent: "center",  alignItems: "center"}}>
+                                        <p style={{color: "#fff", cursor: "pointer", fontSize: "18px", marginBottom: "0.2em"}}>
+                                            Followers
+                                        </p>
+                                        <div style={{height: "1px", color: "black", width: "25%", border: "2px solid rgb(29, 155, 240)",borderRadius: "10px"}}></div>
+                                    </div>
+                                    : 
+                                    <Link to="./../followers" style={{textDecoration: "none", color: "inherit", fontSize: "18px"}}>
+                                        Followers
+                                    </Link>
+                                    }
+                                </Col>
+                                <Col>
+                                    { page == "following" ? 
+                                    <div style={{display: "flex", flexDirection: "column", justifyContent: "center",  alignItems: "center"}}>
+                                        <p style={{color: "#fff", cursor: "pointer", fontSize: "18px", marginBottom: "0.2em"}}>
+                                            Following
+                                        </p>
+                                        <div style={{height: "1px", color: "black", width: "25%", border: "2px solid rgb(29, 155, 240)",borderRadius: "10px"}}></div>
+                                    </div>
+                                    : 
+                                    <Link to="./../following" style={{textDecoration: "none", color: "inherit", fontSize: "18px"}}>
+                                        Following
+                                    </Link>
+                                    }
+                                </Col>
+                            </Row>
+                        </Stack>
+                        <div style={{borderBottom: "3px solid black", width: "110%", marginBottom: "1em"}}></div>
+
+                        { user.following && page == "following"
+                            ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
+                                {user.following.length > 0 &&
+                                user.following.map((item) => (
+                                    <MiniUser {...item} key={item._id} status={"following"}/>))}
+                            </Stack> 
+                        :<></> }
+                        
+                        { user.followers && page == "followers"
+                            ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
+                                {user.followers.length > 0 &&
+                                user.followers.map((item) => (
+                                    <MiniUser {...item} key={item._id} status={"follower"}/>))}
+                            </Stack>
+                        :<></> }
+                    </>
+                    }
+                </Col>
+
+                <Col style={{background: colorBg, position: "fixed", right: 0, minHeight: "100vh"}} className="mobileCol" lg={3}>
+                    
+                </Col>
+            </Row>
+        </Container>
+        <Footer username={user.username}/>
     </>)
 }

@@ -20,7 +20,7 @@ export const MenuColumn = () => {
             setPage("home")
         }
         else if(window.location.pathname.includes(name)) {
-                setPage("profile")
+            setPage("profile")
         } else {
             setPage("")
         }
@@ -42,26 +42,27 @@ export const MenuColumn = () => {
     },[])
 
     return (<>
-        <Col style={{background: colorBg, minHeight: "100vh", position: "sticky"}} className="mobileCol" lg={3}>
+        <Col style={{background: colorBg, minHeight: "100vh", position: "fixed", left: 0}} className="mobileCol" lg={3}>
             <Row>
                 <Col lg={3}>
                 </Col>
                 <Col lg={6} style={{color: "#fff", fontWeight: "bold", fontSize: "1.5em"}}>
-                    <Stack gap={3}>
-                        <Row>
-                            <h1>Not Twitter</h1>
-                        </Row>
+                    <Row style={{marginTop: "1em"}}>
+                        <h1>Not Twitter</h1>
+                    </Row>
 
+                    <Stack gap={4} style={{marginTop: "2em"}}>
                         <Row style={{display: "inline"}}>
-                                <Link to={"/"}>
-                                { page === "home" ? <i className="bi bi-house-door-fill" style={{paddingRight: "0.5em"}}/> : <i className="bi bi-house-door" style={{paddingRight: "0.5em"}}/> }
-
-                                Home
+                                <Link to={"/"} className="menuItem">
+                                        { page === "home" 
+                                        ? <i className="bi bi-house-door-fill" style={{paddingRight: "0.5em"}}/> 
+                                        : <i className="bi bi-house-door" style={{paddingRight: "0.5em"}}/> }
+                                        Home
                                 </Link>
                         </Row>
 
                         <Row style={{display: "inline"}}>
-                            <Link to={`/${username}`}>
+                            <Link to={`/${username}`} className="menuItem">
                                     { page === "profile" ? <i className="bi bi-person-fill" style={{paddingRight: "0.5em"}}/> : <i className="bi bi-person" style={{paddingRight: "0.5em"}}/> }
                                     Profile
                             </Link>

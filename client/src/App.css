@@ -23,7 +23,15 @@ body {
   font-family: 'Barlow', sans-serif;
 }
 
+.footerC {
+  display: none;
+}
 @media screen and (max-width: 600px) {
+
+  .footerC {
+    display: block;
+  }
+
   .mobileCol {
     display: none;
   }
@@ -36,6 +44,7 @@ body {
     height: 100px;
   }
 }
+
 
 .profileBanner {
   width: 100%;
@@ -109,4 +118,45 @@ body {
   transform: scale(1.2);
   font-weight: bolder;
   color: #fffffe;
+}
+
+.userFollow {
+  text-decoration: inherit;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.userFollow:hover {
+  text-decoration: underline
+}
+
+.menuItem {
+  text-decoration: inherit;
+  color: #fff;
+  padding:  0.5em 10em;
+}
+
+.menuItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  /* opacity: 0.9; */
+}
+
+.miniUserButton {
+  all: unset;
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 0.25em 0.75em;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.miniUserButton:hover:before {
+  content: " Unfollow";
+  color: red;
+}
+
+.miniUserButton:hover span {
+  display: none;
 }

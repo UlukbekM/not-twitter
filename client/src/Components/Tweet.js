@@ -68,14 +68,16 @@ export const Tweet = (tweet) => {
     <Container style={{backgroundColor: "#fffffe", margin: "1em 0", borderRadius: "5px", padding: 0}} lg={10}>
         <Row>
             <Col xs={2} lg={1} style={{display: "flex", alignItems:"center", justifyContent:"center", padding: 0}}>
-                <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/>
+                <Link to={tweet.postedBy} className="userFollow">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/>
+                </Link>
                 {/* <i class="bi bi-person-circle" style={{fontSize: "2rem"}}></i> */}
             </Col>
 
             <Col xs={10} lg={11}>
                 <Row style={{}}>
                     <div style={{}}>
-                        {ownPage ? <p style={{cursor: "pointer",display: "inline", margin: "0.2em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : <Link to={tweet.postedBy}>@{tweet.postedBy}</Link> }
+                        {ownPage ? <p style={{cursor: "pointer",display: "inline", margin: "0.2em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : <Link to={tweet.postedBy} className="userFollow">@{tweet.postedBy}</Link> }
                     </div>
                 </Row>
 
