@@ -4,16 +4,17 @@ import Col from 'react-bootstrap/Col';
 import { Link } from "react-router-dom";
 
 export const MiniUser = (user) => {
-    // const [follower, setFollower] = useState("false")
-    console.log(user)
+    const [status, setStatus] = useState(false)
+    // console.log(user.status)
 
-    // useEffect(() => {
-    //     if(user.status == "follower") {
-    //         setFollower("true")
-    //     } else {
-    //         setFollower("false")
-    //     }
-    // } ,[])
+    useEffect(() => {
+        if(user.array) {
+            console.log(user)
+            if(user.array.some(e => e.username === user.username)) {
+                setStatus(true)
+            }
+        }
+    } ,[user.array])
 
     return(<>
         <Row style={{background: "#fffffe", width: "95%", padding: "0.2em", borderRadius: "5px", alignItems: "center"}}>
@@ -35,10 +36,11 @@ export const MiniUser = (user) => {
             </Col>
 
             <Col xs={4} lg={2}>
-                {user.status == "following" ?
+                {status ? 
                     <button className="miniUserButton"> <span> Following </span> </button>
                     :
-                    <button> Follow </button>}
+                    <button> TEMP </button>
+                }
             </Col>
         </Row>
     </>)

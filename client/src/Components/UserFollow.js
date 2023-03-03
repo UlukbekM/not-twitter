@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { MiniUser } from "./MiniUser";
 import { useNavigate} from "react-router-dom";
 import { Footer } from "./Footer";
+import jwt_decode from "jwt-decode";
 
 const color = "#000"
 const colorBg = "#232946"
@@ -24,20 +25,48 @@ export const UserFollow = () => {
     const [user, setUser] = useState([])
     const [page, setPage] = useState("")
 
+    const [mainUser, setMainUser] = useState([])
+
 
     const api = 'http://localhost:3001'
 
-    const getUser = (name) => {
+    const getProfileUser = (name) => {
         Axios.get(`${api}/getUser`, {
             params: {
                 username: name
             }
         })
         .then((response)=> {
-            console.log(response.data)
+            // console.log(response.data)
             setUser(response.data)
         })
     }
+
+    const getMainUser = () => {
+        let decoded = jwt_decode(window.sessionStorage.getItem("token"));
+        Axios.get(`${api}/getUser`, {
+            params: {
+                username: decoded.username
+            }
+        })
+        .then((response)=> {
+            // console.log(response.data)
+            setMainUser(response.data)
+        })
+    }
+
+    // const checkItem = async (username) => {
+    //     let temp = await mainUser.following.some(e => e.username == username)
+    //     // console.log(temp)
+    //     // return false
+    //     if(temp){
+    //         return true
+    //     } else {
+    //         return false
+    //     }
+    // }
+
+
     useEffect(() => {
         if(location.pathname.includes("followers")){
             setPage("followers")
@@ -49,7 +78,8 @@ export const UserFollow = () => {
     }, [location]);
 
     useEffect(()=> {
-        getUser(username)
+        getProfileUser(username)
+        getMainUser()
     },[])
 
 
@@ -113,11 +143,15 @@ export const UserFollow = () => {
                         </Stack>
                         <div style={{borderBottom: "3px solid black", width: "110%", marginBottom: "1em"}}></div>
 
+
+
+                        {/* <MiniUser {...item} key={item._id} status={checkItem("following",item.username)}/>))} */}
+
                         { user.following && page == "following"
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.following.length > 0 &&
                                 user.following.map((item) => (
-                                    <MiniUser {...item} key={item._id} status={"following"}/>))}
+                                    <MiniUser {...item} key={item._id} array={mainUser.following}/>))}
                             </Stack> 
                         :<></> }
                         
@@ -125,7 +159,7 @@ export const UserFollow = () => {
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.followers.length > 0 &&
                                 user.followers.map((item) => (
-                                    <MiniUser {...item} key={item._id} status={"follower"}/>))}
+                                    <MiniUser {...item} key={item._id} array={mainUser.following}/>))}
                             </Stack>
                         :<></> }
                     </>

@@ -38,7 +38,7 @@ export const UserPage = () => {
             }
         })
         .then((response)=> {
-            console.log(response.data)
+            // console.log(response.data)
             setUser(response.data)
             setTweets(response.data.tweets)
         })

@@ -47,7 +47,7 @@ export const Home = () => {
             }
         })
         .then((response)=> {
-            console.log(response)
+            // console.log(response)
             response.data.sort((a,b) => new Date(b.date) - new Date(a.date))
             setUserFeed(response.data)
         })
