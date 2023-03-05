@@ -143,20 +143,43 @@ body {
   /* opacity: 0.9; */
 }
 
-.miniUserButton {
+.unfollowButton {
   all: unset;
   cursor: pointer;
   border: 1px solid black;
-  padding: 0.25em 0.75em;
+  padding: 0.25em 0;
   border-radius: 20px;
   font-size: 14px;
+  width: 100px;
 }
 
-.miniUserButton:hover:before {
-  content: " Unfollow";
+.unfollowButton:hover:before {
+  content: "Unfollow";
   color: red;
 }
 
-.miniUserButton:hover span {
+.unfollowButton:hover span {
   display: none;
+}
+
+.unfollowButton:hover {
+  border: none;
+  border: 1px solid red;
+  padding: 0.25em 0;
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.followButton {
+  all: unset;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid black;
+  padding: 0.25em 0;
+  border-radius: 20px;
+  width: 100px;
+}
+
+.followButton:hover {
+  
+  background-color: rgba(0, 0, 0, 0.2);
 }

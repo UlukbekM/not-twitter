@@ -151,7 +151,7 @@ export const UserFollow = () => {
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.following.length > 0 &&
                                 user.following.map((item) => (
-                                    <MiniUser {...item} key={item._id} array={mainUser.following}/>))}
+                                    <MiniUser {...item} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
                             </Stack> 
                         :<></> }
                         
@@ -159,7 +159,7 @@ export const UserFollow = () => {
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.followers.length > 0 &&
                                 user.followers.map((item) => (
-                                    <MiniUser {...item} key={item._id} array={mainUser.following}/>))}
+                                    <MiniUser {...item} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
                             </Stack>
                         :<></> }
                     </>
