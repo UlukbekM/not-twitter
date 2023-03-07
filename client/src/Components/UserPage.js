@@ -64,12 +64,12 @@ export const UserPage = () => {
                                 <i className="bi bi-arrow-left" style={{fontSize: "2em"}}/>
                             </Col>
                             <Col xs={4} lg={5}>
-                                <Row>
-                                    {user.username? <h4 style={{margin: 0}}>{user.username}</h4>:"temp"}
-                                </Row>
-                                <Row>
-                                    {user.tweets ? <p style={{margin: 0}}>{user.tweets.length} Tweets</p> : "temp"}
-                                </Row>
+                                    <Row>
+                                        {user.username? <h4 style={{margin: 0}}>{user.username}</h4>:"temp"}
+                                    </Row>
+                                    <Row>
+                                        {user.tweets ? <p style={{margin: 0}}>{user.tweets.length} Tweets</p> : "temp"}
+                                    </Row>
                             </Col>
                             <Col xs={6} lg={6}></Col>
                         </Row>
@@ -82,7 +82,18 @@ export const UserPage = () => {
                             <img src="https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png" className="profilePicture"/>
                         </div>
 
-                        {user.username? <h2>{user.username}</h2>:<></>}
+                        <Row>
+                            <Col>
+                                {user.username? <h2>{user.username}</h2>:<></>}
+                            </Col>
+                            
+                            <Col>
+                                { 
+                                    
+                                }
+                                <button> Unfollow </button>
+                            </Col>
+                        </Row>
                         {/* {user.tweets ? <h5>{user.tweets.length} Tweets</h5> : "temp"} */}
                         <p>Description</p>
                         <Row>

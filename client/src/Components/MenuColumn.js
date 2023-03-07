@@ -15,7 +15,18 @@ export const MenuColumn = () => {
     const location = useLocation();
 
     const checkLocation = (name) => {
-        // console.log(window.location.pathname, name)
+        // console.log(window.location.pathname.substring(1).indexOf("/"))
+
+        // let index = window.location.pathname.substring(1).indexOf("/")
+        // if(index > 0) {
+
+        // } else {
+
+        // }
+        // let user = window.location.pathname.substring(0,index)
+
+        // console.log(user)
+
         if(window.location.pathname == "/"){
             setPage("home")
         }

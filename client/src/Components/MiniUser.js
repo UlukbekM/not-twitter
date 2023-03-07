@@ -6,7 +6,9 @@ import Axios from 'axios';
 
 export const MiniUser = (user) => {
     const [status, setStatus] = useState(false)
-    console.log(user)
+    // console.log(user)
+
+    const api = 'http://localhost:3001'
 
     useEffect(() => {
         if(user.array) {
@@ -18,19 +20,31 @@ export const MiniUser = (user) => {
     } ,[user.array])
 
     const followUser = () => {
+        // let token = window.sessionStorage.getItem("token");
         console.log(user.mainUser + " will follow " + user.username)
-        // Axios.put(`${api}/followUser`, {
-        //     follower: currentUser,
-        //     following: username
-        // }).then((response)=> {
-        //     if(response.data === "user followed") {
-        //         setText("Following")
-        //     }
-        // })
+        Axios.put(`${api}/followUser`, {
+            follower: user.mainUser,
+            following: user.username,
+            // token: token
+        }).then((response)=> {
+            if(response.data === "user followed") {
+                setStatus(!status)
+            }
+        })
     }
 
     const unfollowUser = () => {
+        // let token = window.sessionStorage.getItem("token");
         console.log(user.mainUser + " will unfollow " + user.username)
+        Axios.put(`${api}/unfollowUser`, {
+            unfollower: user.mainUser,
+            target: user.username,
+            // token: token
+        }).then((response)=> {
+            if(response.data === "user unfollowed") {
+                setStatus(!status)
+            }
+        })
     }
 
     return(<>

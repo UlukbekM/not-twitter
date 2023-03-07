@@ -126,6 +126,33 @@ app.put("/followUser", async (req,res) => {
     }
 })
 
+app.put("/unfollowUser", async (req,res) => {
+    try {
+        const { unfollower, target } = req.body
+
+        let doc = await UserModel.findOne({username: unfollower})
+        let index = doc.following.find(e => e.username == target)
+        // console.log(doc.following)
+        // console.log(doc.following.indexOf(index))
+        if (doc.following.indexOf(index) > -1) {
+            doc.following.splice(doc.following.indexOf(index),1)
+        }
+        doc.save()
+
+        doc = await UserModel.findOne({username: target})
+        index = doc.followers.find(e => e.username == unfollower)
+        if (doc.followers.indexOf(index) > -1) {
+            doc.followers.splice(doc.followers.indexOf(index),1)
+        }
+        doc.save()
+
+        res.send("user unfollowed")
+
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.post("/newTweet", auth, async (req,res) => {
     try {
         const { username , tweet } = req.body
