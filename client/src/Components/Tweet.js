@@ -65,7 +65,7 @@ export const Tweet = (tweet) => {
     }
 
     return(<>
-    <Container style={{backgroundColor: "#fffffe", margin: "1em 0", borderRadius: "5px", padding: 0}} lg={10}>
+    <Container style={{backgroundColor: "#fffffe", margin: "1em 0", borderRadius: "5px"}} lg={10}>
         <Row>
             <Col xs={2} lg={1} style={{display: "flex", alignItems:"center", justifyContent:"center", padding: 0}}>
                 <Link to={tweet.postedBy} className="userFollow">

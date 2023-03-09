@@ -88,9 +88,9 @@ export const UserPage = () => {
                             </Col>
                             
                             <Col>
-                                { 
-                                    
-                                }
+                            </Col>
+
+                            <Col>
                                 <button> Unfollow </button>
                             </Col>
                         </Row>

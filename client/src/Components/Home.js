@@ -9,6 +9,7 @@ import Axios from 'axios';
 import { SuggestedUsers } from './SuggestedUsers';
 import { Tweet } from './Tweet';
 import { MenuColumn } from "./MenuColumn";
+import Stack from 'react-bootstrap/Stack'
 import { Footer } from './Footer';
 
 const color = "#000"
@@ -125,12 +126,12 @@ export const Home = () => {
                         </Col>
                     </Row>
 
-                    {/* TWEETS GO HERE */}
-
+                    <Container>
                     {userFeed.length > 0 &&
                         userFeed.map((tweet) => (
                             <Tweet {...tweet} key={tweet._id} username={user.username}/>
                     ))}
+                    </Container>
                 </Col>
 
                 <Col style={{background: colorBg, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3}>
