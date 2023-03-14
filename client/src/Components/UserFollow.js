@@ -18,7 +18,9 @@ const colorBg = "#232946"
 const colorMain = "#eebbc3"
 const colorSide = "#b8c1ec" 
 
-export const UserFollow = () => {
+export const UserFollow = (props) => {
+    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = props.theme
+
     let navigate = useNavigate();
     const location = useLocation();
     const {username} = useParams()
@@ -27,9 +29,6 @@ export const UserFollow = () => {
 
     const [mainUser, setMainUser] = useState([])
 
-
-    const api = 'http://localhost:3001'
-
     const getProfileUser = (name) => {
         Axios.get(`${api}/getUser`, {
             params: {
@@ -37,7 +36,6 @@ export const UserFollow = () => {
             }
         })
         .then((response)=> {
-            // console.log(response.data)
             setUser(response.data)
         })
     }
@@ -86,9 +84,9 @@ export const UserFollow = () => {
     return(<>
         <Container fluid style={{color: color}}>
             <Row style={{display: "flex", justifyContent: "center"}}>
-                <MenuColumn/>
+                <MenuColumn backgroundColor={backgroundColor} titleColor={titleColor}/>
                 
-                <Col style={{background: colorMain, minHeight: "100vh", padding: 0 }} lg={6}>
+                <Col style={{background: backgroundColor, minHeight: "100vh", padding: 0, borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6}>
                     { !user ? 
                     "user doesnt exist"
                     :

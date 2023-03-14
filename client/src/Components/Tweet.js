@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 
 export const Tweet = (tweet) => {
+    const {tweetBackground , tweetTitleColor, tweetTextColor} = tweet
     const location = useLocation();
     const [liked, setLiked] = useState(false)
     const [likes, setLikes] = useState(0)
@@ -65,23 +66,27 @@ export const Tweet = (tweet) => {
     }
 
     return(<>
-    <Container style={{backgroundColor: "#fffffe", margin: "1em 0", borderRadius: "5px"}} lg={10}>
+    <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
         <Row>
             <Col xs={2} lg={1} style={{display: "flex", alignItems:"center", justifyContent:"center", padding: 0}}>
                 <Link to={tweet.postedBy} className="userFollow">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/>
+                    {/* <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/> */}
+                    <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i>
                 </Link>
-                {/* <i class="bi bi-person-circle" style={{fontSize: "2rem"}}></i> */}
             </Col>
 
             <Col xs={10} lg={11}>
                 <Row style={{}}>
-                    <div style={{}}>
-                        {ownPage ? <p style={{cursor: "pointer",display: "inline", margin: "0.2em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : <Link to={tweet.postedBy} className="userFollow">@{tweet.postedBy}</Link> }
+                    <div style={{color: tweetTitleColor}}>
+                        {ownPage ? 
+                        <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
+                        <Link to={tweet.postedBy} className="userFollow">
+                            <p style={{color: tweetTitleColor, display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p>
+                        </Link> }
                     </div>
                 </Row>
 
-                <Row style={{margin: 0, overflow: "hidden", whiteSpace: "nowrap", width: "95%", height: "auto"}}>
+                <Row style={{margin: 0, overflow: "hidden", whiteSpace: "nowrap", width: "95%", height: "auto", padding: "0.5em 0"}}>
                     <p style={{margin: 0, padding: 0, textOverflow: "ellipsis"}}>
                         {tweet.content}
                     </p>

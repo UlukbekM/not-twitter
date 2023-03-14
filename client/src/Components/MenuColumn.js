@@ -7,9 +7,10 @@ import jwt_decode from "jwt-decode";
 import Stack from 'react-bootstrap/Stack'
 import { useLocation } from 'react-router-dom';
 
-const colorBg = "#232946"
 
-export const MenuColumn = () => {
+export const MenuColumn = (props) => {
+    const { backgroundColor, titleColor} = props
+
     const [username, setUsername] = useState("")
     const [page, setPage] = useState("")
     const location = useLocation();
@@ -47,7 +48,7 @@ export const MenuColumn = () => {
     },[])
 
     return (<>
-        <Col style={{background: colorBg, minHeight: "100vh", position: "fixed", left: 0}} className="mobileCol" lg={3}>
+        <Col style={{background: backgroundColor, minHeight: "100vh", position: "fixed", left: 0}} className="mobileCol" lg={3}>
             <Row>
                 <Col lg={3}>
                 </Col>
@@ -57,7 +58,7 @@ export const MenuColumn = () => {
                     </Row>
 
                     <Stack gap={4} style={{marginTop: "2em"}}>
-                        <Row style={{display: "inline"}}>
+                        <Row style={{display: "inline", color: titleColor}}>
                                 <Link to={"/"} className="menuItem">
                                         { page === "home" 
                                         ? <i className="bi bi-house-door-fill" style={{paddingRight: "0.5em"}}/> 
@@ -66,7 +67,7 @@ export const MenuColumn = () => {
                                 </Link>
                         </Row>
 
-                        <Row style={{display: "inline"}}>
+                        <Row style={{display: "inline", color: titleColor}}>
                             <Link to={`/${username}`} className="menuItem">
                                     { page === "profile" ? <i className="bi bi-person-fill" style={{paddingRight: "0.5em"}}/> : <i className="bi bi-person" style={{paddingRight: "0.5em"}}/> }
                                     Profile

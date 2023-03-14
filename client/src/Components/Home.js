@@ -12,22 +12,16 @@ import { MenuColumn } from "./MenuColumn";
 import Stack from 'react-bootstrap/Stack'
 import { Footer } from './Footer';
 
-const color = "#000"
-const colorBg = "#232946"
-const colorMain = "#eebbc3"
-const colorSide = "#b8c1ec" 
 
+export const Home = (props) => {
+    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = props.theme
 
-
-
-export const Home = () => {
     const [user, setUser] = useState("");
     const [suggestedUsers, setSuggestedUsers] = useState([])
     const [userFeed, setUserFeed] = useState([])
 
     const [tweet, setTweet] = useState("")
 
-    const api = 'http://localhost:3001'
 
     const getSuggestedUsers = (username) => {
         Axios.get(`${api}/suggestedUsers`, {
@@ -37,7 +31,6 @@ export const Home = () => {
         })
         .then((response)=> {
             setSuggestedUsers(response.data)
-            // console.log(response.data)
         })
     }
 
@@ -48,7 +41,6 @@ export const Home = () => {
             }
         })
         .then((response)=> {
-            // console.log(response)
             response.data.sort((a,b) => new Date(b.date) - new Date(a.date))
             setUserFeed(response.data)
         })
@@ -99,16 +91,16 @@ export const Home = () => {
     }
 
     return(<>
-        <Container fluid style={{color: color}}>
+        <Container fluid style={{color: fontColor}}>
             <Row style={{display: "flex", justifyContent: "center"}}>
-                <MenuColumn/>
+                <MenuColumn backgroundColor={backgroundColor} titleColor={titleColor}/>
 
-                <Col style={{background: colorMain, minHeight: "100vh"}} lg={6}>
+                <Col style={{background: backgroundColor, minHeight: "100vh", borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6}>
                     <Row>
-                        <h2>Home</h2>
+                        <h2 style={{color: titleColor}}>Home</h2>
                     </Row>
-                    <Row style={{textAlign:"center", borderBottom: "solid 2px" , marginBottom: "1em"}}>
-                        <h4>Feed</h4>
+                    <Row style={{textAlign:"center", borderBottom: `solid 2px ${borderColor}` , marginBottom: "1em"}}>
+                        <h4 style={{color: titleColor}}>Feed</h4>
                     </Row>
                     <Row style={{margin: "0"}}>
                         <Col xs={9} lg={10}>
@@ -121,7 +113,7 @@ export const Home = () => {
                                 rows={3}
                             />
                         </Col>
-                        <Col xs={2} lg={2}>
+                        <Col xs={2} lg={2} style={{textAlign: "center"}}>
                             <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button>
                         </Col>
                     </Row>
@@ -129,17 +121,17 @@ export const Home = () => {
                     <Container>
                     {userFeed.length > 0 &&
                         userFeed.map((tweet) => (
-                            <Tweet {...tweet} key={tweet._id} username={user.username}/>
+                            <Tweet {...tweet} key={tweet._id} username={user.username} tweetBackground={tweetBackground} tweetTitleColor={tweetTitleColor} tweetTextColor={tweetTextColor}/>
                     ))}
                     </Container>
                 </Col>
 
-                <Col style={{background: colorBg, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3}>
-                    <Container style={{background: colorSide, borderRadius: "5px", marginTop: "10%", padding: "1em"}}>
+                <Col style={{background: backgroundColor, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3}>
+                    <Container style={{background: backgroundColor, borderRadius: "5px", marginTop: "10%", padding: "1em"}}>
                         <Row><h3>Who to follow</h3></Row>
                         {suggestedUsers.length > 0 &&
                             suggestedUsers.map((tempUser) => (
-                                <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username}/>
+                                <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} />
                         ))}
                     </Container>
                     <Button variant="primary" onClick={logout} style={{marginTop: "10%"}}>Log Out</Button>

@@ -1,7 +1,7 @@
 import React from "react";
 
-export const ErrorPage = () => {
-
+export const ErrorPage = (props) => {
+    console.log(props)
     return(<>
         Errrorrrr Page
     </>)
