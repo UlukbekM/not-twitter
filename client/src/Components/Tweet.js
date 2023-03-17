@@ -8,10 +8,11 @@ import { Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 
 export const Tweet = (tweet) => {
-    const {tweetBackground , tweetTitleColor, tweetTextColor} = tweet
+    const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = tweet
     const location = useLocation();
     const [liked, setLiked] = useState(false)
     const [likes, setLikes] = useState(0)
+    const [comments, setComments] = useState(0)
     const [ownPage, setOwnPage] = useState(false)
 
     const checkLocation = (name) => {
@@ -28,6 +29,7 @@ export const Tweet = (tweet) => {
 
     useEffect(()=> {
         setLikes(tweet.likes.length)
+        setComments(tweet.comments.length)
         if(tweet.likes.includes(tweet.username)) {
             setLiked(true)
         }
@@ -66,11 +68,11 @@ export const Tweet = (tweet) => {
     }
 
     return(<>
+        {/* <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/> */}
     <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
-        <Row>
+        {/* <Row>
             <Col xs={2} lg={1} style={{display: "flex", alignItems:"center", justifyContent:"center", padding: 0}}>
                 <Link to={tweet.postedBy} className="userFollow">
-                    {/* <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/> */}
                     <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i>
                 </Link>
             </Col>
@@ -110,7 +112,68 @@ export const Tweet = (tweet) => {
                     </Col>
                 </Row>
             </Col>
+        </Row> */}
+
+
+        <Row>
+            <Col xs={2} lg={1} style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
+                <Link to={tweet.postedBy} className="userFollow">
+                    <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i>
+                </Link>
+            </Col>
+
+            <Col xs={10} lg={11} style={{display: "flex", alignItems: "center"}}>
+                <div style={{color: tweetTitleColor}}>
+                    {ownPage ? 
+                    <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
+                    <Link to={tweet.postedBy} className="userFollow">
+                        <p style={{color: tweetTitleColor, display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p>
+                    </Link> }
+                </div>
+            </Col>
         </Row>
+
+        <Row>
+            <Col xs={0} lg={1}>
+            </Col>
+
+            <Col xs={12} lg={11}>
+                <p style={{color: tweetTextColor, marginBottom: "1em", fontWeight: 450}}>
+                    {tweet.content}
+                </p>
+            </Col>
+        </Row>
+
+        <Row>
+            <Col xs={0} lg={1}>
+
+            </Col>
+            <Col xs={12} lg={11}>
+                <Row>
+                    <Col xs={6}>
+                        <Link style={{textDecoration: "inherit", color: "inherit"}}>
+                            <div className="commentButton tweetButton" style={{backgroundColor: tweetButtonBackgroundColor,  fontWeight:"bold"}}>
+                                    <i className="bi bi-chat"/>
+                                    { comments }
+                            </div>
+                        </Link>
+                    </Col>
+                    <Col xs={6}>
+                        { liked ? 
+                        <div className="buttonLiked tweetButton" onClick={clickButton} style={{backgroundColor: tweetButtonBackgroundColor, fontWeight:"bold"}}>
+                            <i className="bi bi-heart-fill"/>
+                            { likes }
+                        </div>
+                        :
+                        <div className="buttonNotLiked tweetButton" onClick={clickButton} style={{backgroundColor: tweetButtonBackgroundColor, fontWeight:"bold"}}>
+                            <i className="bi bi-heart"/>
+                            { likes }
+                        </div> }
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
+
     </Container>
     </>)
 }

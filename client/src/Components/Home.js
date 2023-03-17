@@ -14,7 +14,7 @@ import { Footer } from './Footer';
 
 
 export const Home = (props) => {
-    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = props.theme
+    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = props.theme
 
     const [user, setUser] = useState("");
     const [suggestedUsers, setSuggestedUsers] = useState([])
@@ -121,7 +121,13 @@ export const Home = (props) => {
                     <Container>
                     {userFeed.length > 0 &&
                         userFeed.map((tweet) => (
-                            <Tweet {...tweet} key={tweet._id} username={user.username} tweetBackground={tweetBackground} tweetTitleColor={tweetTitleColor} tweetTextColor={tweetTextColor}/>
+                            <Tweet {...tweet} key={tweet._id} username={user.username} 
+                            tweetBackground={tweetBackground} 
+                            tweetTitleColor={tweetTitleColor} 
+                            tweetTextColor={tweetTextColor}
+                            tweetButtonBackgroundColor={tweetButtonBackgroundColor}
+                            tweetButtonColor={tweetButtonColor}
+                            />
                     ))}
                     </Container>
                 </Col>

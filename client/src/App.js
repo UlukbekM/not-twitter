@@ -4,22 +4,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Landing } from './Components/Landing';
 import { UserPage } from './Components/UserPage';
 import { ErrorPage } from './Components/ErrorPage';
-// import { FollowersPage } from './Components/FollowersPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import { FollowingPage } from './Components/FollowingPage';
 import { UserFollow } from './Components/UserFollow';
+import { Status } from './Components/Status';
 
 function App() {
-  
-  const api = 'http://localhost:3001'
-  const backgroundColor = "#232946"
-  const fontColor = "#fff"
-  const titleColor = "#fffffe"
-  const borderColor ="#000"
-  const tweetBackground = "#fffffe"
-  const tweetTitleColor = "#232946"
-  const tweetTextColor = "#232946"
-
   let theme = {
     api: 'http://localhost:3001',
     backgroundColor: "#232946",
@@ -29,6 +18,8 @@ function App() {
     tweetBackground: "#fffffe",
     tweetTitleColor: "#232946",
     tweetTextColor: "#232946",
+    tweetButtonBackgroundColor: "rgba(35, 41, 70, 0.8)",
+    tweetButtonColor: "#b8c1ec"
   }
 
 
@@ -40,6 +31,7 @@ function App() {
             <Route path=":username" element={<UserPage theme={theme}/>} />
             <Route path=":username/following" element={<UserFollow theme={theme}/>} />
             <Route path=":username/followers" element={<UserFollow theme={theme}/>} />
+            <Route path=":username/status/:id" element={<Status theme={theme}/>} />
             <Route path="*" element={<ErrorPage/>} />
           </Routes>
         </BrowserRouter>

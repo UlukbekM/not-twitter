@@ -57,7 +57,7 @@ export const MenuColumn = (props) => {
                         <h1>Not Twitter</h1>
                     </Row>
 
-                    <Stack gap={4} style={{marginTop: "2em"}}>
+                    <Stack gap={4} style={{marginTop: "2em", fontSize: "1.1em"}}>
                         <Row style={{display: "inline", color: titleColor}}>
                                 <Link to={"/"} className="menuItem">
                                         { page === "home" 
