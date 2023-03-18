@@ -4,13 +4,13 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
 import Axios from 'axios';
 import { SuggestedUsers } from './SuggestedUsers';
 import { Tweet } from './Tweet';
 import { MenuColumn } from "./MenuColumn";
 import Stack from 'react-bootstrap/Stack'
 import { Footer } from './Footer';
+import Form from 'react-bootstrap/Form'
 
 
 export const Home = (props) => {
@@ -19,8 +19,8 @@ export const Home = (props) => {
     const [user, setUser] = useState("");
     const [suggestedUsers, setSuggestedUsers] = useState([])
     const [userFeed, setUserFeed] = useState([])
-
     const [tweet, setTweet] = useState("")
+
 
 
     const getSuggestedUsers = (username) => {
@@ -99,10 +99,12 @@ export const Home = (props) => {
                     <Row>
                         <h2 style={{color: titleColor}}>Home</h2>
                     </Row>
-                    <Row style={{textAlign:"center", borderBottom: `solid 2px ${borderColor}` , marginBottom: "1em"}}>
+                    <Row style={{textAlign:"center", borderBottom: `solid 2px ${borderColor}`}}>
                         <h4 style={{color: titleColor}}>Feed</h4>
                     </Row>
-                    <Row style={{margin: "0"}}>
+
+
+                    {/* <Row style={{margin: "0"}}>
                         <Col xs={9} lg={10}>
                             <Form.Control
                                 type="text"
@@ -116,7 +118,41 @@ export const Home = (props) => {
                         <Col xs={2} lg={2} style={{textAlign: "center"}}>
                             <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button>
                         </Col>
+                    </Row> */}
+
+                <Container style={{paddingTop: "1em",paddingBottom: "1em"}}>
+                    <Row>
+                        {/* <Form.Control
+                            size='lg'
+                            type="text"
+                            placeholder="What's Happening?"
+                            maxLength="280"
+                            value={tweet}
+                            onChange={({ target }) => setTweet(target.value)}
+                            rows={3}
+                            style={{backgroundColor: backgroundColor, border: "none", color: fontColor, outline: "none"}}
+                        /> */}
+                        <input placeholder="What's Happening?" className='tweetForm'
+                            style={{
+                            backgroundColor: backgroundColor, 
+                            border: "none", 
+                            color: fontColor, 
+                            outline: "none", 
+                            fontFamily: "inherit",
+                            paddingTop: "1em",
+                            paddingBottom: "1em"
+                            }}></input>
                     </Row>
+                    <Row>
+                        <Col lg={11}></Col>
+                        <Col lg={1} style={{alignItems: "center"}}>
+                            <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button>
+                        </Col>
+                        
+                    </Row>
+                </Container>
+
+                <Row style={{borderBottom: `solid 2px ${borderColor}`}}/>
 
                     <Container>
                     {userFeed.length > 0 &&
