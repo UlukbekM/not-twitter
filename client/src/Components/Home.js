@@ -21,6 +21,30 @@ export const Home = (props) => {
     const [userFeed, setUserFeed] = useState([])
     const [tweet, setTweet] = useState("")
 
+    const [image, setImage] = useState(null)
+
+    const handleImage = e => {
+        if(e.target.files[0].size > 2097152) {
+            alert("File is too big!")
+            setImage(null)
+        } else {
+            setImage(e.target.files[0])
+            document.getElementById("tweetImageContainer").style.backgroundImage=`url(${window.URL.createObjectURL(e.target.files[0])})`
+            document.getElementById("tweetImage").src=window.URL.createObjectURL(e.target.files[0])
+        }
+    }
+
+    const removeImage = () => {
+        setImage(null)
+    }
+
+    useEffect(()=> {
+        if(image) {
+            document.getElementById("tweetImageContainer").style.display = "block"
+        } else {
+            document.getElementById("tweetImageContainer").style.display = "none"
+        }
+    },[image])
 
 
     const getSuggestedUsers = (username) => {
@@ -121,7 +145,7 @@ export const Home = (props) => {
                     </Row> */}
 
                 <Container style={{paddingTop: "1em",paddingBottom: "1em"}}>
-                    <Row>
+                    <Row style={{height:"auto"}}>
                         {/* <Form.Control
                             size='lg'
                             type="text"
@@ -132,20 +156,56 @@ export const Home = (props) => {
                             rows={3}
                             style={{backgroundColor: backgroundColor, border: "none", color: fontColor, outline: "none"}}
                         /> */}
-                        <input placeholder="What's Happening?" className='tweetForm'
+                        {/* <input placeholder="What's Happening?" className='tweetForm' 
                             style={{
                             backgroundColor: backgroundColor, 
-                            border: "none", 
+                            // border: "none", 
                             color: fontColor, 
                             outline: "none", 
                             fontFamily: "inherit",
                             paddingTop: "1em",
                             paddingBottom: "1em"
-                            }}></input>
+                            }}/> */}
+                        <textarea placeholder="What's Happening?" className='tweetForm'
+                            maxLength={280}
+                            value={tweet}
+                            onChange={({ target }) => setTweet(target.value)}
+                            style={{        
+                                resize: "none",
+                                height: "auto",                    
+                                backgroundColor: backgroundColor, 
+                                border: "none", 
+                                color: fontColor, 
+                                outline: "none", 
+                                fontFamily: "inherit",
+                                paddingTop: "1em",
+                                paddingBottom: "1em",
+                                overflow: "hidden"}}
+                        ></textarea>
+                        {/* <div style={{width: "100%"}}>
+                            <button style={{ position: "relative",top: "10px", left: "10px"}}>X</button>
+                            <img src="#" id="tweetImage" style={{paddingTop: "1em", borderRadius: "30px", maxWidth: "100%"}}/>
+                        </div> */}
+                                                                                                                            {/*  ~~~~~~~~~~~~~~~~~~~~~~~~ FIX WITH SMALL IMGS ~~~~~~~~~~~~~~ */}
+                        <div style={{width: "100%", height: "100%", backgroundSize: "cover", borderRadius: "20px"}} id="tweetImageContainer">
+                            <button className='tweetImageClose' onClick={removeImage}>
+                                <p style={{margin: 0}}>X</p>
+                            </button>
+                            <img src="#" id="tweetImage" style={{paddingTop: "1em", borderRadius: "30px", maxWidth: "100%", opacity: 0}}/>
+                        </div>
                     </Row>
-                    <Row>
-                        <Col lg={11}></Col>
-                        <Col lg={1} style={{alignItems: "center"}}>
+                    <Row style={{paddingTop: "1em"}}>
+                        <Col xs={1} lg={1} style={{display: "grid", placeItems: "center"}}>
+                            {/* <Container> */}
+                            <label htmlFor="image-upload">
+                                <i className="bi bi-card-image" style={{fontSize: "1.3em", cursor: "pointer"}}/>
+                            </label>
+                            <input type="file" accept='image/*' onChange={handleImage} id="image-upload" style={{display: "none"}}/>
+                            {/* </Container> */}
+                        </Col>
+                        <Col xs={8}lg={10}>
+                        </Col>
+                        <Col xs={2} lg={1} style={{alignItems: "center"}}>
                             <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button>
                         </Col>
                         

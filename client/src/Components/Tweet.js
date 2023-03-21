@@ -138,7 +138,7 @@ export const Tweet = (tweet) => {
             </Col>
 
             <Col xs={12} lg={11}>
-                <p style={{color: tweetTextColor, marginBottom: "1em", fontWeight: 450}}>
+                <p style={{color: tweetTextColor, marginBottom: "1em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
                     {tweet.content}
                 </p>
             </Col>
@@ -151,7 +151,8 @@ export const Tweet = (tweet) => {
             <Col xs={12} lg={11}>
                 <Row>
                     <Col xs={6}>
-                        <Link style={{textDecoration: "inherit", color: "inherit"}}>
+                        {/* // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIX DISPLAY INLINE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
+                        <Link style={{textDecoration: "inherit", color: "inherit", display: "inline"}}> 
                             <div className="commentButton tweetButton" style={{backgroundColor: tweetButtonBackgroundColor,  fontWeight:"bold"}}>
                                     <i className="bi bi-chat"/>
                                     { comments }

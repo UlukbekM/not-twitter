@@ -7,6 +7,8 @@ import { ErrorPage } from './Components/ErrorPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserFollow } from './Components/UserFollow';
 import { Status } from './Components/Status';
+import { UploadImageToS3WithReactS3 } from './AWS/UploadImageToS3WithReactS3';
+import { Upload } from './AWS/Upload';
 
 function App() {
   let theme = {
@@ -24,7 +26,7 @@ function App() {
 
 
   return (<>
-        <BrowserRouter>
+        {/* <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home theme={theme} />}/>
             <Route path="landing" element={<Landing />} />
@@ -34,9 +36,9 @@ function App() {
             <Route path=":username/status/:id" element={<Status theme={theme}/>} />
             <Route path="*" element={<ErrorPage/>} />
           </Routes>
-        </BrowserRouter>
+        </BrowserRouter> */}
 
-        {/* <Landing/> */}
+        <Upload/>
     </>
   );
 }

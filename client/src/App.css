@@ -214,3 +214,23 @@ body {
 .tweetForm input::placeholder {
   opacity: 1;
 }
+
+.tweetImageClose {
+  position: relative;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, .3);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  transition: all 0.1s ease;
+}
+
+.tweetImageClose:hover {
+  background-color: rgba(0, 0, 0, 1);
+}
