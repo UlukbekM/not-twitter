@@ -14,6 +14,7 @@ export const Tweet = (tweet) => {
     const [likes, setLikes] = useState(0)
     const [comments, setComments] = useState(0)
     const [ownPage, setOwnPage] = useState(false)
+    const [imageURL, setImageURL] = useState("")
 
     const checkLocation = (name) => {
         if(window.location.pathname.includes(name)){
@@ -32,6 +33,9 @@ export const Tweet = (tweet) => {
         setComments(tweet.comments.length)
         if(tweet.likes.includes(tweet.username)) {
             setLiked(true)
+        }
+        if(tweet.imageURL) {
+            setImageURL(tweet.imageURL)
         }
     },[])
 
@@ -138,9 +142,17 @@ export const Tweet = (tweet) => {
             </Col>
 
             <Col xs={12} lg={11}>
-                <p style={{color: tweetTextColor, marginBottom: "1em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
-                    {tweet.content}
-                </p>
+                <Row>
+                    <p style={{color: tweetTextColor, marginBottom: "1em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
+                        {tweet.content}
+                    </p>
+                </Row>
+                <Row style={{display: "grid", placeItems: "center"}}>
+                    {imageURL ?
+                    <img src={imageURL} style={{padding: "1em 0", maxWidth: "500px"}}/> :
+                    <></>
+                    }
+                </Row>
             </Col>
         </Row>
 

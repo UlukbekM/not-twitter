@@ -155,14 +155,15 @@ app.put("/unfollowUser", async (req,res) => {
 
 app.post("/newTweet", auth, async (req,res) => {
     try {
-        const { username , tweet } = req.body
+        const { username , tweet , imageURL} = req.body
 
         let doc = await UserModel.findOne({username: username})
         doc.tweets.push({
             content: tweet,
             date: Date.now(),
             likes: [],
-            postedBy: username
+            postedBy: username,
+            imageURL: imageURL
         })
 
         doc.save()

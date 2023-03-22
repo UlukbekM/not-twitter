@@ -11,10 +11,20 @@ import { MenuColumn } from "./MenuColumn";
 import Stack from 'react-bootstrap/Stack'
 import { Footer } from './Footer';
 import Form from 'react-bootstrap/Form'
+import AWS from 'aws-sdk';
 
+
+AWS.config.update({
+    accessKeyId: process.env.REACT_APP_AWS_ACCESSKEY_ID,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESSKEY,
+    region: 'us-east-1',
+    signatureVersion: 'v4',
+});
 
 export const Home = (props) => {
     const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = props.theme
+
+    const s3 = new AWS.S3();
 
     const [user, setUser] = useState("");
     const [suggestedUsers, setSuggestedUsers] = useState([])
@@ -45,6 +55,21 @@ export const Home = (props) => {
             document.getElementById("tweetImageContainer").style.display = "none"
         }
     },[image])
+
+    const uploadToS3 = async () => {
+        if (!image) {
+            console.log('no image')
+            return;
+        }
+        const params = { 
+            Bucket: process.env.REACT_APP_BUCKET_NAME + '/tweet', 
+            Key: `${Date.now()}.${image.name}`, 
+            Body: image 
+        };
+        const { Location } = await s3.upload(params).promise();
+        // console.log(Location)
+        return Location
+    }
 
 
     const getSuggestedUsers = (username) => {
@@ -102,16 +127,36 @@ export const Home = (props) => {
     const sendTweet = async e => {
         e.preventDefault()
         // console.log(user)
-        let token = window.sessionStorage.getItem("token");
-        Axios.post(`${api}/newTweet`, {
-            username: user.username,
-            tweet: tweet,
-            token: token
-        }).then((response)=> {
-            console.log(response)
-            getFeed(user.username)
-        })
-        setTweet("")
+        let imageURL = ''
+        if(image) {
+            imageURL = await uploadToS3()
+        }
+        if(imageURL) {
+            let token = window.sessionStorage.getItem("token");
+            Axios.post(`${api}/newTweet`, {
+                username: user.username,
+                tweet: tweet,
+                imageURL: imageURL,
+                token: token
+            }).then((response)=> {
+                console.log(response)
+                getFeed(user.username)
+            })
+            setTweet("")
+            setImage(null)
+        } else {
+            let token = window.sessionStorage.getItem("token");
+            Axios.post(`${api}/newTweet`, {
+                username: user.username,
+                tweet: tweet,
+                token: token
+            }).then((response)=> {
+                console.log(response)
+                getFeed(user.username)
+            })
+            setTweet("")
+            setImage(null)
+        }
     }
 
     return(<>

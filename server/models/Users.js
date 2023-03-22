@@ -45,6 +45,10 @@ const UserSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        imageURL: {
+            type: String,
+            required: false
+        },
         comments: [{
             content: {
                 type: String,
