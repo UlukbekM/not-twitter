@@ -54,7 +54,9 @@ export const MenuColumn = (props) => {
                 </Col>
                 <Col lg={6} style={{color: "#fff", fontWeight: "bold", fontSize: "1.5em"}}>
                     <Row style={{marginTop: "1em"}}>
-                        <h1>Not Twitter</h1>
+                        <Link to={"/"} style={{textDecoration: "inherit", color: "#fff"}}>
+                            <h1>Not Twitter</h1>
+                        </Link>
                     </Row>
 
                     <Stack gap={4} style={{marginTop: "2em", fontSize: "1.1em"}}>

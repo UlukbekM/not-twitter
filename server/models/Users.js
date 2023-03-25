@@ -16,6 +16,18 @@ const UserSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    profilePicture: {
+        type: String,
+        required: false
+    },
+    bannerPicture: {
+        type: String,
+        required: false
+    },
+    description: {
+        type: String,
+        required: false
+    },
     followers: [{
         username: {
             type: String,
@@ -46,6 +58,10 @@ const UserSchema = new mongoose.Schema({
             required: true
         },
         imageURL: {
+            type: String,
+            required: false
+        },
+        userImage: {
             type: String,
             required: false
         },

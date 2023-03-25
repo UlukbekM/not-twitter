@@ -30,6 +30,7 @@ export const Home = (props) => {
     const [suggestedUsers, setSuggestedUsers] = useState([])
     const [userFeed, setUserFeed] = useState([])
     const [tweet, setTweet] = useState("")
+    // const [userImages, setUserImages] = useState([])
 
     const [image, setImage] = useState(null)
 
@@ -61,6 +62,7 @@ export const Home = (props) => {
             console.log('no image')
             return;
         }
+        // IMPLEMENT DELETING FROM S3 WHEN TWEET DELETED
         const params = { 
             Bucket: process.env.REACT_APP_BUCKET_NAME + '/tweet', 
             Key: `${Date.now()}.${image.name}`, 
@@ -90,6 +92,12 @@ export const Home = (props) => {
             }
         })
         .then((response)=> {
+            console.log(response)
+            // response.data.tweetArray.sort((a,b) => new Date(b.date) - new Date(a.date))
+            // setUserFeed(response.data.tweetArray)
+            // setUserImages(response.data.profileArray)
+
+            
             response.data.sort((a,b) => new Date(b.date) - new Date(a.date))
             setUserFeed(response.data)
         })
@@ -268,6 +276,7 @@ export const Home = (props) => {
                             tweetTextColor={tweetTextColor}
                             tweetButtonBackgroundColor={tweetButtonBackgroundColor}
                             tweetButtonColor={tweetButtonColor}
+                            // userPictures={userImages}
                             />
                     ))}
                     </Container>

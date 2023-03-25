@@ -179,15 +179,31 @@ app.get("/getTweets", async (req,res) => {
     try {
         let doc = await UserModel.findOne({username: req.query.username})
 
-        let array = []
-        doc.tweets.forEach(e => array.push(e))
+        let tweetArray = []
+        // let profileArray = []
+
+        doc.tweets.forEach(e => {
+            let tweet = e
+            tweet.userImage = doc.profilePicture
+            tweetArray.push(tweet)
+        })
+        // profileArray.push([doc.username,doc.profilePicture])
 
         for(let i = 0; i < doc.following.length; i++) {
             let tempUser = await UserModel.findOne({username: doc.following[i].username})
-            tempUser.tweets.forEach(e => array.push(e))
+            // profileArray.push([tempUser.username,tempUser.profilePicture])
+            tempUser.tweets.forEach(e => {
+                let tweet = e
+                tweet.userImage = tempUser.profilePicture
+                // console.log(tweet)
+                tweetArray.push(tweet)
+            })
         }
 
-        res.send(array)
+        // let object = {tweetArray, profileArray}
+
+        // res.send(object)
+        res.send(tweetArray)
     } catch (error) {
         res.send(error)
     }
@@ -273,6 +289,45 @@ app.put("/unlikeTweet/:id", auth, async (req,res) => {
 //     }
 // })
 
+app.put("/uploadPicture", async (req,res) => {
+
+    const { username , profilePicture , bannerPicture} = req.body
+
+    let doc = await UserModel.findOne({username: username})
+
+    
+    if(bannerPicture) {
+        doc.bannerPicture = bannerPicture
+    }
+    if(profilePicture) {
+        doc.profilePicture = profilePicture
+    }
+
+
+    doc.save()
+    res.send("images updated")
+})
+
+app.get("/getUserProfile", async (req,res) => {
+    try{
+        let doc = await UserModel.findOne({username: req.query.username})
+
+        // let array = []
+        // array.push({profile:doc.profilePicture})
+        // array.push({banner:doc.bannerPicture})
+        // array.push({description:doc.description})
+
+        let item = {
+            profile: doc.profilePicture,
+            banner: doc.bannerPicture,
+            description: doc.description
+        }
+
+        res.send(item)
+    } catch (error) {
+        res.send(error)
+    }
+})
 
 app.get("/test", (req,res) => {
     res.send('Hello World!')

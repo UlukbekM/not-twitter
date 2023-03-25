@@ -12,10 +12,25 @@ import { Link } from "react-router-dom";
 import { useNavigate} from "react-router-dom";
 import { Footer } from "./Footer";
 import jwt_decode from "jwt-decode";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import AWS from 'aws-sdk';
 
 
 export const UserPage = (props) => {
     const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = props.theme
+
+    const s3 = new AWS.S3();
+    // console.log(props)
+
+    const [show, setShow] = useState(false);
+
+    const [profilePicture, setProfilePicture] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
+    const [bannerPicture, setBannerPicture] = useState("https://wallpapers.com/images/hd/peacock-blue-plain-color-9bxl0kw0vw849lpd.jpg")
+
+    const [newProfilePicture, setNewProfilePicture] = useState(null)
+    const [newBannerPicture, setNewBannerPicture] = useState(null)
 
 
     let navigate = useNavigate();
@@ -38,6 +53,13 @@ export const UserPage = (props) => {
         })
         .then((response)=> {
             // console.log(response.data)
+            if(response.data.profilePicture) {
+                setProfilePicture(response.data.profilePicture)
+            }
+            if(response.data.bannerPicture) {
+                setBannerPicture(response.data.bannerPicture)
+            }
+            response.data.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
             setUser(response.data)
             setTweets(response.data.tweets)
         })
@@ -50,7 +72,133 @@ export const UserPage = (props) => {
         setMainUser(token.username)
     },[])
 
+    const handleProfileImage = e => {
+        if(e.target.files[0].size > 2097152) {
+            alert("File is too big!")
+            setNewProfilePicture(null)
+        } else {
+            setNewProfilePicture(e.target.files[0])
+            document.getElementById("new-profile").src=window.URL.createObjectURL(e.target.files[0])
+        }
+    }
+
+    const handleBannerImage = e => {
+        if(e.target.files[0].size > 2097152) {
+            alert("File is too big!")
+            setNewBannerPicture(null)
+        } else {
+            setNewBannerPicture(e.target.files[0])
+            document.getElementById("new-banner").src=window.URL.createObjectURL(e.target.files[0])
+        }
+    }
+
+    const uploadToS3 = async (item, folder) => {
+        if (!item) {
+            console.log('no image')
+            return;
+        }
+        // IMPLEMENT DELETING FROM S3 WHEN NEW IMAGE UPLOADED
+        const params = { 
+            Bucket: process.env.REACT_APP_BUCKET_NAME + folder, 
+            Key: `${Date.now()}.${item.name}`, 
+            Body: item 
+        };
+        const { Location } = await s3.upload(params).promise();
+        // console.log(Location)
+        return Location
+    }
+
+    const handleClose = () => {
+        setNewBannerPicture(null)
+        setNewProfilePicture(null)
+        setShow(false)
+    };
+    const handleShow = () => setShow(true);
+    
+    const handleCloseAndUpload = async () => {
+
+        if(newProfilePicture || newBannerPicture) {
+            let profileURL = ''
+            let bannerURL = ''
+
+            if(newProfilePicture) {
+                profileURL = await uploadToS3(newProfilePicture, "/user-profile")
+            }
+            if(newBannerPicture) {
+                bannerURL = await uploadToS3(newBannerPicture, "/user-banner")
+            }
+
+            Axios.put(`${api}/uploadPicture`, { 
+                username: mainUser,
+                token: window.sessionStorage.getItem("token"),
+                profilePicture: profileURL,
+                bannerPicture: bannerURL
+            })
+            .then((response)=> {
+                if(response.data === 'images updated') {
+                    if(profileURL) {
+                        setProfilePicture(profileURL)
+                    }
+                    if(bannerURL) {
+                        setBannerPicture(bannerURL)
+                    }
+                }
+            })
+        }
+        else {
+            console.log('nothing uploaded')
+        }
+
+
+        handleClose()
+    };
+
     return(<>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>Edit profile</Modal.Title>
+            </Modal.Header>
+
+
+            <label htmlFor="banner-upload">
+                <img src={bannerPicture} style={{width: "100%", maxHeight: "150px", cursor: "pointer"}} id="new-banner"/>
+            </label>
+            <input type="file" accept=".png, .jpg, .jpeg" onChange={handleBannerImage} id="banner-upload" style={{display: "none"}}/>
+
+
+            <Modal.Body>
+            <Stack gap={2}>
+                <div style={{marginTop: "-60px"}}>
+                    <label htmlFor="profile-upload">
+                        <img src={profilePicture} id="new-profile"
+                        style={{cursor: "pointer", width: "75px", height: "75px", padding: "5px", backgroundColor: "#fff", borderRadius: "50px"}}/>
+                    </label>
+                    <input type="file" accept=".png, .jpg, .jpeg" onChange={handleProfileImage} id="profile-upload" style={{display: "none"}}/>
+                </div>
+                <Form.Label>Username</Form.Label>
+                <Form.Control type="text" placeholder={'@' + mainUser} disabled readOnly/>
+                <Form.Label>Bio</Form.Label>
+                <Form.Control type="text" placeholder="Description"/>
+
+            </Stack>
+
+            </Modal.Body>
+
+
+
+            <Modal.Footer>
+                <Button variant="secondary" onClick={handleClose}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={handleCloseAndUpload} 
+                // disabled={newProfilePicture || newBannerPicture}
+                >
+                    Save Changes
+                </Button>
+            </Modal.Footer>
+        </Modal>
+
+
         <Container fluid style={{color: fontColor}}>
             <Row style={{display: "flex", justifyContent: "center"}}>
                 <MenuColumn backgroundColor={backgroundColor}/>
@@ -77,11 +225,11 @@ export const UserPage = (props) => {
                         </Row>
                     </Stack>
 
-                    <img src="https://wallpapers.com/images/hd/peacock-blue-plain-color-9bxl0kw0vw849lpd.jpg" className="profileBanner"/>
+                    <img src={bannerPicture} className="profileBanner"/>
 
                     <Stack  style={{padding: "1em"}}>
                         <div style={{marginTop: "-60px"}}>
-                            <img src="https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png"
+                            <img src={profilePicture}
                             // className="profilePicture"
                             style={{color: titleColor, width: "85px", height: "85px", padding: "5px", backgroundColor: backgroundColor, borderRadius: "50px"}}
                             />
@@ -96,10 +244,10 @@ export const UserPage = (props) => {
                             <Col>
                             </Col>
 
-                            <Col>
+                            <Col style={{display: "flex", alignItems: "center", justifyContent: "right"}}>
                                 { username == mainUser ? 
-                                <button> Edit </button> :
-                                <button> Unfollow </button>
+                                <button onClick={handleShow}> Edit Profile </button> :
+                                <button> Following/Not Following </button>
                                 }
                             </Col>
                         </Row>
@@ -109,13 +257,13 @@ export const UserPage = (props) => {
                             <Col xs={4} lg={2}>
                                 {user.following?
                                     <Link to="following" className="userFollow">
-                                        <p style={{display: "inline"}}>{user.following.length} following</p>
+                                        <p style={{display: "inline",color: fontColor}}>{user.following.length} following</p>
                                     </Link>:<></>}
                             </Col>
                             <Col xs={4} lg={2}>
                                 {user.followers?
                                     <Link to="followers" className="userFollow">
-                                            <p style={{display: "inline"}}>{user.followers.length} followers</p>
+                                            <p style={{display: "inline",color: fontColor}}>{user.followers.length} followers</p>
                                     </Link>:<></>}
                             </Col>
                             <Col xs={4} lg={8}></Col>
@@ -137,7 +285,7 @@ export const UserPage = (props) => {
                     <Container>
                         {tweets.length > 0 &&
                             tweets.map((tweet) => (
-                                <Tweet {...tweet} key={tweet._id} username={username} tweetBackground={tweetBackground} tweetTitleColor={tweetTitleColor} tweetTextColor={tweetTextColor}/>
+                                <Tweet {...tweet} profilePicture={profilePicture} key={tweet._id} username={username} tweetBackground={tweetBackground} tweetTitleColor={tweetTitleColor} tweetTextColor={tweetTextColor}/>
                         ))}
                     </Container>
                     </>

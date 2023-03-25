@@ -6,6 +6,9 @@ import Axios from 'axios';
 
 export const MiniUser = (user) => {
     const [status, setStatus] = useState(false)
+
+    const [profile, setProfile] = useState([])
+
     // console.log(user)
 
     const api = 'http://localhost:3001'
@@ -47,11 +50,32 @@ export const MiniUser = (user) => {
         })
     }
 
+    useEffect(() => {
+        getInfo()
+    } ,[])
+
+    const getInfo = () => {
+        Axios.get(`${api}/getUserProfile`, {
+            params: {
+                username: user.username
+            }
+        }).then((response)=> {
+            setProfile(response.data)
+        })
+    }
+
     return(<>
         <Row style={{background: "#fffffe", width: "95%", padding: "0.2em", borderRadius: "5px", alignItems: "center"}}>
             <Col xs={2} lg={1}>
                 <Link to={"../../" + user.username} className="userFollow" style={{padding: 0}}>
-                    <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/>
+                    {/* <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/> */}
+                    {profile.profile ? 
+                        <img src={profile.profile} 
+                        style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/> :
+                        <img src="https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png" 
+                        style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
+                    }
+                    
                 </Link>
             </Col>
 
@@ -62,7 +86,7 @@ export const MiniUser = (user) => {
                     </Link>
                 </Row>
                 <Row>
-                    Description...
+                    {profile.description ? profile.description : "Description"}
                 </Row>
             </Col>
 

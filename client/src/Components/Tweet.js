@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Axios from 'axios';
 import { Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
+import Image from 'react-bootstrap/Image'
 
 export const Tweet = (tweet) => {
     const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = tweet
@@ -15,6 +16,7 @@ export const Tweet = (tweet) => {
     const [comments, setComments] = useState(0)
     const [ownPage, setOwnPage] = useState(false)
     const [imageURL, setImageURL] = useState("")
+    const [userImage, setUserImage] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
 
     const checkLocation = (name) => {
         if(window.location.pathname.includes(name)){
@@ -37,6 +39,7 @@ export const Tweet = (tweet) => {
         if(tweet.imageURL) {
             setImageURL(tweet.imageURL)
         }
+        getUserImage()
     },[])
 
     const api = 'http://localhost:3001'
@@ -70,6 +73,18 @@ export const Tweet = (tweet) => {
             })
         }
     }
+
+    const getUserImage = () => {
+        if(tweet.profilePicture) {
+            setUserImage(tweet.profilePicture)
+        } else if(tweet.userImage) {
+            setUserImage(tweet.userImage)
+        }
+    }
+
+    let mobileCol1 = 2
+    let mobileCol2 = 9
+    let mobileCol3 = 1
 
     return(<>
         {/* <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/> */}
@@ -119,29 +134,40 @@ export const Tweet = (tweet) => {
         </Row> */}
 
 
-        <Row>
-            <Col xs={2} lg={1} style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
+        <Row style={{paddingTop: "1em"}}>
+            <Col xs={mobileCol1} lg={1} style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
+                {ownPage ?
+                    // <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor, cursor: "pointer"}}></i>
+                    <img src={userImage} 
+                    style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
+                :
                 <Link to={tweet.postedBy} className="userFollow">
-                    <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i>
+                    {/* <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i> */}
+                    <img src={userImage}  
+                    style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
                 </Link>
+                }
             </Col>
 
-            <Col xs={10} lg={11} style={{display: "flex", alignItems: "center"}}>
+            <Col xs={mobileCol2} lg={10} style={{display: "flex", alignItems: "center"}}>
                 <div style={{color: tweetTitleColor}}>
                     {ownPage ? 
-                    <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
-                    <Link to={tweet.postedBy} className="userFollow">
-                        <p style={{color: tweetTitleColor, display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p>
-                    </Link> }
+                        <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
+                        <Link to={tweet.postedBy} className="userFollow">
+                            <p style={{color: tweetTitleColor, display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p>
+                        </Link>
+                    }
                 </div>
             </Col>
+
+            <Col xs={mobileCol3} lg={1}></Col>
         </Row>
 
         <Row>
-            <Col xs={0} lg={1}>
+            <Col xs={mobileCol1} lg={1}>
             </Col>
 
-            <Col xs={12} lg={11}>
+            <Col xs={mobileCol2} lg={10}>
                 <Row>
                     <p style={{color: tweetTextColor, marginBottom: "1em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
                         {tweet.content}
@@ -149,18 +175,21 @@ export const Tweet = (tweet) => {
                 </Row>
                 <Row style={{display: "grid", placeItems: "center"}}>
                     {imageURL ?
-                    <img src={imageURL} style={{padding: "1em 0", maxWidth: "500px"}}/> :
+                    <img src={imageURL} style={{padding: "1em 0", borderRadius: "20px", maxHeight: "400px", width: "auto"}} draggable="true"/>
+                    :
                     <></>
                     }
                 </Row>
             </Col>
+
+            <Col xs={mobileCol3} lg={1}></Col>
         </Row>
 
         <Row>
-            <Col xs={0} lg={1}>
+            <Col xs={mobileCol1} lg={1}>
 
             </Col>
-            <Col xs={12} lg={11}>
+            <Col xs={mobileCol2} lg={10}>
                 <Row>
                     <Col xs={6}>
                         {/* // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIX DISPLAY INLINE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
@@ -185,6 +214,8 @@ export const Tweet = (tweet) => {
                     </Col>
                 </Row>
             </Col>
+
+            <Col xs={mobileCol3} lg={1}></Col>
         </Row>
 
     </Container>
