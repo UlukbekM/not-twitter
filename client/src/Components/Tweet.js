@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from "react";
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Axios from 'axios';
 import { Link } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
-import Image from 'react-bootstrap/Image'
+// import Image from 'react-bootstrap/Image'
+import jwt_decode from "jwt-decode";
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export const Tweet = (tweet) => {
     const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = tweet
@@ -18,6 +20,9 @@ export const Tweet = (tweet) => {
     const [imageURL, setImageURL] = useState("")
     const [userImage, setUserImage] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
 
+
+    const [mainUser, setMainUser] = useState(false)
+
     const checkLocation = (name) => {
         if(window.location.pathname.includes(name)){
             setOwnPage(true)
@@ -26,8 +31,19 @@ export const Tweet = (tweet) => {
         }
     }
 
+
     useEffect(() => {
         checkLocation(tweet.postedBy)
+
+        let token = window.sessionStorage.getItem("token");
+        let decoded = jwt_decode(token)
+
+        if(tweet.postedBy === decoded.username) {
+            setMainUser(true)
+        } else {
+            setMainUser(false)
+        }
+
     }, [location]);
 
     useEffect(()=> {
@@ -86,53 +102,12 @@ export const Tweet = (tweet) => {
     let mobileCol2 = 9
     let mobileCol3 = 1
 
+    const deleteTweet = () => {
+        console.log(tweet._id)
+    }
+
     return(<>
-        {/* <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/> */}
-    <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
-        {/* <Row>
-            <Col xs={2} lg={1} style={{display: "flex", alignItems:"center", justifyContent:"center", padding: 0}}>
-                <Link to={tweet.postedBy} className="userFollow">
-                    <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i>
-                </Link>
-            </Col>
-
-            <Col xs={10} lg={11}>
-                <Row style={{}}>
-                    <div style={{color: tweetTitleColor}}>
-                        {ownPage ? 
-                        <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
-                        <Link to={tweet.postedBy} className="userFollow">
-                            <p style={{color: tweetTitleColor, display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p>
-                        </Link> }
-                    </div>
-                </Row>
-
-                <Row style={{margin: 0, overflow: "hidden", whiteSpace: "nowrap", width: "95%", height: "auto", padding: "0.5em 0"}}>
-                    <p style={{margin: 0, padding: 0, textOverflow: "ellipsis"}}>
-                        {tweet.content}
-                    </p>
-                </Row>
-
-                <Row style={{}}>
-                    <Col>
-                        <i className="bi bi-chat"/>
-                    </Col>
-                    <Col>
-                        { liked ? 
-                        <div className="buttonLiked likeButton" onClick={clickButton}>
-                            <i className="bi bi-heart-fill"/>
-                            { likes }
-                        </div>
-                        :
-                        <div className="buttonNotLiked likeButton" onClick={clickButton}>
-                            <i className="bi bi-heart"/>
-                            { likes }
-                        </div> }
-                    </Col>
-                </Row>
-            </Col>
-        </Row> */}
-
+        <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
 
         <Row style={{paddingTop: "1em"}}>
             <Col xs={mobileCol1} lg={1} style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
@@ -160,7 +135,21 @@ export const Tweet = (tweet) => {
                 </div>
             </Col>
 
-            <Col xs={mobileCol3} lg={1}></Col>
+            <Col xs={mobileCol3} lg={1} style={{display: "grid", placeItems: "center"}}>
+                {mainUser ? 
+                <Dropdown>
+                <Dropdown.Toggle id="dropdown-basic">
+                    <i className="bi bi-three-dots" style={{cursor: "pointer"}}></i>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                    <Dropdown.Item style={{color: "red"}} onClick={deleteTweet}>Delete</Dropdown.Item>
+                    {/* <Dropdown.Item href="#/action-2">Another action</Dropdown.Item> */}
+                    {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
+                </Dropdown.Menu>
+                </Dropdown>
+                : <></>}
+            </Col>
         </Row>
 
         <Row>

@@ -96,8 +96,7 @@ export const Home = (props) => {
             // response.data.tweetArray.sort((a,b) => new Date(b.date) - new Date(a.date))
             // setUserFeed(response.data.tweetArray)
             // setUserImages(response.data.profileArray)
-
-            
+            // console.log(response)
             response.data.sort((a,b) => new Date(b.date) - new Date(a.date))
             setUserFeed(response.data)
         })
@@ -134,37 +133,56 @@ export const Home = (props) => {
 
     const sendTweet = async e => {
         e.preventDefault()
-        // console.log(user)
         let imageURL = ''
         if(image) {
             imageURL = await uploadToS3()
         }
-        if(imageURL) {
-            let token = window.sessionStorage.getItem("token");
-            Axios.post(`${api}/newTweet`, {
-                username: user.username,
-                tweet: tweet,
-                imageURL: imageURL,
-                token: token
-            }).then((response)=> {
-                console.log(response)
+
+        let token = window.sessionStorage.getItem("token");
+        Axios.post(`${api}/newTweet`, {
+            username: user.username,
+            tweet: tweet,
+            imageURL: imageURL,
+            token: token
+        }).then((response)=> {
+            console.log(response)
+            if(response) {
                 getFeed(user.username)
-            })
-            setTweet("")
-            setImage(null)
-        } else {
-            let token = window.sessionStorage.getItem("token");
-            Axios.post(`${api}/newTweet`, {
-                username: user.username,
-                tweet: tweet,
-                token: token
-            }).then((response)=> {
-                console.log(response)
-                getFeed(user.username)
-            })
-            setTweet("")
-            setImage(null)
-        }
+            }
+        })
+        setTweet("")
+        setImage(null)
+
+        // if(imageURL) {
+        //     let token = window.sessionStorage.getItem("token");
+        //     Axios.post(`${api}/newTweet`, {
+        //         username: user.username,
+        //         tweet: tweet,
+        //         imageURL: imageURL,
+        //         token: token
+        //     }).then((response)=> {
+        //         console.log(response)
+        //         if(response) {
+        //             getFeed(user.username)
+        //         }
+        //     })
+        //     setTweet("")
+        //     setImage(null)
+        // } else {
+        //     let token = window.sessionStorage.getItem("token");
+        //     Axios.post(`${api}/newTweet`, {
+        //         username: user.username,
+        //         tweet: tweet,
+        //         token: token
+        //     }).then((response)=> {
+        //         if(response) {
+        //             getFeed(user.username)
+        //         }
+        //         // console.log(response)
+        //     })
+        //     setTweet("")
+        //     setImage(null)
+        // }
     }
 
     return(<>
@@ -251,7 +269,7 @@ export const Home = (props) => {
                         <Col xs={1} lg={1} style={{display: "grid", placeItems: "center"}}>
                             {/* <Container> */}
                             <label htmlFor="image-upload">
-                                <i className="bi bi-card-image" style={{fontSize: "1.3em", cursor: "pointer"}}/>
+                                <i className="bi bi-card-image imageUploadIcon" style={{fontSize: "1.3em", cursor: "pointer"}}/>
                             </label>
                             <input type="file" accept='image/*' onChange={handleImage} id="image-upload" style={{display: "none"}}/>
                             {/* </Container> */}

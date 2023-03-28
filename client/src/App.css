@@ -158,6 +158,10 @@ body {
   text-decoration: underline
 }
 
+.imageUploadIcon:hover {
+  color: #1e81b0;
+}
+
 .menuItem {
   text-decoration: inherit;
   color: #fff;
