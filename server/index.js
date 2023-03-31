@@ -155,7 +155,7 @@ app.put("/unfollowUser", async (req,res) => {
 
 app.post("/newTweet", auth, async (req,res) => {
     try {
-        const { username , tweet , imageURL} = req.body
+        const { username , tweet , imageURL, imageKey} = req.body
 
         let doc = await UserModel.findOne({username: username})
         doc.tweets.push({
@@ -163,7 +163,8 @@ app.post("/newTweet", auth, async (req,res) => {
             date: Date.now(),
             likes: [],
             postedBy: username,
-            imageURL: imageURL
+            imageURL: imageURL,
+            imageKey: imageKey
         })
 
         doc.save()
@@ -289,18 +290,46 @@ app.put("/unlikeTweet/:id", auth, async (req,res) => {
 //     }
 // })
 
+
+//auth
+
+app.delete("/deleteTweet/:username/:id", async (req,res) => {
+    try {
+        const {username, id} = req.params
+
+        let doc = await UserModel.findOne({username: username})
+        // console.log(username, id, doc)
+        
+        doc.tweets.find((tweet) => {
+            if (tweet._id == id) {
+                let index = doc.tweets.indexOf(tweet)
+                if(index > -1) {
+                    doc.tweets.splice(index,1)
+                }
+            }
+        });
+
+        doc.save()
+        res.send('tweet deleted')
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.put("/uploadPicture", async (req,res) => {
 
-    const { username , profilePicture , bannerPicture} = req.body
+    const { username , profilePicture , bannerPicture, profileKey, bannerKey} = req.body
 
     let doc = await UserModel.findOne({username: username})
 
     
     if(bannerPicture) {
         doc.bannerPicture = bannerPicture
+        doc.bannerKey = bannerKey
     }
     if(profilePicture) {
         doc.profilePicture = profilePicture
+        doc.profileKey = profileKey
     }
 
 
@@ -312,14 +341,11 @@ app.get("/getUserProfile", async (req,res) => {
     try{
         let doc = await UserModel.findOne({username: req.query.username})
 
-        // let array = []
-        // array.push({profile:doc.profilePicture})
-        // array.push({banner:doc.bannerPicture})
-        // array.push({description:doc.description})
-
         let item = {
             profile: doc.profilePicture,
             banner: doc.bannerPicture,
+            profileKey: doc.profileKey,
+            bannerKey: doc.bannerKey,
             description: doc.description
         }
 

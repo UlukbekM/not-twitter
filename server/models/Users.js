@@ -20,7 +20,15 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    profileKey: {
+        type: String,
+        required: false
+    },
     bannerPicture: {
+        type: String,
+        required: false
+    },
+    bannerKey: {
         type: String,
         required: false
     },
@@ -58,6 +66,10 @@ const UserSchema = new mongoose.Schema({
             required: true
         },
         imageURL: {
+            type: String,
+            required: false
+        },
+        imageKey: {
             type: String,
             required: false
         },

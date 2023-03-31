@@ -48,7 +48,7 @@ export const MenuColumn = (props) => {
     },[])
 
     return (<>
-        <Col style={{background: backgroundColor, minHeight: "100vh", position: "fixed", left: 0}} className="mobileCol" lg={3}>
+        <Col style={{background: backgroundColor, minHeight: "100vh", position: "fixed", left: 0, userSelect: "none"}} className="mobileCol" lg={3}>
             <Row>
                 <Col lg={3}>
                 </Col>

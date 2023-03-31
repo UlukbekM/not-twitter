@@ -52,7 +52,7 @@ export const UserPage = (props) => {
             }
         })
         .then((response)=> {
-            // console.log(response.data)
+            console.log(response.data)
             if(response.data.profilePicture) {
                 setProfilePicture(response.data.profilePicture)
             }
@@ -103,9 +103,10 @@ export const UserPage = (props) => {
             Key: `${Date.now()}.${item.name}`, 
             Body: item 
         };
-        const { Location } = await s3.upload(params).promise();
+        const { Location, Key } = await s3.upload(params).promise();
         // console.log(Location)
-        return Location
+        let obj = {Location, Key}
+        return obj
     }
 
     const handleClose = () => {
@@ -114,34 +115,51 @@ export const UserPage = (props) => {
         setShow(false)
     };
     const handleShow = () => setShow(true);
+
+    const deleteS3 = async (key) => {
+        var params = { Bucket: process.env.REACT_APP_BUCKET_NAME, Key: key }
+        s3.deleteObject(params, function(err, data) {
+          // if(err) console.log(err)
+          // else console.log(data)
+        })
+    }
     
     const handleCloseAndUpload = async () => {
 
         if(newProfilePicture || newBannerPicture) {
-            let profileURL = ''
-            let bannerURL = ''
+            let profile = {Key: "", Location: ""}
+            let banner = {Key: "", Location: ""}
 
             if(newProfilePicture) {
-                profileURL = await uploadToS3(newProfilePicture, "/user-profile")
+                profile = await uploadToS3(newProfilePicture, "/user-profile")
             }
             if(newBannerPicture) {
-                bannerURL = await uploadToS3(newBannerPicture, "/user-banner")
+                banner = await uploadToS3(newBannerPicture, "/user-banner")
             }
 
             Axios.put(`${api}/uploadPicture`, { 
                 username: mainUser,
                 token: window.sessionStorage.getItem("token"),
-                profilePicture: profileURL,
-                bannerPicture: bannerURL
+                profilePicture: profile.Location,
+                profileKey: profile.Key,
+                bannerPicture: banner.Location,
+                bannerKey: banner.Key
             })
             .then((response)=> {
                 if(response.data === 'images updated') {
-                    if(profileURL) {
-                        setProfilePicture(profileURL)
+                    if(profile.Location) {
+                        setProfilePicture(profile.Location)
+                        if(user.profileKey) {
+                            deleteS3(user.profileKey)
+                        }
                     }
-                    if(bannerURL) {
-                        setBannerPicture(bannerURL)
+                    if(banner.Location) {
+                        setBannerPicture(banner.Location)
+                        if(user.bannerKey) {
+                            deleteS3(user.bannerKey)
+                        }
                     }
+                    
                 }
             })
         }
@@ -161,14 +179,14 @@ export const UserPage = (props) => {
 
 
             <label htmlFor="banner-upload">
-                <img src={bannerPicture} style={{width: "100%", maxHeight: "150px", cursor: "pointer"}} id="new-banner"/>
+                <img src={bannerPicture} style={{width: "100%", height: "150px", cursor: "pointer"}} id="new-banner"/>
             </label>
             <input type="file" accept=".png, .jpg, .jpeg" onChange={handleBannerImage} id="banner-upload" style={{display: "none"}}/>
 
 
             <Modal.Body>
             <Stack gap={2}>
-                <div style={{marginTop: "-60px"}}>
+                <div style={{marginTop: "-60px", display: "inline"}}>
                     <label htmlFor="profile-upload">
                         <img src={profilePicture} id="new-profile"
                         style={{cursor: "pointer", width: "75px", height: "75px", padding: "5px", backgroundColor: "#fff", borderRadius: "50px"}}/>
@@ -298,6 +316,6 @@ export const UserPage = (props) => {
             </Row>
         </Container>
 
-        <Footer username={user.username}/>
+        <Footer/>
     </>)
 }

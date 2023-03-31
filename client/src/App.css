@@ -26,6 +26,7 @@ body {
 }
 
 .footerC {
+  margin-top: 3em;
   display: none;
 }
 @media screen and (max-width: 600px) {
@@ -46,10 +47,10 @@ body {
     height: 100px;
   }
 
-  .tweetButton {
+  /* .tweetButton {
     width: 50px;
     padding: 0.5em 1em;
-  }
+  } */
 }
 
 
@@ -102,18 +103,71 @@ body {
 }
 
 .tweetButton {
-  width: 190px;
+  /* width: 190px; */
+  /* aspect-ratio: 1 / 1; */
   /* height: auto; */
-  border-radius: 5px;
-  padding: 0.5em 5em;
+  /* border-radius: 10px; */
+  padding: 0.25em 1em;
+  /* width: 20%; */
   display: flex;
   justify-content: space-between;
+  font-weight: bold;
+  align-items: center;
   cursor: pointer;
   margin-bottom: 0.5em;
+  /* transition: all 0.2s ease-out; */
+  /* background-color: #a06e22; */
+  /* border-radius: 50%; */
 }
 
+/* .tweetButton i::before {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  width: 2em;
+}
+
+.tweetButton:hover i::before {
+  border-radius: 50%;
+} */
+
+.iconEffect i::before {
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  width: 2em;
+}
+
+.iconEffect:hover i::before {
+  border-radius: 50%;
+}
+
+.commentButton:hover i::before {
+  background-color: rgba(30, 129, 176, 0.3);
+}
+
+.pictureUploadButton:hover i::before {
+  background-color: rgba(30, 129, 176, 0.3);
+}
+
+.buttonLiked:hover i::before {
+  background-color: rgba(221, 83, 83, 0.3);
+}
+
+.buttonNotLiked:hover i::before {
+  background-color: rgba(221, 83, 83, 0.3);
+}
+
+/* .tweetButton:hover {
+  background-color: #a06e22;
+} */
+
 .buttonNotLiked {
-  color: #b8c1ec
+  color: #232946
+}
+
+.commentButton {
+  color: #232946
 }
 
 .buttonNotLiked:hover {
@@ -124,12 +178,9 @@ body {
   color: #DD5353;
 }
 
-.commentButton {
-  color: #b8c1ec
-}
-
 .commentButton:hover {
   color: #1e81b0;
+  /* background-color: rgba(30, 129, 176, 0.3); */
 }
 
 /* .buttonLiked:hover i::before {

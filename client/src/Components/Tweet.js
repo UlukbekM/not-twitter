@@ -9,8 +9,18 @@ import { useLocation } from 'react-router-dom';
 // import Image from 'react-bootstrap/Image'
 import jwt_decode from "jwt-decode";
 import Dropdown from 'react-bootstrap/Dropdown';
+import AWS from 'aws-sdk';
+
+
+AWS.config.update({
+    accessKeyId: process.env.REACT_APP_AWS_ACCESSKEY_ID,
+    secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESSKEY,
+    region: 'us-east-1',
+    signatureVersion: 'v4',
+});
 
 export const Tweet = (tweet) => {
+    const s3 = new AWS.S3();
     const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = tweet
     const location = useLocation();
     const [liked, setLiked] = useState(false)
@@ -20,6 +30,8 @@ export const Tweet = (tweet) => {
     const [imageURL, setImageURL] = useState("")
     const [userImage, setUserImage] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
 
+
+    const [deleted, setDeleted] = useState(false)
 
     const [mainUser, setMainUser] = useState(false)
 
@@ -31,6 +43,12 @@ export const Tweet = (tweet) => {
         }
     }
 
+    useEffect(() => {
+        if(tweet.profilePicture) {
+            setUserImage(tweet.profilePicture)
+        }
+
+    }, [tweet.profilePicture]);
 
     useEffect(() => {
         checkLocation(tweet.postedBy)
@@ -102,11 +120,28 @@ export const Tweet = (tweet) => {
     let mobileCol2 = 9
     let mobileCol3 = 1
 
-    const deleteTweet = () => {
-        console.log(tweet._id)
+    const deleteTweet = async () => {
+        // console.log(tweet.username,tweet._id, tweet.imageKey)
+        if(tweet.imageKey) {
+            var params = { Bucket: process.env.REACT_APP_BUCKET_NAME, Key: tweet.imageKey }
+            s3.deleteObject(params, function(err, data) {
+              // if(err) console.log(err)
+              // else console.log(data)
+            })
+        }
+
+
+        Axios.delete(`${api}/deleteTweet/${tweet.username}/${tweet._id}`)
+        .then((response)=> {
+            console.log(response)
+            if(response.data === "tweet deleted") {
+                setDeleted(true)
+            }
+        })
     }
 
     return(<>
+    {deleted ? <></> :
         <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
 
         <Row style={{paddingTop: "1em"}}>
@@ -124,7 +159,7 @@ export const Tweet = (tweet) => {
                 }
             </Col>
 
-            <Col xs={mobileCol2} lg={10} style={{display: "flex", alignItems: "center"}}>
+            <Col xs={7} lg={10} style={{display: "flex", alignItems: "center"}}>
                 <div style={{color: tweetTitleColor}}>
                     {ownPage ? 
                         <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
@@ -135,10 +170,10 @@ export const Tweet = (tweet) => {
                 </div>
             </Col>
 
-            <Col xs={mobileCol3} lg={1} style={{display: "grid", placeItems: "center"}}>
+            <Col xs={3} lg={1} style={{display: "grid", placeItems: "center"}}>
                 {mainUser ? 
                 <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic">
+                <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor: tweetBackground, color: "#000", border: "none"}}>
                     <i className="bi bi-three-dots" style={{cursor: "pointer"}}></i>
                 </Dropdown.Toggle>
 
@@ -158,13 +193,13 @@ export const Tweet = (tweet) => {
 
             <Col xs={mobileCol2} lg={10}>
                 <Row>
-                    <p style={{color: tweetTextColor, marginBottom: "1em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
+                    <p style={{color: tweetTextColor, marginBottom: "0.25em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
                         {tweet.content}
                     </p>
                 </Row>
                 <Row style={{display: "grid", placeItems: "center"}}>
                     {imageURL ?
-                    <img src={imageURL} style={{padding: "1em 0", borderRadius: "20px", maxHeight: "400px", width: "auto"}} draggable="true"/>
+                    <img src={imageURL} style={{padding: "1em 0", borderRadius: "10%", maxHeight: "400px", width: "auto"}} draggable="true"/>
                     :
                     <></>
                     }
@@ -180,26 +215,30 @@ export const Tweet = (tweet) => {
             </Col>
             <Col xs={mobileCol2} lg={10}>
                 <Row>
-                    <Col xs={6}>
+                    <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                         {/* // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIX DISPLAY INLINE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
-                        <Link style={{textDecoration: "inherit", color: "inherit", display: "inline"}}> 
-                            <div className="commentButton tweetButton" style={{backgroundColor: tweetButtonBackgroundColor,  fontWeight:"bold"}}>
-                                    <i className="bi bi-chat"/>
-                                    { comments }
+                        <Link style={{textDecoration: "inherit", display: "inline"}}>
+                            <div className="commentButton tweetButton iconEffect">
+                                <i className="bi bi-chat"/>
+                                {/* <i className="bi bi-chat-fill"></i> */}
+                                { comments }
                             </div>
                         </Link>
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                         { liked ? 
-                        <div className="buttonLiked tweetButton" onClick={clickButton} style={{backgroundColor: tweetButtonBackgroundColor, fontWeight:"bold"}}>
+                        <div className="buttonLiked tweetButton iconEffect" onClick={clickButton}>
                             <i className="bi bi-heart-fill"/>
                             { likes }
                         </div>
                         :
-                        <div className="buttonNotLiked tweetButton" onClick={clickButton} style={{backgroundColor: tweetButtonBackgroundColor, fontWeight:"bold"}}>
+                        <div className="buttonNotLiked tweetButton iconEffect" onClick={clickButton}>
                             <i className="bi bi-heart"/>
                             { likes }
                         </div> }
+                    </Col>
+                    
+                    <Col xs={0} lg={8}>
                     </Col>
                 </Row>
             </Col>
@@ -207,6 +246,8 @@ export const Tweet = (tweet) => {
             <Col xs={mobileCol3} lg={1}></Col>
         </Row>
 
-    </Container>
+        </Container>
+    }
+        
     </>)
 }

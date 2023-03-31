@@ -15,6 +15,9 @@ export const S3Upload = () => {
   const s3 = new AWS.S3();
   const [file, setFile] = useState(null);
 
+  const [item, setItem] = useState("")
+  const [key, setKey] = useState("")
+
   const handleFileSelect = (e) => {
     setFile(e.target.files[0]);
   }
@@ -24,12 +27,37 @@ export const S3Upload = () => {
       return;
     }
     const params = { 
-      Bucket: process.env.REACT_APP_BUCKET_NAME + '/tweet', 
+      Bucket: process.env.REACT_APP_BUCKET_NAME + '/test', 
       Key: `${Date.now()}.${file.name}`, 
       Body: file 
     };
     const temp = await s3.upload(params).promise();
+    setItem(temp.Location)
+    setKey(temp.Key)
     console.log(temp);
+  }
+
+  const deleteS3Item = async () => {
+    var params = { Bucket: process.env.REACT_APP_BUCKET_NAME, Key: key }
+    s3.deleteObject(params, function(err, data) {
+      // if(err) console.log(err)
+      // else console.log(data)
+    })
+
+    // return new Promise((resolve, reject) => {
+    //   try {
+    //     var params = { Bucket: process.env.REACT_APP_BUCKET_NAME, Key: key };
+    //     s3.deleteObject(params, function(err, data) {
+    //         if (err) reject(err);
+    //         // an error occurred
+    //         else resolve(data); // successful response
+    //     });
+    //   } catch (e) {
+    //       reject(e);
+    //   }
+  // }
+
+
   }
   
   return (
@@ -39,6 +67,13 @@ export const S3Upload = () => {
       {file && (
         <div style={{ marginTop: '10px' }}>
           <button onClick={uploadToS3}>Upload</button>
+        </div>
+      )}
+
+      {item && (
+        <div>
+          <button onClick={deleteS3Item}>delete</button>
+          <img src={item}/>
         </div>
       )}
       {/* {imageUrl && (
