@@ -35,9 +35,6 @@ body {
     display: block;
   }
 
-  .mobileCol {
-    display: none;
-  }
 
   .formContainer {
     text-align: center;
@@ -288,4 +285,8 @@ body {
 
 .tweetImageClose:hover {
   background-color: rgba(0, 0, 0, 1);
+}
+
+textarea::placeholder {
+  color: gray;
 }

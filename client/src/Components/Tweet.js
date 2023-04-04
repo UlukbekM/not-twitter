@@ -121,7 +121,7 @@ export const Tweet = (tweet) => {
     let mobileCol3 = 1
 
     const deleteTweet = async () => {
-        // console.log(tweet.username,tweet._id, tweet.imageKey)
+        // console.log(tweet)
         if(tweet.imageKey) {
             var params = { Bucket: process.env.REACT_APP_BUCKET_NAME, Key: tweet.imageKey }
             s3.deleteObject(params, function(err, data) {

@@ -2,17 +2,22 @@ import React, {useState} from "react";
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
-import Image from 'react-bootstrap/Image'
 import Axios from 'axios';
 import { Link } from "react-router-dom";
 
 export const SuggestedUsers = (user) => {
-    const { currentUser, email, username } = user
-    const [text, setText] = useState("Follow")
+    console.log(user)
+    const { currentUser, email, username, profilePicture } = user
 
     const [status, setStatus] = useState(false)
+    // const [profilePicture, setProfilePicture] = useState("")
 
     const api = 'http://localhost:3001'
+
+    // useState(()=> {
+    //     if(user.profilePicture) setProfilePicture(user.profilePicture)
+    //     else setProfilePicture("")
+    // },[])
 
     const followUser = () => {
         Axios.put(`${api}/followUser`, {
@@ -38,22 +43,24 @@ export const SuggestedUsers = (user) => {
     }
 
     return (<>
-        <Row style={{
-            // backgroundColor: "#61657a", 
-            margin: "1em", borderRadius:"5px", display:"table"}}>
-            <Col lg={1} style={{display: "table-cell"}}>
+        <Row style={{margin: "1em", borderRadius:"5px"}}>
+            <Col lg={2} style={{display: "grid", placeItems: "center"}}>
                 <Link to={username} className="userFollow" style={{padding: 0}}>
-                    <i className="bi bi-person-circle" style={{fontSize: "2rem"}}></i>
+                    { profilePicture ? 
+                    <img src={profilePicture} 
+                    style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>:
+                    <img src="https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png" 
+                    style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>}
                 </Link>
             </Col>
-            <Col lg={5} style={{display: "table-cell", verticalAlign: "middle"}}>
-                <h4 style={{margin: "0"}}>
-                    <Link to={username} className="userFollow" style={{padding: 0}}>
+            <Col lg={6} style={{display: "grid",}}>
+                <h4 style={{margin: "0", display: "flex", alignItems: "center"}}>
+                    <Link to={username} className="userFollow" style={{padding: 0, color: user.fontColor, fontWeight: "600"}}>
                         @{username}
                     </Link>
                 </h4>
             </Col>
-            <Col lg={2} style={{display: "table-cell", verticalAlign:"middle"}}>
+            <Col lg={4} style={{display: "grid", placeItems: "center", verticalAlign:"middle"}}>
                 { status ? 
                 <Button variant="light" onClick={unfollowUser} style={{borderRadius: "20px", padding: "5px 15px"}} > Unfollow </Button> :
                 <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px"}} > Follow </Button>

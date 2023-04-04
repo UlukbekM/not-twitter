@@ -13,6 +13,8 @@ function App() {
   let theme = {
     api: 'http://localhost:3001',
     backgroundColor: "#232946",
+    formBackgroundColor: "#eebbc3",
+    contentBackgroundColor: "rgba(63, 68, 93, 0.5)",
     fontColor: "#fff",
     titleColor: "#fffffe",
     borderColor: "#000",
@@ -28,7 +30,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home theme={theme} />}/>
-            <Route path="landing" element={<Landing />} />
+            <Route path="landing" element={<Landing theme={theme} />}/>
             <Route path=":username" element={<UserPage theme={theme}/>} />
             <Route path=":username/following" element={<UserFollow theme={theme}/>} />
             <Route path=":username/followers" element={<UserFollow theme={theme}/>} />

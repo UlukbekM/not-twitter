@@ -94,7 +94,7 @@ app.get("/suggestedUsers", async (req,res) => {
                     let array = []
                     for(let i = 0; i < result.length; i++) {
                         if(result[i].username !== req.query.username && followingList.indexOf(result[i].username) < 0) {
-                            array.push({username:result[i].username,email:result[i].email})
+                            array.push({username:result[i].username,email:result[i].email, profilePicture: result[i].profilePicture})
                         }
                     }
                     res.send(array)
@@ -297,19 +297,30 @@ app.delete("/deleteTweet/:username/:id", async (req,res) => {
     try {
         const {username, id} = req.params
 
-        let doc = await UserModel.findOne({username: username})
+        // let doc = await UserModel.findOne({username: username})
         // console.log(username, id, doc)
         
-        doc.tweets.find((tweet) => {
-            if (tweet._id == id) {
-                let index = doc.tweets.indexOf(tweet)
-                if(index > -1) {
-                    doc.tweets.splice(index,1)
-                }
-            }
+        // await doc.tweets.find((tweet) => {
+        //     if (tweet._id == id) {
+        //         let index = doc.tweets.indexOf(tweet)
+        //         console.log(index)
+        //         if(index > -1) {
+        //             doc.tweets.splice(index,1)
+        //         }
+        //     }
+        // });
+
+        // await doc.save()
+        // res.send('tweet deleted')
+
+        UserModel.findOneAndUpdate({username: username}, { $pull: { tweets: { _id: id } } }, { new: true })
+        .then(updatedDoc => {
+            console.log('Document updated:', updatedDoc);
+        })
+        .catch(err => {
+            console.error('Error updating document:', err);
         });
 
-        doc.save()
         res.send('tweet deleted')
     } catch (error) {
         res.send(error)

@@ -22,7 +22,7 @@ AWS.config.update({
 });
 
 export const Home = (props) => {
-    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = props.theme
+    const {contentBackgroundColor, backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = props.theme
 
     const s3 = new AWS.S3();
 
@@ -273,11 +273,11 @@ export const Home = (props) => {
                 </Col>
 
                 <Col style={{background: backgroundColor, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3}>
-                    <Container style={{background: backgroundColor, borderRadius: "5px", marginTop: "10%", padding: "1em"}}>
+                    <Container style={{background: contentBackgroundColor, borderRadius: "20px", marginTop: "10%", padding: "1em", color: fontColor}}>
                         <Row><h3>Who to follow</h3></Row>
                         {suggestedUsers.length > 0 &&
                             suggestedUsers.map((tempUser) => (
-                                <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} />
+                                <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} fontColor={fontColor}/>
                         ))}
                     </Container>
                     <Button variant="primary" onClick={logout} style={{marginTop: "10%"}}>Log Out</Button>

@@ -6,14 +6,15 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Axios from 'axios';
 
-export const Landing = () => {
+export const Landing = (props) => {
+    const {backgroundColor, api, formBackgroundColor} = props.theme
+
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const [toggle, setToggle] = useState(true)
 
-    const api = 'http://localhost:3001'
 
     useEffect(()=> {
         let token = window.sessionStorage.getItem("token");
@@ -77,11 +78,11 @@ export const Landing = () => {
     }
 
     return(<>
-        <Container fluid style={{background: "#232946"}} className="landingContainer">
+        <Container fluid className="landingContainer">
             <Row>
-                <Col xs="1" lg="9" className="mobileCol">
+                <Col xs="0" lg="9" className="mobileCol" style={{background: backgroundColor}}>
                 </Col>
-                <Col xs="12" lg="3" style={{background: "#eebbc3", height: "100vh" }} className="formCol">
+                <Col xs="12" lg="3" style={{background: formBackgroundColor, height: "100vh" }} className="formCol">
                     {toggle ? 
                     <div className='formContainer'>
                         <Form onSubmit={logInSubmit}>
