@@ -6,7 +6,7 @@ import Axios from 'axios';
 import { Link } from "react-router-dom";
 
 export const SuggestedUsers = (user) => {
-    console.log(user)
+    // console.log(user)
     const { currentUser, email, username, profilePicture } = user
 
     const [status, setStatus] = useState(false)

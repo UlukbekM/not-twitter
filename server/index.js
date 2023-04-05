@@ -155,6 +155,7 @@ app.put("/unfollowUser", async (req,res) => {
 
 app.post("/newTweet", auth, async (req,res) => {
     try {
+        console.log(req.body)
         const { username , tweet , imageURL, imageKey} = req.body
 
         let doc = await UserModel.findOne({username: username})
@@ -369,6 +370,7 @@ app.get("/getUserProfile", async (req,res) => {
 app.get("/test", (req,res) => {
     res.send('Hello World!')
 })
+
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {

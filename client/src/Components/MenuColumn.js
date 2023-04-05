@@ -6,17 +6,20 @@ import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import Stack from 'react-bootstrap/Stack'
 import { useLocation } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import { TweetForm } from './TweetForm';
 
 
 export const MenuColumn = (props) => {
-    const { backgroundColor, titleColor} = props
+    const { backgroundColor, titleColor, buttonFontColor} = props.theme
+
+    // console.log(props)
 
     const [username, setUsername] = useState("")
     const [page, setPage] = useState("")
     const location = useLocation();
 
     const checkLocation = (name) => {
-
         if(window.location.pathname === "/"){
             setPage("home")
             return
@@ -76,6 +79,10 @@ export const MenuColumn = (props) => {
                             </Link>
                         </Row>
                     </Stack>
+
+                    <Row style={{marginTop: "2em"}}>
+                        <button className="tweetButtonSide" style={{color: buttonFontColor}} onClick={props.handleShow}>Tweet</button>
+                    </Row>
                 </Col>
                 <Col lg={3}>
                 </Col>

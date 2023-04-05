@@ -117,6 +117,18 @@ body {
   /* border-radius: 50%; */
 }
 
+.tweetButtonSide {
+  border-radius: 20px;
+  padding: 0.25em 0.5em;
+  font-weight: bold;
+  background-color: #eebbc3;
+  border: 1px solid black;
+}
+
+.tweetButtonSide:hover {
+  background-color: #d6a8b0;
+}
+
 /* .tweetButton i::before {
   aspect-ratio: 1 / 1;
   display: grid;
