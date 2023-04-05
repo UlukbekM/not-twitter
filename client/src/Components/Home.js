@@ -95,6 +95,7 @@ export const Home = (props) => {
 
 
             <Modal.Body>
+                hello
                 <TweetForm theme={props.theme} user={user.username} getFeed={()=>getFeed(user.username)}/>
             </Modal.Body>
             

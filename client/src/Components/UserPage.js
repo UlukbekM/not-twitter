@@ -219,7 +219,7 @@ export const UserPage = (props) => {
 
         <Container fluid style={{color: fontColor}}>
             <Row style={{display: "flex", justifyContent: "center"}}>
-                <MenuColumn backgroundColor={backgroundColor}/>
+                <MenuColumn theme={props.theme}/>
                 
                 <Col style={{background: backgroundColor, minHeight: "100vh" , padding: 0, borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6}>
                     { !user ? 
