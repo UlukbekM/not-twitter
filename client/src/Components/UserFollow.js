@@ -12,11 +12,9 @@ import { MiniUser } from "./MiniUser";
 import { useNavigate} from "react-router-dom";
 import { Footer } from "./Footer";
 import jwt_decode from "jwt-decode";
+import { TweetForm } from './TweetForm';
+import Modal from 'react-bootstrap/Modal';
 
-const color = "#000"
-const colorBg = "#232946"
-const colorMain = "#eebbc3"
-const colorSide = "#b8c1ec" 
 
 export const UserFollow = (props) => {
     const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = props.theme
@@ -26,6 +24,10 @@ export const UserFollow = (props) => {
     const {username} = useParams()
     const [user, setUser] = useState([])
     const [page, setPage] = useState("")
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => {setShow(true)};
 
     const [mainUser, setMainUser] = useState([])
 
@@ -83,9 +85,19 @@ export const UserFollow = (props) => {
 
 
     return(<>
-        <Container fluid style={{color: color}}>
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>Tweet</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <TweetForm theme={props.theme} user={user.username} mode="modal" handleClose={()=>handleClose()}/>
+            </Modal.Body>
+        </Modal>
+
+        <Container fluid style={{color: fontColor}}>
             <Row style={{display: "flex", justifyContent: "center"}}>
-                <MenuColumn backgroundColor={backgroundColor} titleColor={titleColor}/>
+                <MenuColumn theme={props.theme} handleShow={()=>handleShow()}/>
                 
                 <Col style={{background: backgroundColor, minHeight: "100vh", padding: 0, borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6}>
                     { !user ? 
@@ -150,7 +162,7 @@ export const UserFollow = (props) => {
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.following.length > 0 &&
                                 user.following.map((item) => (
-                                    <MiniUser {...item} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
+                                    <MiniUser {...item} theme={props.theme} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
                             </Stack> 
                         :<></> }
                         
@@ -158,14 +170,14 @@ export const UserFollow = (props) => {
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.followers.length > 0 &&
                                 user.followers.map((item) => (
-                                    <MiniUser {...item} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
+                                    <MiniUser {...item} theme={props.theme} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
                             </Stack>
                         :<></> }
                     </>
                     }
                 </Col>
 
-                <Col style={{background: colorBg, position: "fixed", right: 0, minHeight: "100vh"}} className="mobileCol" lg={3}>
+                <Col style={{background: backgroundColor, position: "fixed", right: 0, minHeight: "100vh"}} className="mobileCol" lg={3}>
                     
                 </Col>
             </Row>

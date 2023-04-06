@@ -5,13 +5,13 @@ import { Link } from "react-router-dom";
 import Axios from 'axios';
 
 export const MiniUser = (user) => {
+    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = user.theme
+
     const [status, setStatus] = useState(false)
 
     const [profile, setProfile] = useState([])
 
     // console.log(user)
-
-    const api = 'http://localhost:3001'
 
     useEffect(() => {
         if(user.array) {
@@ -65,7 +65,7 @@ export const MiniUser = (user) => {
     }
 
     return(<>
-        <Row style={{background: "#fffffe", width: "95%", padding: "0.2em", borderRadius: "5px", alignItems: "center"}}>
+        <Row style={{background: tweetBackground, width: "95%", padding: "0.2em", borderRadius: "5px", alignItems: "center"}}>
             <Col xs={2} lg={1}>
                 <Link to={"../../" + user.username} className="userFollow" style={{padding: 0}}>
                     {/* <img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" style={{width: "2rem", height: "2rem"}}/> */}
@@ -85,12 +85,12 @@ export const MiniUser = (user) => {
                         {user.username}
                     </Link>
                 </Row>
-                <Row>
+                <Row style={{color: tweetTextColor}}>
                     {profile.description ? profile.description : "Description"}
                 </Row>
             </Col>
 
-            <Col xs={4} lg={2} style={{textAlign: "center"}}>
+            <Col xs={4} lg={2} style={{textAlign: "center",color: tweetTextColor}}>
                 { user.mainUser !== user.username ? <>
                 {status ? 
                     <button className="unfollowButton" onClick={unfollowUser}> <span> Following </span> </button>

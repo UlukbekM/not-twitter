@@ -11,8 +11,9 @@ import { MenuColumn } from "./MenuColumn";
 import Stack from 'react-bootstrap/Stack'
 import { Footer } from './Footer';
 import Form from 'react-bootstrap/Form'
-import { TweetForm } from './TweetForm';
 import Modal from 'react-bootstrap/Modal';
+import { TweetForm } from './TweetForm';
+// import { TweetModal } from './TweetModal';
 
 
 
@@ -21,9 +22,7 @@ export const Home = (props) => {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => {
-        console.log('test')
-        setShow(true)};
+    const handleShow = () => {setShow(true)};
 
     const [user, setUser] = useState("");
     const [suggestedUsers, setSuggestedUsers] = useState([])
@@ -93,20 +92,9 @@ export const Home = (props) => {
             <Modal.Title>Tweet</Modal.Title>
             </Modal.Header>
 
-
             <Modal.Body>
-                hello
-                <TweetForm theme={props.theme} user={user.username} getFeed={()=>getFeed(user.username)}/>
+                <TweetForm theme={props.theme} user={user.username} getFeed={()=>getFeed(user.username)} mode="modal" handleClose={()=>handleClose()}/>
             </Modal.Body>
-            
-            <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-                Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-                Save Changes
-            </Button>
-            </Modal.Footer>
         </Modal>
 
         <Container fluid style={{color: fontColor}}>
@@ -138,7 +126,7 @@ export const Home = (props) => {
                         </Col>
                     </Row> */}
 
-                <TweetForm theme={props.theme} user={user.username} getFeed={()=>getFeed(user.username)}/>
+                <TweetForm theme={props.theme} user={user.username} getFeed={()=>getFeed(user.username)} mode="normal"/>
 
                 <Row style={{borderBottom: `solid 2px ${borderColor}`}}/>
 

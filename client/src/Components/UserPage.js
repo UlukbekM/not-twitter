@@ -16,13 +16,14 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import AWS from 'aws-sdk';
+import { TweetForm } from './TweetForm';
 
 
 export const UserPage = (props) => {
-    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = props.theme
+    const {contentBackgroundColor, backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = props.theme
 
     const s3 = new AWS.S3();
-    // console.log(props)
+    console.log(props)
 
     const [show, setShow] = useState(false);
 
@@ -171,7 +172,25 @@ export const UserPage = (props) => {
         handleClose()
     };
 
+    
+    const [showTweetModal, setShowTweetModal] = useState(false);
+    const handleCloseTweetModal = () => setShowTweetModal(false);
+    const handleShowTweetModal = () => {setShowTweetModal(true)};
+
     return(<>
+        
+        <Modal show={showTweetModal} onHide={handleCloseTweetModal}>
+            <Modal.Header closeButton>
+            <Modal.Title>Tweet</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+                <TweetForm theme={props.theme} user={user.username} mode="modal" handleClose={()=>handleCloseTweetModal()}/>
+            </Modal.Body>
+        </Modal>
+
+
+
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title>Edit profile</Modal.Title>
@@ -219,7 +238,7 @@ export const UserPage = (props) => {
 
         <Container fluid style={{color: fontColor}}>
             <Row style={{display: "flex", justifyContent: "center"}}>
-                <MenuColumn theme={props.theme}/>
+                <MenuColumn theme={props.theme} handleShow={()=>handleShowTweetModal()}/>
                 
                 <Col style={{background: backgroundColor, minHeight: "100vh" , padding: 0, borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6}>
                     { !user ? 
