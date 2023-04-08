@@ -17,6 +17,7 @@ export const MenuColumn = (props) => {
 
     const [username, setUsername] = useState("")
     const [page, setPage] = useState("")
+    const [profilePicture, setProfilePicture] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
     const location = useLocation();
 
     const checkLocation = (name) => {
@@ -46,16 +47,17 @@ export const MenuColumn = (props) => {
         }
 
         let decoded = jwt_decode(token);
+        if(decoded.profile) setProfilePicture(decoded.profile)
         setUsername(decoded.username)
         checkLocation(decoded.username)
     },[])
 
     return (<>
         <Col style={{background: backgroundColor, minHeight: "100vh", position: "fixed", left: 0, userSelect: "none"}} className="mobileCol" lg={3}>
-            <Row>
+            <Row style={{height: "100vh"}}>
                 <Col lg={3}>
                 </Col>
-                <Col lg={6} style={{color: "#fff", fontWeight: "bold", fontSize: "1.5em"}}>
+                <Col lg={6} style={{color: "#fff", fontWeight: "bold", fontSize: "1.5em",display: "flex", flexDirection: "column"}}>
                     <Row style={{marginTop: "1em"}}>
                         <Link to={"/"} style={{textDecoration: "inherit", color: "#fff"}}>
                             <h1>Not Twitter</h1>
@@ -83,13 +85,42 @@ export const MenuColumn = (props) => {
                     <Row style={{marginTop: "2em"}}>
                         <button className="tweetButtonSide" style={{color: buttonFontColor}} onClick={props.handleShow}>Tweet</button>
                     </Row>
+
+
+                    
+                    <Row 
+                    // style={{position: "fixed", bottom: "10px", width: "100%"}}
+                    >
+                        <Container style={{
+                            display: "flex", 
+                            // justifyContent: "center", 
+                            alignItems: "center",
+                            textAlign: "center",
+                            padding: "0.25em 0.5em", 
+                            background: "rgba(255, 255, 255, 0.1)", 
+                            borderRadius: "40px",
+                            // position: "absolute",
+                            // bottom: 0
+                            }}>
+                            <Col lg={3}>
+                                <img src={profilePicture} style={{width: "40px", height: "40px", borderRadius: "50%", backgroundColor: "red"}}/>
+                            </Col>
+
+                            <Col lg={6} style={{textAlign: "left"}}>
+                                <p style={{margin: 0}}>@{username}</p>
+                            </Col>
+
+                            <Col lg={3}>
+                                
+                            </Col>
+                        </Container>
+                    </Row>
                 </Col>
                 <Col lg={3}>
                 </Col>
             </Row>
 
 
-            
         </Col>
     </>)
 }

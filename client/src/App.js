@@ -22,7 +22,7 @@ function App() {
     tweetTitleColor: "#232946",
     tweetTextColor: "#232946",
     tweetButtonBackgroundColor: "rgba(35, 41, 70, 0.8)",
-    tweetButtonColor: "#b8c1ec",
+    tweetButtonColor: "#eebbc3",
     // buttonColor: "#eebbc3",
     buttonFontColor: "#232946"
   }

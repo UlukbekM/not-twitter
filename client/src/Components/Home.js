@@ -109,23 +109,6 @@ export const Home = (props) => {
                         <h4 style={{color: titleColor}}>Feed</h4>
                     </Row>
 
-
-                    {/* <Row style={{margin: "0"}}>
-                        <Col xs={9} lg={10}>
-                            <Form.Control
-                                type="text"
-                                placeholder="What's Happening?"
-                                maxLength="280"
-                                value={tweet}
-                                onChange={({ target }) => setTweet(target.value)}
-                                rows={3}
-                            />
-                        </Col>
-                        <Col xs={2} lg={2} style={{textAlign: "center"}}>
-                            <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button>
-                        </Col>
-                    </Row> */}
-
                 <TweetForm theme={props.theme} user={user.username} getFeed={()=>getFeed(user.username)} mode="normal"/>
 
                 <Row style={{borderBottom: `solid 2px ${borderColor}`}}/>

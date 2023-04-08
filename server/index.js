@@ -61,7 +61,7 @@ app.get("/login", async (req,res) => {
             if(result.length > 0) {
                 if(req.query.password === result[0].password) {
                     const token = jwt.sign(
-                        {email:  result[0].email, username: result[0].username},
+                        {email:  result[0].email, username: result[0].username, profile: result[0].profilePicture},
                         process.env.JWT_TOKEN_KEY,
                         { expiresIn: "2h" }
                     )
@@ -168,7 +168,7 @@ app.post("/newTweet", auth, async (req,res) => {
             imageKey: imageKey
         })
 
-        doc.save()
+        await doc.save()
 
         res.send('tweet posted')
 

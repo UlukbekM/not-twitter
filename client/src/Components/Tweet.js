@@ -171,19 +171,20 @@ export const Tweet = (tweet) => {
             </Col>
 
             <Col xs={3} lg={1} style={{display: "grid", placeItems: "center"}}>
-                {mainUser ? 
-                <Dropdown>
-                <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor: tweetBackground, color: "#000", border: "none"}}>
-                    <i className="bi bi-three-dots" style={{cursor: "pointer"}}></i>
-                </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                    <Dropdown.Item style={{color: "red"}} onClick={deleteTweet}>Delete</Dropdown.Item>
-                    {/* <Dropdown.Item href="#/action-2">Another action</Dropdown.Item> */}
-                    {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
-                </Dropdown.Menu>
-                </Dropdown>
-                : <></>}
+                {mainUser && 
+                    <Dropdown>
+                    <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor: tweetBackground, color: "#000", border: "none"}}>
+                        <i className="bi bi-three-dots" style={{cursor: "pointer"}}></i>
+                    </Dropdown.Toggle>
+    
+                    <Dropdown.Menu>
+                        <Dropdown.Item style={{color: "red"}} onClick={deleteTweet}>Delete</Dropdown.Item>
+                        {/* <Dropdown.Item href="#/action-2">Another action</Dropdown.Item> */}
+                        {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
+                    </Dropdown.Menu>
+                    </Dropdown>
+                }
             </Col>
         </Row>
 
@@ -198,11 +199,14 @@ export const Tweet = (tweet) => {
                     </p>
                 </Row>
                 <Row style={{display: "grid", placeItems: "center"}}>
-                    {imageURL ?
+                    { imageURL && 
+                    <img src={imageURL} style={{padding: "1em 0", borderRadius: "40px", maxHeight: "400px", width: "auto"}} draggable="true"/>}
+
+                    {/* {imageURL ?
                     <img src={imageURL} style={{padding: "1em 0", borderRadius: "10%", maxHeight: "400px", width: "auto"}} draggable="true"/>
                     :
                     <></>
-                    }
+                    } */}
                 </Row>
             </Col>
 
@@ -218,7 +222,7 @@ export const Tweet = (tweet) => {
                     <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                         {/* // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIX DISPLAY INLINE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
                         <Link style={{textDecoration: "inherit", display: "inline"}}>
-                            <div className="commentButton tweetButton iconEffect">
+                            <div className="commentButton tweetIcon iconEffect">
                                 <i className="bi bi-chat"/>
                                 {/* <i className="bi bi-chat-fill"></i> */}
                                 { comments }
@@ -227,12 +231,12 @@ export const Tweet = (tweet) => {
                     </Col>
                     <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                         { liked ? 
-                        <div className="buttonLiked tweetButton iconEffect" onClick={clickButton}>
+                        <div className="buttonLiked tweetIcon iconEffect" onClick={clickButton}>
                             <i className="bi bi-heart-fill"/>
                             { likes }
                         </div>
                         :
-                        <div className="buttonNotLiked tweetButton iconEffect" onClick={clickButton}>
+                        <div className="buttonNotLiked tweetIcon iconEffect" onClick={clickButton}>
                             <i className="bi bi-heart"/>
                             { likes }
                         </div> }

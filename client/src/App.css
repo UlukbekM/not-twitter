@@ -99,7 +99,7 @@ body {
   margin-top: 0.6rem;
 }
 
-.tweetButton {
+.tweetIcon {
   /* width: 190px; */
   /* aspect-ratio: 1 / 1; */
   /* height: auto; */
@@ -111,7 +111,7 @@ body {
   font-weight: bold;
   align-items: center;
   cursor: pointer;
-  margin-bottom: 0.5em;
+  /* margin-bottom: 0.5em; */
   /* transition: all 0.2s ease-out; */
   /* background-color: #a06e22; */
   /* border-radius: 50%; */
@@ -120,14 +120,43 @@ body {
 .tweetButtonSide {
   border-radius: 20px;
   padding: 0.25em 0.5em;
-  font-weight: bold;
-  background-color: #eebbc3;
+  /* padding: 0.5em 1em; */
+  /* font-weight: bold; */
+  font-weight: 700;
   border: 1px solid black;
+  background-color: #eebbc3;
 }
 
 .tweetButtonSide:hover {
   background-color: #d6a8b0;
 }
+
+.tweetButton {
+  background-color: #eebbc3;
+  color: #232946;
+  padding: 0.5em 1em;
+  border: none;
+  font-weight: 700;
+  border-radius: 40px;
+  letter-spacing: 0.5px;
+}
+
+.tweetButton:disabled {
+  background-color: #a78389;
+}
+
+.tweetButton:hover:enabled {
+  background-color: #d6a8b0;
+}
+
+
+/* .buttonHoverColor {
+  background-color: #eebbc3;
+}
+
+.buttonHoverColor:hover {
+  background-color: #d6a8b0;
+} */
 
 /* .tweetButton i::before {
   aspect-ratio: 1 / 1;
@@ -147,6 +176,10 @@ body {
   width: 2em;
 }
 
+.imageUploadIcon:hover {
+  color: rgba(238, 187, 195, 1);
+}
+
 .iconEffect:hover i::before {
   border-radius: 50%;
 }
@@ -156,7 +189,7 @@ body {
 }
 
 .pictureUploadButton:hover i::before {
-  background-color: rgba(30, 129, 176, 0.3);
+  background-color: rgba(238, 187, 195, 0.3);
 }
 
 .buttonLiked:hover i::before {
@@ -218,9 +251,6 @@ body {
   text-decoration: underline
 }
 
-.imageUploadIcon:hover {
-  color: #1e81b0;
-}
 
 .menuItem {
   text-decoration: inherit;

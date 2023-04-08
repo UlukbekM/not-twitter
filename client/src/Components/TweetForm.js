@@ -17,9 +17,9 @@ AWS.config.update({
 
 
 export const TweetForm = (props) => {
-    const {backgroundColor, api, fontColor} = props.theme
+    const {backgroundColor, api, fontColor, tweetButtonColor, buttonFontColor} = props.theme
 
-    console.log(props)
+    // console.log(props)
 
     const [tweet, setTweet] = useState("")
     const [image, setImage] = useState(null)
@@ -29,13 +29,13 @@ export const TweetForm = (props) => {
     useEffect(()=> {
         if(props.mode === "normal") {
             if(image) {
-                document.getElementById("tweetImageContainer").style.display = "block"
+                document.getElementById("tweetImageContainer").style.display = "flex"
             } else {
                 document.getElementById("tweetImageContainer").style.display = "none"
             }
         } else {
             if(image) {
-                document.getElementById("modalImageContainer").style.display = "block"
+                document.getElementById("modalImageContainer").style.display = "flex"
             } else {
                 document.getElementById("modalImageContainer").style.display = "none"
             }
@@ -88,7 +88,7 @@ export const TweetForm = (props) => {
         })
         setTweet("")
         setImage(null)
-        props.handleClose()
+        if(props.handleClose) props.handleClose()
     }
 
     const uploadToS3 = async () => {
@@ -112,44 +112,60 @@ export const TweetForm = (props) => {
     {props.mode === "normal" ? 
         <Container style={{paddingTop: "1em",paddingBottom: "1em"}}>
             <Row style={{height:"auto"}}>
-                <textarea placeholder="What's Happening?" className='tweetForm'
-                    maxLength={280}
-                    value={tweet}
-                    onChange={({ target }) => setTweet(target.value)}
-                    style={{        
-                        resize: "none",
-                        height: "auto",                    
-                        backgroundColor: backgroundColor, 
-                        border: "none", 
-                        color: fontColor, 
-                        outline: "none", 
-                        fontFamily: "inherit",
-                        paddingTop: "1em",
-                        paddingBottom: "1em",
-                        overflow: "hidden"}}
-                ></textarea>
-                                                                                                                    {/*  ~~~~~~~~~~~~~~~~~~~~~~~~ FIX WITH SMALL IMGS ~~~~~~~~~~~~~~ */}
-                <div style={{width: "100%", height: "100%", backgroundSize: "cover", borderRadius: "20px"}} id="tweetImageContainer">
-                    <button className='tweetImageClose' onClick={removeImage}>
-                        <p style={{margin: 0}}>X</p>
-                    </button>
-                    <img src="#" id="tweetImage" style={{paddingTop: "1em", borderRadius: "30px", maxWidth: "100%", opacity: 0}}/>
-                </div>
+                {/* <Col lg={1}>
+                </Col>
+
+                <Col lg={10}> */}
+                    <textarea placeholder="What's Happening?" className='tweetForm'
+                        maxLength={280}
+                        value={tweet}
+                        onChange={({ target }) => setTweet(target.value)}
+                        style={{        
+                            resize: "none",
+                            height: "auto",                    
+                            backgroundColor: backgroundColor, 
+                            border: "none", 
+                            color: fontColor, 
+                            outline: "none", 
+                            fontFamily: "inherit",
+                            paddingTop: "1em",
+                            paddingBottom: "1em",
+                            // overflow: "hidden",
+                            width: "100%",
+                            overflowY: "scroll",}}
+                    ></textarea>
+                    
+                    <div 
+                        style={{backgroundSize: "cover", display: "flex", flexDirection: "column", borderRadius: "20px", marginTop: "1em"}}
+                    // style={{ display: "flex", flexDirection: "column" ,width: "100%", height: "100%", backgroundSize: "cover", borderRadius: "20px", backgroundSize: "cover"}} 
+                        id="tweetImageContainer">
+                        <button className='tweetImageClose' onClick={removeImage}>
+                            <p style={{margin: 0}}>X</p>
+                        </button>
+                        <img src="#" id="tweetImage" style={{paddingTop: "1em", borderRadius: "30px", maxWidth: "100%", opacity: 0,}}/>
+                    </div>
+                {/* </Col>
+
+                <Col lg={1}>
+                </Col> */}
             </Row>
 
-            <Row style={{paddingTop: "1em"}}>
-                <Col xs={1} lg={1} style={{display: "grid", placeItems: "center"}} className="iconEffect pictureUploadButton">
 
-                    <label htmlFor="image-upload">
-                        <i className="bi bi-card-image imageUploadIcon" style={{fontSize: "1.3em", cursor: "pointer"}}/>
+            <Row style={{paddingTop: "1em"}}>
+                <Col xs={1} lg={1} style={{display: "grid", placeItems: "center"}} className="iconEffect ">
+
+                    <label htmlFor="image-upload" className="pictureUploadButton">
+                        <i className="bi bi-card-image imageUploadIcon " style={{fontSize: "1.3em", cursor: "pointer"}}/>
                     </label>
                     <input type="file" accept='image/*' onChange={handleImage} id="image-upload" style={{display: "none"}}/>
 
                 </Col>
-                <Col xs={8}lg={10}>
+                <Col xs={8}lg={9}>
                 </Col>
-                <Col xs={2} lg={1} style={{alignItems: "center"}}>
-                    <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button>
+                <Col xs={2} lg={2} style={{display: "grid", placeItems: "center"}}>
+                    {/* <Button variant="secondary" onClick={sendTweet} disabled={!(tweet !== "")} 
+                    style={{backgroundColor: tweetButtonColor, color: buttonFontColor, fontWeight: "600"}}>Tweet</Button> */}
+                    <button className="tweetButton" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</button>
                 </Col>
                 
             </Row>
@@ -175,7 +191,8 @@ export const TweetForm = (props) => {
                         overflow: "hidden"}}
                 ></textarea>
 
-                <div id="modalImageContainer" style={{marginTop: "1em",backgroundSize: "cover"}}>
+                <div id="modalImageContainer"
+                    style={{backgroundSize: "cover", display: "flex", flexDirection: "column", borderRadius: "20px"}}>
                     <button className='tweetImageClose' onClick={removeImage}>
                         <p style={{margin: 0}}>X</p>
                     </button>
@@ -184,18 +201,19 @@ export const TweetForm = (props) => {
             </Row>
 
             <Row style={{paddingTop: "1em"}}>
-                <Col xs={1} lg={2} style={{display: "grid", placeItems: "center"}} className="iconEffect pictureUploadButton">
-                    <label htmlFor="image-upload-modal">
-                        <i className="bi bi-card-image imageUploadIcon" style={{fontSize: "1.3em", cursor: "pointer"}}/>
+                <Col xs={1} lg={2} style={{display: "grid", placeItems: "center"}} className="iconEffect">
+                    <label htmlFor="image-upload-modal" className="pictureUploadButton">
+                        <i className="bi bi-card-image imageUploadIcon " style={{fontSize: "1.3em", cursor: "pointer"}}/>
                     </label>
                     <input type="file" accept='image/*' onChange={handleImage} id="image-upload-modal" style={{display: "none"}}/>
                 </Col>
 
-                <Col xs={8} lg={8}>
+                <Col xs={8} lg={7}>
                 </Col>
 
-                <Col xs={2} lg={2} style={{alignItems: "center"}}>
-                    <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button>
+                <Col xs={2} lg={3} style={{alignItems: "center"}}>
+                    {/* <Button variant="primary" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</Button> */}
+                    <button className="tweetButton" onClick={sendTweet} disabled={!(tweet !== "")}>Tweet</button>
                 </Col>
             </Row>
         </Container>

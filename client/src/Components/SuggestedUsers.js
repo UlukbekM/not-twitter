@@ -62,8 +62,8 @@ export const SuggestedUsers = (user) => {
             </Col>
             <Col lg={4} style={{display: "grid", placeItems: "center", verticalAlign:"middle"}}>
                 { status ? 
-                <Button variant="light" onClick={unfollowUser} style={{borderRadius: "20px", padding: "5px 15px"}} > Unfollow </Button> :
-                <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px"}} > Follow </Button>
+                <Button variant="light" onClick={unfollowUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Unfollow </Button> :
+                <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Follow </Button>
                 }
 
                 {/* <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px"}} disabled={text !== "Follow"}> {text} </Button> */}
