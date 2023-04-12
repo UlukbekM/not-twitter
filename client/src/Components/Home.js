@@ -80,11 +80,6 @@ export const Home = (props) => {
 
     // }
 
-    const logout = () => {
-        sessionStorage.removeItem('token');
-        window.location.reload();
-    }
-
 
     return(<>
         <Modal show={show} onHide={handleClose}>
@@ -136,7 +131,7 @@ export const Home = (props) => {
                                 <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} fontColor={fontColor}/>
                         ))}
                     </Container>
-                    <Button variant="primary" onClick={logout} style={{marginTop: "10%"}}>Log Out</Button>
+                    {/* <Button variant="primary" onClick={logout} style={{marginTop: "10%"}}>Log Out</Button> */}
                 </Col>
             </Row>
         </Container>
