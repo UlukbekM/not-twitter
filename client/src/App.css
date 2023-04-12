@@ -251,9 +251,7 @@ body {
   text-decoration: underline
 }
 
-.dropdown-toggle::after {
-  display: none;
-}
+
 
 .menuItem {
   text-decoration: inherit;

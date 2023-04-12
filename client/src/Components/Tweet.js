@@ -142,115 +142,117 @@ export const Tweet = (tweet) => {
 
     return(<>
     {deleted ? <></> :
-        <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
+        <Link to={"../../" + tweet.postedBy + "/status/" + tweet._id} style={{textDecoration: "none"}}>
+            <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
 
-        <Row style={{paddingTop: "1em"}}>
-            <Col xs={mobileCol1} lg={1} style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
-                {ownPage ?
-                    // <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor, cursor: "pointer"}}></i>
-                    <img src={userImage} 
-                    style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
-                :
-                <Link to={tweet.postedBy} className="userFollow">
-                    {/* <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i> */}
-                    <img src={userImage}  
-                    style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
-                </Link>
-                }
-            </Col>
-
-            <Col xs={7} lg={10} style={{display: "flex", alignItems: "center"}}>
-                <div style={{color: tweetTitleColor}}>
-                    {ownPage ? 
-                        <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
-                        <Link to={tweet.postedBy} className="userFollow">
-                            <p style={{color: tweetTitleColor, display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p>
-                        </Link>
-                    }
-                </div>
-            </Col>
-
-            <Col xs={3} lg={1} style={{display: "grid", placeItems: "center"}}>
-
-                {mainUser && 
-                    <Dropdown>
-                    <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor: tweetBackground, color: "#000", border: "none"}}>
-                        <i className="bi bi-three-dots" style={{cursor: "pointer"}}></i>
-                    </Dropdown.Toggle>
-    
-                    <Dropdown.Menu>
-                        <Dropdown.Item style={{color: "red"}} onClick={deleteTweet}>Delete</Dropdown.Item>
-                        {/* <Dropdown.Item href="#/action-2">Another action</Dropdown.Item> */}
-                        {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
-                    </Dropdown.Menu>
-                    </Dropdown>
-                }
-            </Col>
-        </Row>
-
-        <Row>
-            <Col xs={mobileCol1} lg={1}>
-            </Col>
-
-            <Col xs={mobileCol2} lg={10}>
-                <Row>
-                    <p style={{color: tweetTextColor, marginBottom: "0.25em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
-                        {tweet.content}
-                    </p>
-                </Row>
-                <Row style={{display: "grid", placeItems: "center"}}>
-                    { imageURL && 
-                    <img src={imageURL} style={{padding: "1em 0", borderRadius: "40px", maxHeight: "400px", width: "auto"}} draggable="true"/>}
-
-                    {/* {imageURL ?
-                    <img src={imageURL} style={{padding: "1em 0", borderRadius: "10%", maxHeight: "400px", width: "auto"}} draggable="true"/>
+            <Row style={{paddingTop: "1em"}}>
+                <Col xs={mobileCol1} lg={1} style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
+                    {ownPage ?
+                        // <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor, cursor: "pointer"}}></i>
+                        <img src={userImage} 
+                        style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
                     :
-                    <></>
-                    } */}
-                </Row>
-            </Col>
+                    <Link to={tweet.postedBy} className="userFollow">
+                        {/* <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i> */}
+                        <img src={userImage}  
+                        style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
+                    </Link>
+                    }
+                </Col>
 
-            <Col xs={mobileCol3} lg={1}></Col>
-        </Row>
+                <Col xs={7} lg={10} style={{display: "flex", alignItems: "center"}}>
+                    <div style={{color: tweetTitleColor}}>
+                        {ownPage ? 
+                            <p style={{color: tweetTitleColor, cursor: "pointer",display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p> : 
+                            <Link to={tweet.postedBy} className="userFollow">
+                                <p style={{color: tweetTitleColor, display: "inline", margin: "0.3em 0", fontWeight: "bold"}}>@{tweet.postedBy}</p>
+                            </Link>
+                        }
+                    </div>
+                </Col>
 
-        <Row>
-            <Col xs={mobileCol1} lg={1}>
+                <Col xs={3} lg={1} style={{display: "grid", placeItems: "center"}}>
 
-            </Col>
-            <Col xs={mobileCol2} lg={10}>
-                <Row>
-                    <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                        {/* // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIX DISPLAY INLINE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
-                        <Link style={{textDecoration: "inherit", display: "inline"}}>
-                            <div className="commentButton tweetIcon iconEffect">
-                                <i className="bi bi-chat"/>
-                                {/* <i className="bi bi-chat-fill"></i> */}
-                                { comments }
-                            </div>
-                        </Link>
-                    </Col>
-                    <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                        { liked ? 
-                        <div className="buttonLiked tweetIcon iconEffect" onClick={clickButton}>
-                            <i className="bi bi-heart-fill"/>
-                            { likes }
-                        </div>
+                    {mainUser && 
+                        <Dropdown>
+                        <Dropdown.Toggle id="dropdown-basic" style={{backgroundColor: tweetBackground, color: "#000", border: "none"}}>
+                            <i className="bi bi-three-dots" style={{cursor: "pointer"}}></i>
+                        </Dropdown.Toggle>
+        
+                        <Dropdown.Menu>
+                            <Dropdown.Item style={{color: "red"}} onClick={deleteTweet}>Delete</Dropdown.Item>
+                            {/* <Dropdown.Item href="#/action-2">Another action</Dropdown.Item> */}
+                            {/* <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
+                        </Dropdown.Menu>
+                        </Dropdown>
+                    }
+                </Col>
+            </Row>
+
+            <Row>
+                <Col xs={mobileCol1} lg={1}>
+                </Col>
+
+                <Col xs={mobileCol2} lg={10}>
+                    <Row>
+                        <p style={{color: tweetTextColor, marginBottom: "0.25em", fontWeight: 450, overflow: "auto", overflowWrap: "break-word"}}>
+                            {tweet.content}
+                        </p>
+                    </Row>
+                    <Row style={{display: "grid", placeItems: "center"}}>
+                        { imageURL && 
+                        <img src={imageURL} style={{padding: "1em 0", borderRadius: "40px", maxHeight: "400px", width: "auto"}} draggable="true"/>}
+
+                        {/* {imageURL ?
+                        <img src={imageURL} style={{padding: "1em 0", borderRadius: "10%", maxHeight: "400px", width: "auto"}} draggable="true"/>
                         :
-                        <div className="buttonNotLiked tweetIcon iconEffect" onClick={clickButton}>
-                            <i className="bi bi-heart"/>
-                            { likes }
-                        </div> }
-                    </Col>
-                    
-                    <Col xs={0} lg={8}>
-                    </Col>
-                </Row>
-            </Col>
+                        <></>
+                        } */}
+                    </Row>
+                </Col>
 
-            <Col xs={mobileCol3} lg={1}></Col>
-        </Row>
+                <Col xs={mobileCol3} lg={1}></Col>
+            </Row>
 
-        </Container>
+            <Row>
+                <Col xs={mobileCol1} lg={1}>
+
+                </Col>
+                <Col xs={mobileCol2} lg={10}>
+                    <Row>
+                        <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                            {/* // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIX DISPLAY INLINE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
+                            <Link style={{textDecoration: "inherit", display: "inline"}}>
+                                <div className="commentButton tweetIcon iconEffect">
+                                    <i className="bi bi-chat"/>
+                                    {/* <i className="bi bi-chat-fill"></i> */}
+                                    { comments }
+                                </div>
+                            </Link>
+                        </Col>
+                        <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
+                            { liked ? 
+                            <div className="buttonLiked tweetIcon iconEffect" onClick={clickButton}>
+                                <i className="bi bi-heart-fill"/>
+                                { likes }
+                            </div>
+                            :
+                            <div className="buttonNotLiked tweetIcon iconEffect" onClick={clickButton}>
+                                <i className="bi bi-heart"/>
+                                { likes }
+                            </div> }
+                        </Col>
+                        
+                        <Col xs={0} lg={8}>
+                        </Col>
+                    </Row>
+                </Col>
+
+                <Col xs={mobileCol3} lg={1}></Col>
+            </Row>
+
+            </Container>
+        </Link>
     }
         
     </>)

@@ -211,6 +211,27 @@ app.get("/getTweets", async (req,res) => {
     }
 })
 
+app.get("/getTweetInfo", async (req,res) => {
+    try {
+        let {username, id} = req.query
+
+        let doc = await UserModel.findOne({username: username})
+
+        let tweet = []
+
+        doc.tweets.forEach(e => {
+            if(e._id == id) {
+                tweet = e
+                tweet.userImage = doc.profilePicture
+            }
+        })
+
+        res.send(tweet)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.get("/getUser", async (req,res) => {
     try{
         let doc = await UserModel.findOne({username: req.query.username})
