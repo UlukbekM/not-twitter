@@ -184,7 +184,7 @@ body {
   border-radius: 50%;
 }
 
-.commentButton:hover i::before {
+.commentButton:hover, .commentButtonStatus:hover i::before {
   background-color: rgba(30, 129, 176, 0.3);
 }
 
@@ -192,11 +192,11 @@ body {
   background-color: rgba(238, 187, 195, 0.3);
 }
 
-.buttonLiked:hover i::before {
+.buttonLiked:hover, .buttonLikedStatus:hover i::before {
   background-color: rgba(221, 83, 83, 0.3);
 }
 
-.buttonNotLiked:hover i::before {
+.buttonNotLiked:hover, .buttonNotLikedStatus:hover i::before {
   background-color: rgba(221, 83, 83, 0.3);
 }
 
@@ -228,11 +228,11 @@ body {
   color: #DD5353;
 }
 
-.buttonNotLiked:hover {
+.buttonNotLiked:hover, .buttonNotLikedStatus:hover {
   color: #DD5353;
 }
 
-.commentButton:hover {
+.commentButton:hover, .commentButtonStatus:hover {
   color: #1e81b0;
   /* background-color: rgba(30, 129, 176, 0.3); */
 }

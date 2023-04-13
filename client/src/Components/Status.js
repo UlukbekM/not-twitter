@@ -30,6 +30,9 @@ export const Status = (props) => {
     const [comments, setComments] = useState(0)
 
     useEffect(() => {
+        let token = jwt_decode(window.sessionStorage.getItem("token"));
+        setUser(token.username)
+
         Axios.get(`${api}/getTweetInfo`, {
             params: {
                 username: username,
@@ -40,14 +43,25 @@ export const Status = (props) => {
             console.log(response.data)
             setTweet(response.data)
             setLikes(response.data.likes.length)
-            // let temp = new Date(response.data.date)
             convertTime(response.data.date)
-            // console.log(temp.getHours())
-        })
 
-        let token = jwt_decode(window.sessionStorage.getItem("token"));
-        setUser(token.username)
+            if(response.data.likes.includes(token.username)) {
+                setLiked(true)
+            }
+        })
     },[])
+
+    // useEffect(()=> {
+    //     setLikes(tweet.likes.length)
+    //     setComments(tweet.comments.length)
+    //     if(tweet.likes.includes(tweet.username)) {
+    //         setLiked(true)
+    //     }
+    //     if(tweet.imageURL) {
+    //         setImageURL(tweet.imageURL)
+    //     }
+    //     getUserImage()
+    // },[])
 
     const convertTime = (item) => {
         let time = new Date(item)
@@ -73,7 +87,7 @@ export const Status = (props) => {
     const clickButton = () => {
         if(liked) {
             Axios.put(`${api}/unlikeTweet/${tweet._id}`, { 
-                username: tweet.username,
+                username: user,
                 token: window.sessionStorage.getItem("token"),
                 postedBy: tweet.postedBy
             })
@@ -86,7 +100,7 @@ export const Status = (props) => {
             })
         } else {
             Axios.put(`${api}/likeTweet/${tweet._id}`, { 
-                username: tweet.username,
+                username: user,
                 token: window.sessionStorage.getItem("token"),
                 postedBy: tweet.postedBy
             })
@@ -124,7 +138,7 @@ export const Status = (props) => {
                     {tweet ? 
                     <Stack gap={0} style={{padding: "0.5em 1em"}}>
 
-                        <Container style={{marginBottom: "1em"}}>
+                        <Container style={{padding: "0.5em 0"}}>
                             <Row style={{alignItems: "center"}}>
                                 <Col xs={2} lg={1} className="backIcon" onClick={() => navigate(-1)} style={{display: "flex", justifyContent: "center", alignItems: "center", cursor: "pointer",}} >
                                     <i className="bi bi-arrow-left" style={{fontSize: "2em"}}/>
@@ -138,7 +152,7 @@ export const Status = (props) => {
                             </Row>
                         </Container>
 
-                        <Container style={{marginBottom: "1em"}}>
+                        <Container style={{padding: "0.5em 0"}}>
                             <Row style={{alignItems: "center"}}>
                                 <Col lg={1} style={{textAlign: "center"}}>
                                     <Link to={"../../" + tweet.postedBy} className="userFollow">
@@ -149,7 +163,7 @@ export const Status = (props) => {
                                     </Link>
                                 </Col>
 
-                                <Col lg={8} style={{fontWeight: "600", fontSize: "22px"}}>
+                                <Col lg={8} style={{fontWeight: "600", fontSize: "24px"}}>
                                     @{tweet && tweet.postedBy}
                                 </Col>
 
@@ -159,43 +173,52 @@ export const Status = (props) => {
                             </Row>
                         </Container>
 
-                        <Container style={{wordBreak: "break-all",marginBottom: "1em"}}>
+                        <Container style={{wordBreak: "break-all",padding: "0.5em 0", fontSize: "20px"}}>
                             {tweet && tweet.content}
                         </Container>
 
-                        <Container style={{color: paragraphColor, borderBottom: "1px black solid",marginBottom: "1em"}}>
+                        {tweet.imageURL && 
+                            <Container style={{padding: "0.5em 0", textAlign: "center"}}>
+                                <img src={tweet.imageURL} alt="tweet image" style={{width: "80%", borderRadius: "15px"}}/>
+                            </Container>
+                        }
+
+                        <Container style={{color: paragraphColor, borderBottom: "1px black solid",padding: "0.5em 0"}}>
                             {date}
                         </Container>
 
-                        <Container style={{display: "flex", borderBottom: "1px black solid",marginBottom: "1em"}}>
+                        <Container style={{display: "flex", borderBottom: "1px black solid", padding: "0.5em 0"}}>
                             <p style={{color: fontColor, margin: 0, width: "auto", padding: "3px 3px 3px 0", fontWeight: "bold"}}>{likes}</p>
                             <p style={{color: paragraphColor, margin: 0, width: "auto", padding: "3px"}}>{likes == 1 ? "Like": "Likes"}</p>
                         </Container>
 
-                        <Container style={{marginBottom: "0.5em"}}>
-                            <Row style={{borderBottom: "1px black solid", textAlign: "center"}}>
-                                <Col>
-                                
-                                    <div className="commentButtonStatus tweetIcon iconEffect">
+                        <Container style={{padding: "0.5em 0",borderBottom: "1px black solid",}}>
+                            <Row style={{ display: "flex", alignItems: "center", justifyContent: "space-around", margin: 0}}>
+
+                                {/* <Col style={{}} lg={6}> */}
+                                    <div className="commentButtonStatus  iconEffect" 
+                                    style={{display: "flex", alignItems: "center", justifyContent: "center", width: "auto", cursor: "pointer", fontWeight: "bold"}}>
                                         <i className="bi bi-chat"/>
                                         {/* <i className="bi bi-chat-fill"></i> */}
                                         { comments }
                                     </div>
-                                </Col>
+                                {/* </Col>
 
-                                <Col>
+                                <Col lg={6}> */}
                                 { liked ? 
-                                    <div className="buttonLikedStatus tweetIcon iconEffect" onClick={clickButton}>
-                                        <i className="bi bi-heart-fill"/>
+                                    <div className="buttonLikedStatus  iconEffect" onClick={clickButton} 
+                                    style={{display: "flex", alignItems:"center", justifyContent: "center", width: "auto", cursor: "pointer", fontWeight: "bold"}}> 
+                                        <i className="bi bi-heart-fill" style={{}}/>
                                         { likes }
                                     </div>
                                     :
-                                    <div className="buttonNotLikedStatus tweetIcon iconEffect" onClick={clickButton}>
+                                    <div className="buttonNotLikedStatus  iconEffect" onClick={clickButton}
+                                    style={{display: "flex", alignItems:"center", justifyContent: "center", width: "auto", cursor: "pointer", fontWeight: "bold"}}> 
                                         <i className="bi bi-heart"/>
                                         { likes }
                                     </div> 
                                 }
-                                </Col>
+                                {/* </Col> */}
                             </Row>
                         </Container>
                     </Stack> : <></>}

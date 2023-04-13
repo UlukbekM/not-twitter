@@ -20,6 +20,7 @@ AWS.config.update({
 });
 
 export const Tweet = (tweet) => {
+    // console.log(tweet)
     const s3 = new AWS.S3();
     const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = tweet
     const location = useLocation();
