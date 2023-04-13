@@ -24,7 +24,8 @@ function App() {
     tweetButtonBackgroundColor: "rgba(35, 41, 70, 0.8)",
     tweetButtonColor: "#eebbc3",
     // buttonColor: "#eebbc3",
-    buttonFontColor: "#232946"
+    buttonFontColor: "#232946",
+    paragraphColor: "#b8c1ec"
   }
 
 

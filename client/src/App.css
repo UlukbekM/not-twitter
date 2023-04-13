@@ -212,11 +212,23 @@ body {
   color: #232946
 }
 
-.buttonNotLiked:hover {
+.buttonLiked {
   color: #DD5353;
 }
 
-.buttonLiked {
+.buttonNotLikedStatus {
+  color: #b8c1ec
+}
+
+.commentButtonStatus {
+  color: #b8c1ec
+}
+
+.buttonLikedStatus {
+  color: #DD5353;
+}
+
+.buttonNotLiked:hover {
   color: #DD5353;
 }
 
