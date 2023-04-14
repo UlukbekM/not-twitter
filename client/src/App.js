@@ -16,6 +16,7 @@ function App() {
   }
 
   console.log(backend)
+  console.log(process.env.REACT_APP_BACKEND_API)
 
   let theme = {
     api: backend,
