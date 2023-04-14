@@ -10,8 +10,13 @@ import { Status } from './Components/Status';
 import { S3Upload } from './AWS/S3Upload';
 
 function App() {
+  let backend = 'http://localhost:3001'
+  if(window.location.host !== 'localhost:3000') {
+    backend = process.env.REACT_APP_BACKEND_API
+  }
+
   let theme = {
-    api: 'http://localhost:3001',
+    api: backend,
     backgroundColor: "#232946",
     formBackgroundColor: "#eebbc3",
     contentBackgroundColor: "rgba(63, 68, 93, 0.5)",
