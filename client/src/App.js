@@ -15,6 +15,8 @@ function App() {
     backend = process.env.REACT_APP_BACKEND_API
   }
 
+  console.log(backend)
+
   let theme = {
     api: backend,
     backgroundColor: "#232946",
