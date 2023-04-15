@@ -6,13 +6,13 @@ import Axios from 'axios';
 import { Link } from "react-router-dom";
 
 export const SuggestedUsers = (user) => {
-    // console.log(user)
-    const { currentUser, email, username, profilePicture } = user
+    const { currentUser, email, username, profilePicture  } = user
+    const {api} = user.theme
 
     const [status, setStatus] = useState(false)
     // const [profilePicture, setProfilePicture] = useState("")
 
-    const api = 'http://localhost:3001'
+    // const api = 'http://localhost:3001'
 
     // useState(()=> {
     //     if(user.profilePicture) setProfilePicture(user.profilePicture)

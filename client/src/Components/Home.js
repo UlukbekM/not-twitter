@@ -128,7 +128,7 @@ export const Home = (props) => {
                         <Row><h3>Who to follow</h3></Row>
                         {suggestedUsers.length > 0 &&
                             suggestedUsers.map((tempUser) => (
-                                <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} fontColor={fontColor}/>
+                                <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} theme={props.theme}/>
                         ))}
                     </Container>
                     {/* <Button variant="primary" onClick={logout} style={{marginTop: "10%"}}>Log Out</Button> */}

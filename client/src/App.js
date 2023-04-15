@@ -20,6 +20,7 @@ function App() {
 
   //menucolumn picture update on upload
   //userpage gettweets when tweet
+  //suggestedusers add profile pic in api call
 
   let theme = {
     api: backend,
