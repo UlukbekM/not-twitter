@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const UserModel = require("./models/Users")
 require('dotenv').config()
+const bcrypt = require('bcrypt');
 
 const auth = require("./auth");
 
@@ -34,10 +35,15 @@ app.post("/register", async (req,res) => {
             return res.status(409).send("Username Already Exists.");
         }
 
-        // encryptedPassword = await bcrypt.hash(password, 10);
-        // console.log(encryptedPassword)
+        encryptedPassword = await bcrypt.hash(password, 10);
+        console.log(encryptedPassword)
 
-        const user = req.body
+        const user = {
+            email: email.toLowerCase(),
+            username,
+            password: encryptedPassword
+        }
+
         const newUser = new UserModel(user)
         await newUser.save()
 
@@ -49,6 +55,8 @@ app.post("/register", async (req,res) => {
         user.token = token
 
         res.json(user)
+
+        // res.send(encryptedPassword)
     } catch (err) {
         res.send(err)
     }
@@ -59,7 +67,8 @@ app.get("/login", async (req,res) => {
     try {
         UserModel.find({email: req.query.email}, (err, result) => {
             if(result.length > 0) {
-                if(req.query.password === result[0].password) {
+                if(bcrypt.compare(req.query.password, result[0].password)) {
+                // if(req.query.password === result[0].password) {
                     const token = jwt.sign(
                         {email:  result[0].email, username: result[0].username, profile: result[0].profilePicture},
                         process.env.JWT_TOKEN_KEY,

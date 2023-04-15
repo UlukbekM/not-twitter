@@ -33,8 +33,12 @@ export const Landing = (props) => {
             }).then((response)=> {
                 // saveToken(response.data.token)
                 // console.log(response)
-                window.sessionStorage.setItem("token", response.data.token);
-                window.location = "/"
+                if(response.data.token) {
+                    window.sessionStorage.setItem("token", response.data.token);
+                    window.location = "/"
+                } else {
+                    console.log(response)
+                }
             }).catch(function (error) {
                 let message = error.response.data
                 if(message === "Email Already Exists." || message === "Username Already Exists.") {

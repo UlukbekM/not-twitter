@@ -15,8 +15,11 @@ function App() {
     backend = process.env.REACT_APP_BACKEND_API
   }
 
-  console.log(backend)
-  console.log(process.env.REACT_APP_BACKEND_API)
+  // console.log(backend)
+  // console.log(process.env.REACT_APP_BACKEND_API)
+
+  //menucolumn picture update on upload
+  //userpage gettweets when tweet
 
   let theme = {
     api: backend,
