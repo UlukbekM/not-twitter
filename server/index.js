@@ -141,6 +141,26 @@ app.put("/followUser", async (req,res) => {
     }
 })
 
+app.get("/checkFollowing", async (req,res) => {
+    try {
+        let {follower, user} = req.query
+
+        let doc = await UserModel.findOne({username: user})
+
+        let check = false
+
+        doc.followers.forEach(e => {
+            if(e.username === follower) {
+                check = true
+            }
+        })
+
+        res.send(check)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.put("/unfollowUser", async (req,res) => {
     try {
         const { unfollower, target } = req.body

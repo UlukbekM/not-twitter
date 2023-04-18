@@ -17,7 +17,7 @@ import Modal from 'react-bootstrap/Modal';
 
 
 export const UserFollow = (props) => {
-    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor} = props.theme
+    const {backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonColor} = props.theme
 
     let navigate = useNavigate();
     const location = useLocation();
@@ -128,7 +128,7 @@ export const UserFollow = (props) => {
                                         <p style={{color: "#fff", cursor: "pointer", fontSize: "18px", marginBottom: "0.2em"}}>
                                             Followers
                                         </p>
-                                        <div style={{height: "1px", color: "black", width: "25%", border: "2px solid rgb(29, 155, 240)",borderRadius: "10px"}}></div>
+                                        <div style={{height: "1px", color: "black", width: "25%", border: `2px solid ${tweetButtonColor}`,borderRadius: "10px"}}></div>
                                     </div>
                                     : 
                                     <Link to="./../followers" style={{textDecoration: "none", color: "inherit", fontSize: "18px"}}>
@@ -142,7 +142,7 @@ export const UserFollow = (props) => {
                                         <p style={{color: "#fff", cursor: "pointer", fontSize: "18px", marginBottom: "0.2em"}}>
                                             Following
                                         </p>
-                                        <div style={{height: "1px", color: "black", width: "25%", border: "2px solid rgb(29, 155, 240)",borderRadius: "10px"}}></div>
+                                        <div style={{height: "1px", color: "black", width: "25%", border: `2px solid ${tweetButtonColor}`,borderRadius: "10px"}}></div>
                                     </div>
                                     : 
                                     <Link to="./../following" style={{textDecoration: "none", color: "inherit", fontSize: "18px"}}>

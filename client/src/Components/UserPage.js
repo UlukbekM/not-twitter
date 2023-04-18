@@ -23,7 +23,7 @@ export const UserPage = (props) => {
     const {contentBackgroundColor, backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = props.theme
 
     const s3 = new AWS.S3();
-    console.log(props)
+    // console.log(props)
 
     const [show, setShow] = useState(false);
 
@@ -32,6 +32,8 @@ export const UserPage = (props) => {
 
     const [newProfilePicture, setNewProfilePicture] = useState(null)
     const [newBannerPicture, setNewBannerPicture] = useState(null)
+
+    const [following, setFollowing] = useState(false)
 
 
     let navigate = useNavigate();
@@ -71,7 +73,21 @@ export const UserPage = (props) => {
 
         let token = jwt_decode(window.sessionStorage.getItem("token"));
         setMainUser(token.username)
+        if(username !== token.username) getFollowing()
     },[])
+
+    const getFollowing = () => {
+        let token = jwt_decode(window.sessionStorage.getItem("token"));
+        Axios.get(`${api}/checkFollowing`, {
+            params: {
+                user: username,
+                follower: token.username
+            }
+        })
+        .then((response)=> {
+            setFollowing(response.data)
+        })
+    }
 
     const handleProfileImage = e => {
         if(e.target.files[0].size > 2097152) {
@@ -171,6 +187,32 @@ export const UserPage = (props) => {
 
         handleClose()
     };
+
+
+    const followUser = () => {
+        let token = jwt_decode(window.sessionStorage.getItem("token"));
+        Axios.put(`${api}/followUser`, {
+            follower: token.username,
+            following: username
+        }).then((response)=> {
+            if(response.data === "user followed") {
+                setFollowing(!following)
+            }
+        })
+    }
+
+    const unfollowUser = () => {
+        let token = jwt_decode(window.sessionStorage.getItem("token"));
+        Axios.put(`${api}/unfollowUser`, {
+            unfollower: token.username,
+            target: username,
+            // token: token
+        }).then((response)=> {
+            if(response.data === "user unfollowed") {
+                setFollowing(!following)
+            }
+        })
+    }
 
     
     const [showTweetModal, setShowTweetModal] = useState(false);
@@ -283,9 +325,15 @@ export const UserPage = (props) => {
 
                             <Col style={{display: "flex", alignItems: "center", justifyContent: "right"}}>
                                 { username == mainUser ? 
-                                <button onClick={handleShow}> Edit Profile </button> :
-                                <button> Following/Not Following </button>
-                                }
+                                // <button onClick={handleShow}> Edit Profile </button>
+                                
+                                <button className="profileEditButton" onClick={handleShow}> Edit Profile </button>
+                                :
+                                following ? 
+                                <Button variant="light" onClick={unfollowUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Unfollow </Button> :
+                                <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Follow </Button>
+                                    }
+                                
                             </Col>
                         </Row>
                         {/* {user.tweets ? <h5>{user.tweets.length} Tweets</h5> : "temp"} */}

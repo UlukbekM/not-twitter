@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 export const SuggestedUsers = (user) => {
     const { currentUser, email, username, profilePicture  } = user
-    const {api} = user.theme
+    const {api, fontColor} = user.theme
 
     const [status, setStatus] = useState(false)
     // const [profilePicture, setProfilePicture] = useState("")
@@ -55,7 +55,7 @@ export const SuggestedUsers = (user) => {
             </Col>
             <Col lg={6} style={{display: "grid",}}>
                 <h4 style={{margin: "0", display: "flex", alignItems: "center"}}>
-                    <Link to={username} className="userFollow" style={{padding: 0, color: user.fontColor, fontWeight: "600"}}>
+                    <Link to={username} className="userFollow" style={{padding: 0, color: user.fontColor, fontWeight: "600", color: fontColor}}>
                         @{username}
                     </Link>
                 </h4>

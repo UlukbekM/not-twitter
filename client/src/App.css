@@ -316,8 +316,21 @@ body {
 }
 
 .followButton:hover {
-  
   background-color: rgba(0, 0, 0, 0.2);
+}
+
+.profileEditButton {
+  all: unset;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid white;
+  padding: 0.25em 0.75em;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.profileEditButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .tweetForm input::placeholder {
