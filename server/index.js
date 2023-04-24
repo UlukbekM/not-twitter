@@ -188,6 +188,27 @@ app.put("/unfollowUser", async (req,res) => {
     }
 })
 
+app.put("/removeBanner", async (req,res) => {
+    try {
+        const { username } = req.body
+
+        let doc = await UserModel.findOne({username: username})
+
+        if(doc) {
+            doc.bannerKey = undefined
+            doc.bannerPicture = undefined
+            await doc.updateOne({ $unset: { bannerKey: 1, bannerPicture: 1 } })
+            // await doc.updateOne({ $unset: { bannerPicture: 1 } })
+        }
+        // console.log()
+        await doc.save()
+
+        res.send("banner removed")
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.post("/newTweet", auth, async (req,res) => {
     try {
         console.log(req.body)

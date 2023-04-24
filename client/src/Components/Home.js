@@ -46,7 +46,7 @@ export const Home = (props) => {
             }
         })
         .then((response)=> {
-            console.log(response.data)
+            // console.log(response.data)
             // response.data.tweetArray.sort((a,b) => new Date(b.date) - new Date(a.date))
             // setUserFeed(response.data.tweetArray)
             // setUserImages(response.data.profileArray)

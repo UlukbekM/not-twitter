@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 import Dropdown from 'react-bootstrap/Dropdown';
 import AWS from 'aws-sdk';
+import { useNavigate } from "react-router-dom";
 
 
 AWS.config.update({
@@ -21,6 +22,7 @@ AWS.config.update({
 
 export const Tweet = (tweet) => {
     // console.log(tweet)
+    let navigate = useNavigate();
     const s3 = new AWS.S3();
     const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = tweet
     const location = useLocation();
@@ -141,22 +143,29 @@ export const Tweet = (tweet) => {
         })
     }
 
+    const openTweet = () => {
+        let path = "../../" + tweet.postedBy + "/status/" + tweet._id
+        navigate(path);
+    }
+
     return(<>
     {deleted ? <></> :
-        <Link to={"../../" + tweet.postedBy + "/status/" + tweet._id} style={{textDecoration: "none"}}>
-            <Container style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}} lg={10}>
+        // <Link to={"../../" + tweet.postedBy + "/status/" + tweet._id} style={{textDecoration: "none"}}>
+            <Container lg={10} 
+            // onClick={openTweet}
+            style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}}>
 
             <Row style={{paddingTop: "1em"}}>
                 <Col xs={mobileCol1} lg={1} style={{display: "flex", textAlign: "center", justifyContent: "center"}}>
                     {ownPage ?
                         // <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor, cursor: "pointer"}}></i>
                         <img src={userImage} 
-                        style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
+                        style={{width: "40px", height: "40px", cursor: "pointer", borderRadius: "50%"}}/>
                     :
                     <Link to={tweet.postedBy} className="userFollow">
                         {/* <i className="bi bi-person-circle" style={{fontSize: "2rem", color: tweetTitleColor}}></i> */}
                         <img src={userImage}  
-                        style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>
+                        style={{width: "40px", height: "40px", cursor: "pointer", borderRadius: "50%"}}/>
                     </Link>
                     }
                 </Col>
@@ -223,13 +232,13 @@ export const Tweet = (tweet) => {
                     <Row>
                         <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                             {/* // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ FIX DISPLAY INLINE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */}
-                            <Link style={{textDecoration: "inherit", display: "inline"}}>
-                                <div className="commentButton tweetIcon iconEffect">
+                            {/* <Link style={{textDecoration: "inherit", display: "inline"}}> */}
+                                <div className="commentButton tweetIcon iconEffect" onClick={openTweet}>
                                     <i className="bi bi-chat"/>
                                     {/* <i className="bi bi-chat-fill"></i> */}
                                     { comments }
                                 </div>
-                            </Link>
+                            {/* </Link> */}
                         </Col>
                         <Col xs={6} lg={2} style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                             { liked ? 
@@ -241,7 +250,8 @@ export const Tweet = (tweet) => {
                             <div className="buttonNotLiked tweetIcon iconEffect" onClick={clickButton}>
                                 <i className="bi bi-heart"/>
                                 { likes }
-                            </div> }
+                            </div> 
+                            }
                         </Col>
                         
                         <Col xs={0} lg={8}>
@@ -253,7 +263,7 @@ export const Tweet = (tweet) => {
             </Row>
 
             </Container>
-        </Link>
+        // </Link>
     }
         
     </>)

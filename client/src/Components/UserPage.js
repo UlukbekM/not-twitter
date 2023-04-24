@@ -25,13 +25,16 @@ export const UserPage = (props) => {
     const s3 = new AWS.S3();
     // console.log(props)
 
+    let defaultBanner = "https://el-ninho.com/wp-content/uploads/2013/11/black-background-ppt-backgrounds-powerpoint-1024x6402.jpg"
+
     const [show, setShow] = useState(false);
 
     const [profilePicture, setProfilePicture] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
-    const [bannerPicture, setBannerPicture] = useState("https://wallpapers.com/images/hd/peacock-blue-plain-color-9bxl0kw0vw849lpd.jpg")
+    const [bannerPicture, setBannerPicture] = useState(defaultBanner)
 
     const [newProfilePicture, setNewProfilePicture] = useState(null)
     const [newBannerPicture, setNewBannerPicture] = useState(null)
+    const [newDescription, setNewDescription] = useState(null)
 
     const [following, setFollowing] = useState(false)
 
@@ -43,6 +46,8 @@ export const UserPage = (props) => {
     const [mainUser, setMainUser] = useState("")
     const [user, setUser] = useState([])
     const [tweets, setTweets] = useState([])
+
+    const [bannerKey, setBannerKey] = useState("")
 
     useEffect(() => {
         getUser(window.location.pathname.substring(1,window.location.pathname.length))
@@ -61,6 +66,9 @@ export const UserPage = (props) => {
             }
             if(response.data.bannerPicture) {
                 setBannerPicture(response.data.bannerPicture)
+            }
+            if(response.data.bannerKey) {
+                setBannerKey(response.data.bannerKey)
             }
             response.data.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
             setUser(response.data)
@@ -95,7 +103,8 @@ export const UserPage = (props) => {
             setNewProfilePicture(null)
         } else {
             setNewProfilePicture(e.target.files[0])
-            document.getElementById("new-profile").src=window.URL.createObjectURL(e.target.files[0])
+            // document.getElementById("new-profile").src=window.URL.createObjectURL(e.target.files[0])
+            document.getElementById("uploadProfile").style.backgroundImage=`url(${window.URL.createObjectURL(e.target.files[0])})`
         }
     }
 
@@ -105,7 +114,8 @@ export const UserPage = (props) => {
             setNewBannerPicture(null)
         } else {
             setNewBannerPicture(e.target.files[0])
-            document.getElementById("new-banner").src=window.URL.createObjectURL(e.target.files[0])
+            // document.getElementById("new-banner").src=window.URL.createObjectURL(e.target.files[0])
+            document.getElementById("uploadBanner").style.backgroundImage=`url(${window.URL.createObjectURL(e.target.files[0])})`
         }
     }
 
@@ -131,13 +141,15 @@ export const UserPage = (props) => {
         setNewProfilePicture(null)
         setShow(false)
     };
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true)
+    };
 
     const deleteS3 = async (key) => {
         var params = { Bucket: process.env.REACT_APP_BUCKET_NAME, Key: key }
         s3.deleteObject(params, function(err, data) {
-          // if(err) console.log(err)
-          // else console.log(data)
+            if(err) console.log(err)
+            else console.log(data)
         })
     }
     
@@ -172,11 +184,11 @@ export const UserPage = (props) => {
                     }
                     if(banner.Location) {
                         setBannerPicture(banner.Location)
-                        if(user.bannerKey) {
-                            deleteS3(user.bannerKey)
+                        setBannerKey(banner.Key)
+                        if(bannerKey) {
+                            deleteS3(bannerKey)
                         }
                     }
-                    
                 }
             })
         }
@@ -214,13 +226,30 @@ export const UserPage = (props) => {
         })
     }
 
+    const deleteBanner = () => {
+        // console.log(user.bannerKey)
+
+        Axios.put(`${api}/removeBanner`, {
+            username: user.username,
+            // token: token
+        }).then((response)=> {
+            if(response.data === 'banner removed') {
+                deleteS3(bannerKey)
+                setBannerKey("")
+                setNewBannerPicture(defaultBanner)
+                setBannerPicture(defaultBanner)
+            }
+        })
+
+
+    }
+
     
     const [showTweetModal, setShowTweetModal] = useState(false);
     const handleCloseTweetModal = () => setShowTweetModal(false);
     const handleShowTweetModal = () => {setShowTweetModal(true)};
 
     return(<>
-        
         <Modal show={showTweetModal} onHide={handleCloseTweetModal}>
             <Modal.Header closeButton>
             <Modal.Title>Tweet</Modal.Title>
@@ -238,22 +267,40 @@ export const UserPage = (props) => {
                 <Modal.Title>Edit profile</Modal.Title>
             </Modal.Header>
 
+            <div  style={{width: "100%", height: "150px", display: "flex", justifyContent: "space-around", alignItems: "center", backgroundImage: `url(${bannerPicture})`, backgroundSize: "100% 100%"}}  id="uploadBanner">
+                <label htmlFor="banner-upload" className="uploadImageModalIcons">
+                    <i className="bi bi-camera"/>
+                </label>
 
-            <label htmlFor="banner-upload">
-                <img src={bannerPicture} style={{width: "100%", height: "150px", cursor: "pointer"}} id="new-banner"/>
-            </label>
+                {bannerKey &&                 
+                <div className="uploadImageModalIcons" onClick={deleteBanner}>
+                    <i className="bi bi-x"/>
+                </div>}
+
+            </div>
+            
             <input type="file" accept=".png, .jpg, .jpeg" onChange={handleBannerImage} id="banner-upload" style={{display: "none"}}/>
 
 
             <Modal.Body>
             <Stack gap={2}>
-                <div style={{marginTop: "-60px", display: "inline"}}>
+                {/* <div style={{marginTop: "-50px", display: "inline"}}>
                     <label htmlFor="profile-upload">
                         <img src={profilePicture} id="new-profile"
                         style={{cursor: "pointer", width: "75px", height: "75px", padding: "5px", backgroundColor: "#fff", borderRadius: "50px"}}/>
                     </label>
-                    <input type="file" accept=".png, .jpg, .jpeg" onChange={handleProfileImage} id="profile-upload" style={{display: "none"}}/>
+                </div> */}
+
+                <div style={{marginTop: "-50px", display: "inline"}}>
+                    <div style={{backgroundColor: "#fff", padding: "0.5em", display: "inline-block", borderRadius: "50%"}}>
+                        <label className="uploadImageModalIcons" style={{backgroundColor: "#fff", padding: "0.5em", borderRadius: "50%", backgroundImage: `url(${profilePicture})`, backgroundSize: "100% 100%" }} htmlFor="profile-upload" id="uploadProfile">
+                            <i className="bi bi-camera" style={{opacity: 1}}/>
+                        </label>
+                        <input type="file" accept=".png, .jpg, .jpeg" onChange={handleProfileImage} id="profile-upload" style={{display: "none"}}/>
+                    </div>
                 </div>
+
+
                 <Form.Label>Username</Form.Label>
                 <Form.Control type="text" placeholder={'@' + mainUser} disabled readOnly/>
                 <Form.Label>Bio</Form.Label>
@@ -269,11 +316,12 @@ export const UserPage = (props) => {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={handleCloseAndUpload} 
-                // disabled={newProfilePicture || newBannerPicture}
-                >
+                {/* <Button variant="primary" onClick={handleCloseAndUpload}>
                     Save Changes
-                </Button>
+                </Button> */}
+                <button className="tweetButton" onClick={handleCloseAndUpload} 
+                // disabled={!newProfilePicture || !newBannerPicture}
+                >Save Changes</button>
             </Modal.Footer>
         </Modal>
 

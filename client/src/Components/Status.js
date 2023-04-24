@@ -40,7 +40,7 @@ export const Status = (props) => {
             }
         })
         .then((response)=> {
-            console.log(response.data)
+            // console.log(response.data)
             setTweet(response.data)
             setLikes(response.data.likes.length)
             convertTime(response.data.date)
@@ -158,13 +158,15 @@ export const Status = (props) => {
                                     <Link to={"../../" + tweet.postedBy} className="userFollow">
                                         {tweet.userImage? 
                                         <img src={tweet.userImage} style={{width: "50px", height: "50px", borderRadius: "50%"}}/>:
-                                        <img src="https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png"/>
+                                        <img src="https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png"  style={{width: "50px", height: "50px", borderRadius: "50%"}}/>
                                         }
                                     </Link>
                                 </Col>
 
                                 <Col lg={8} style={{fontWeight: "600", fontSize: "24px"}}>
-                                    @{tweet && tweet.postedBy}
+                                    <Link to={"../../" + tweet.postedBy} style={{textDecoration: "inherit", color: "inherit"}}>
+                                        @{tweet && tweet.postedBy}
+                                    </Link>
                                 </Col>
 
                                 <Col lg={3} style={{textAlign: "right"}}>
