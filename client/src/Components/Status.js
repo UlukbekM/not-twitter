@@ -115,8 +115,7 @@ export const Status = (props) => {
     }
 
 
-    return(<>        
-    
+    return(<>
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
             <Modal.Title>Tweet</Modal.Title>
@@ -154,7 +153,7 @@ export const Status = (props) => {
 
                         <Container style={{padding: "0.5em 0"}}>
                             <Row style={{alignItems: "center"}}>
-                                <Col lg={1} style={{textAlign: "center"}}>
+                                <Col xs={2} lg={1} style={{textAlign: "center"}}>
                                     <Link to={"../../" + tweet.postedBy} className="userFollow">
                                         {tweet.userImage? 
                                         <img src={tweet.userImage} style={{width: "50px", height: "50px", borderRadius: "50%"}}/>:
@@ -163,13 +162,13 @@ export const Status = (props) => {
                                     </Link>
                                 </Col>
 
-                                <Col lg={8} style={{fontWeight: "600", fontSize: "24px"}}>
+                                <Col xs={5} lg={8} style={{fontWeight: "600", fontSize: "24px"}}>
                                     <Link to={"../../" + tweet.postedBy} style={{textDecoration: "inherit", color: "inherit"}}>
                                         @{tweet && tweet.postedBy}
                                     </Link>
                                 </Col>
 
-                                <Col lg={3} style={{textAlign: "right"}}>
+                                <Col xs={5} lg={3} style={{textAlign: "right"}}>
                                     Dropdown
                                 </Col>
                             </Row>

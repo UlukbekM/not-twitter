@@ -182,6 +182,6 @@ export const UserFollow = (props) => {
                 </Col>
             </Row>
         </Container>
-        <Footer username={user.username}/>
+        <Footer/>
     </>)
 }

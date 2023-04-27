@@ -96,7 +96,7 @@ export const Home = (props) => {
             <Row style={{display: "flex", justifyContent: "center"}}>
                 <MenuColumn theme={props.theme} handleShow={()=>handleShow()}/>
 
-                <Col style={{background: backgroundColor, minHeight: "100vh", borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6}>
+                <Col style={{background: backgroundColor, minHeight: "100vh", borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6} xs={12}>
                     <Row>
                         <h2 style={{color: titleColor}}>Home</h2>
                     </Row>
@@ -123,7 +123,7 @@ export const Home = (props) => {
                     </Container>
                 </Col>
 
-                <Col style={{background: backgroundColor, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3}>
+                <Col style={{background: backgroundColor, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3} xs={0}>
                     <Container style={{background: contentBackgroundColor, borderRadius: "20px", marginTop: "10%", padding: "1em", color: fontColor}}>
                         <Row><h3>Who to follow</h3></Row>
                         {suggestedUsers.length > 0 &&
@@ -136,6 +136,6 @@ export const Home = (props) => {
             </Row>
         </Container>
 
-        <Footer username={user.username}/>
+        <Footer/>
     </>)
 }

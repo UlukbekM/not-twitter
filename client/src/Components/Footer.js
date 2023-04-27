@@ -10,10 +10,12 @@ export const Footer = (props) => {
     const [page, setPage] = useState("")
     const location = useLocation();
 
-    const checkLocation = () => {
-        // console.log(username, window.location.pathname)
+    const checkLocation = (username) => {
         if(window.location.pathname === "/"){
             setPage("home")
+            return
+        } else if(window.location.pathname === "/people") {
+            setPage("people")
             return
         }
 
@@ -28,24 +30,18 @@ export const Footer = (props) => {
     }
 
     useEffect(()=> {
-        if(props.username) {
-            setUsername(props.username)
-            // checkLocation(props.username)
-        } else {
-            setUsername("")
-        }
-    }, [props])
+        let token = window.sessionStorage.getItem("token");
+        let decoded = jwt_decode(token);
+        setUsername(decoded.username)
 
-    useEffect(()=> {
-        // console.log(location, props.username)
-        checkLocation()
+        checkLocation(decoded.username)
     }, [location])
 
-    useEffect(()=> {
-        let token = window.sessionStorage.getItem("token");
-        let decoded = jwt_decode(token)
-        setUsername(decoded.username)
-    },[])
+    // useEffect(()=> {
+    //     let token = window.sessionStorage.getItem("token");
+    //     let decoded = jwt_decode(token)
+    //     setUsername(decoded.username)
+    // },[])
 
     const scrollUp = () => {
         window.scrollTo(0, 0);
@@ -56,21 +52,41 @@ export const Footer = (props) => {
             <Col>
                 {page === "home" ? 
                 <div onClick={scrollUp}>
-                    { page === "home" 
+                    {/* { page === "home" 
                     ? <i className="bi bi-house-door-fill" style={{fontSize: "1.5em", fontWeight: "bold"}}/> 
-                    : <i className="bi bi-house-door" style={{fontSize: "1.5em", fontWeight: "bold"}}/> }
+                    : <i className="bi bi-house-door" style={{fontSize: "1.5em", fontWeight: "bold"}}/> } */}
+                    <i className="bi bi-house-door-fill" style={{fontSize: "1.5em", fontWeight: "bold"}}/>
                 </div>
                 :
                 <Link to={"/"} style={{textDecoration: "inherit", color: "inherit"}}>
-                    { page === "home" 
+                    {/* { page === "home" 
                     ? <i className="bi bi-house-door-fill" style={{fontSize: "1.5em", fontWeight: "bold"}}/> 
-                    : <i className="bi bi-house-door" style={{fontSize: "1.5em", fontWeight: "bold"}}/> }
+                    : <i className="bi bi-house-door" style={{fontSize: "1.5em", fontWeight: "bold"}}/> } */}
+                    <i className="bi bi-house-door" style={{fontSize: "1.5em", fontWeight: "bold"}}/>
                 </Link>
                 }
             </Col>
-            {/* <Col>
-                Search
-            </Col> */}
+
+            <Col>
+                {page === "people" ? 
+                <div onClick={scrollUp}>
+                    {/* { page === "search" 
+                    ? <i className="bi bi-search" style={{fontSize: "1.5em", fontWeight: "bold"}}/> 
+                    : <i className="bi bi-house-door" style={{fontSize: "1.5em", fontWeight: "bold"}}/> } */}
+                    {/* <i class="bi bi-people-fill"></i> */}
+                    <i className="bi bi-people-fill" style={{fontSize: "1.5em", fontWeight: "bold"}}/>
+                </div>
+                :
+                <Link to={"/people"} style={{textDecoration: "inherit", color: "inherit"}}>
+                    {/* { page === "search" 
+                    ? <i className="bi bi-house-door-fill" style={{fontSize: "1.5em", fontWeight: "bold"}}/> 
+                    : <i className="bi bi-house-door" style={{fontSize: "1.5em", fontWeight: "bold"}}/> } */}
+                    {/* <i class="bi bi-people"></i> */}
+                    <i className="bi bi-people" style={{fontSize: "1.5em", fontWeight: "100"}}/>
+                </Link>
+                }
+            </Col>
+
             <Col>
                 {page === "profile" ? 
                 <div onClick={scrollUp}>
@@ -78,7 +94,7 @@ export const Footer = (props) => {
                     ? <i className="bi bi-person-fill" style={{fontSize: "1.5em", fontWeight: "bold"}}/> 
                     : <i className="bi bi-person" style={{fontSize: "1.5em", fontWeight: "bold"}}/> }
                 </div>:
-                <Link to={`/${props.username}`} style={{textDecoration: "inherit", color: "inherit"}}>
+                <Link to={`/${username}`} style={{textDecoration: "inherit", color: "inherit"}}>
                     { page === "profile" 
                     ? <i className="bi bi-person-fill" style={{fontSize: "1.5em", fontWeight: "bold"}}/> 
                     : <i className="bi bi-person" style={{fontSize: "1.5em", fontWeight: "bold"}}/> }

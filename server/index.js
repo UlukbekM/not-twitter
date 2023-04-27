@@ -421,9 +421,16 @@ app.put("/uploadPicture", async (req,res) => {
         doc.profileKey = profileKey
     }
 
+    await doc.save()
 
-    doc.save()
-    res.send("images updated")
+    const token = jwt.sign(
+        {email:  doc.email, username: doc.username, profile: doc.profilePicture},
+        process.env.JWT_TOKEN_KEY,
+        { expiresIn: "2h" }
+    )
+    res.send([token,'images updated'])
+
+    // res.send("images updated")
 })
 
 app.get("/getUserProfile", async (req,res) => {

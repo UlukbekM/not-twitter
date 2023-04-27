@@ -44,7 +44,7 @@ export const SuggestedUsers = (user) => {
 
     return (<>
         <Row style={{margin: "1em", borderRadius:"5px"}}>
-            <Col lg={2} style={{display: "grid", placeItems: "center"}}>
+            <Col xs={2} lg={2} style={{display: "grid", placeItems: "center"}}>
                 <Link to={username} className="userFollow" style={{padding: 0}}>
                     { profilePicture ? 
                     <img src={profilePicture} 
@@ -53,14 +53,14 @@ export const SuggestedUsers = (user) => {
                     style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>}
                 </Link>
             </Col>
-            <Col lg={6} style={{display: "grid",}}>
+            <Col xs={5} lg={6} style={{display: "grid",}}>
                 <h4 style={{margin: "0", display: "flex", alignItems: "center"}}>
                     <Link to={username} className="userFollow" style={{padding: 0, color: user.fontColor, fontWeight: "600", color: fontColor}}>
                         @{username}
                     </Link>
                 </h4>
             </Col>
-            <Col lg={4} style={{display: "grid", placeItems: "center", verticalAlign:"middle"}}>
+            <Col xs={5} lg={4} style={{display: "grid", placeItems: "center", verticalAlign:"middle"}}>
                 { status ? 
                 <Button variant="light" onClick={unfollowUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Unfollow </Button> :
                 <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Follow </Button>

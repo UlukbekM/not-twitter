@@ -37,6 +37,7 @@ export const UserPage = (props) => {
     const [newDescription, setNewDescription] = useState(null)
 
     const [following, setFollowing] = useState(false)
+    const [userExists, setUserExists] = useState(true)
 
 
     let navigate = useNavigate();
@@ -50,29 +51,36 @@ export const UserPage = (props) => {
     const [bannerKey, setBannerKey] = useState("")
 
     useEffect(() => {
+        // console.log(window.location.pathname.substring(1,window.location.pathname.length))
         getUser(window.location.pathname.substring(1,window.location.pathname.length))
     }, [location]);
 
     const getUser = (name) => {
+        setUserExists(true)
+
         Axios.get(`${api}/getUser`, {
             params: {
                 username: name
             }
         })
         .then((response)=> {
-            // console.log(response.data)
-            if(response.data.profilePicture) {
-                setProfilePicture(response.data.profilePicture)
+            console.log(response.data)
+            if(response.data === "") {
+                setUserExists(false)
+            } else {
+                if(response.data.profilePicture) {
+                    setProfilePicture(response.data.profilePicture)
+                }
+                if(response.data.bannerPicture) {
+                    setBannerPicture(response.data.bannerPicture)
+                }
+                if(response.data.bannerKey) {
+                    setBannerKey(response.data.bannerKey)
+                }
+                response.data.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
+                setUser(response.data)
+                setTweets(response.data.tweets)
             }
-            if(response.data.bannerPicture) {
-                setBannerPicture(response.data.bannerPicture)
-            }
-            if(response.data.bannerKey) {
-                setBannerKey(response.data.bannerKey)
-            }
-            response.data.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
-            setUser(response.data)
-            setTweets(response.data.tweets)
         })
     }
 
@@ -127,7 +135,7 @@ export const UserPage = (props) => {
         // IMPLEMENT DELETING FROM S3 WHEN NEW IMAGE UPLOADED
         const params = { 
             Bucket: process.env.REACT_APP_BUCKET_NAME + folder, 
-            Key: `${Date.now()}.${item.name}`, 
+            Key: `${mainUser}.${Date.now()}.${item.name}`, 
             Body: item 
         };
         const { Location, Key } = await s3.upload(params).promise();
@@ -175,7 +183,9 @@ export const UserPage = (props) => {
                 bannerKey: banner.Key
             })
             .then((response)=> {
-                if(response.data === 'images updated') {
+                window.sessionStorage.setItem("token", response.data[0]);
+
+                if(response.data[1] === 'images updated') {
                     if(profile.Location) {
                         setProfilePicture(profile.Location)
                         if(user.profileKey) {
@@ -313,9 +323,9 @@ export const UserPage = (props) => {
 
 
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                {/* <Button variant="secondary" onClick={handleClose}>
                     Close
-                </Button>
+                </Button> */}
                 {/* <Button variant="primary" onClick={handleCloseAndUpload}>
                     Save Changes
                 </Button> */}
@@ -328,11 +338,13 @@ export const UserPage = (props) => {
 
         <Container fluid style={{color: fontColor}}>
             <Row style={{display: "flex", justifyContent: "center"}}>
-                <MenuColumn theme={props.theme} handleShow={()=>handleShowTweetModal()}/>
+                <MenuColumn theme={props.theme} handleShow={()=>handleShowTweetModal()} profilePicture={profilePicture}/>
                 
                 <Col style={{background: backgroundColor, minHeight: "100vh" , padding: 0, borderLeft: `solid 2px ${borderColor}`, borderRight: `solid 2px ${borderColor}`}} lg={6}>
-                    { !user ? 
-                    "user doesnt exist"
+                    { !userExists ? 
+                    <div style={{display: "grid", placeItems: "center", height: "100%"}}>
+                        <h2>User doesn't exist</h2>
+                    </div>
                     :
                     <>
                     <Stack gap={0} style={{padding: "0.5em 1em"}}>
@@ -342,10 +354,10 @@ export const UserPage = (props) => {
                             </Col>
                             <Col xs={4} lg={5}>
                                     <Row>
-                                        {user.username? <h4 style={{margin: 0}}>{user.username}</h4>:"temp"}
+                                        {user.username? <h4 style={{margin: 0}}>{user.username}</h4>:"User"}
                                     </Row>
                                     <Row>
-                                        {user.tweets ? <p style={{margin: 0}}>{user.tweets.length} Tweets</p> : "temp"}
+                                        {user.tweets ? <p style={{margin: 0}}>{user.tweets.length} Tweets</p> : "Tweets"}
                                     </Row>
                             </Col>
                             <Col xs={6} lg={6}></Col>
@@ -364,23 +376,29 @@ export const UserPage = (props) => {
                         </div>
 
                         <Row>
-                            <Col>
+                            <Col xs={4}>
                                 {user.username? <h2>{user.username}</h2>:<></>}
                             </Col>
                             
-                            <Col>
+                            <Col xs={2}>
                             </Col>
 
-                            <Col style={{display: "flex", alignItems: "center", justifyContent: "right"}}>
-                                { username == mainUser ? 
-                                // <button onClick={handleShow}> Edit Profile </button>
+                            <Col xs={6} style={{display: "flex", alignItems: "center", justifyContent: "right"}}>
+                                { userExists &&  
                                 
-                                <button className="profileEditButton" onClick={handleShow}> Edit Profile </button>
-                                :
-                                following ? 
-                                <Button variant="light" onClick={unfollowUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Unfollow </Button> :
-                                <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Follow </Button>
-                                    }
+                                    username == mainUser ? 
+                                    // <button onClick={handleShow}> Edit Profile </button>
+                                    
+                                    <button className="profileEditButton" onClick={handleShow}> Edit Profile </button>
+                                    :
+                                    following ? 
+                                    <Button variant="light" onClick={unfollowUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Unfollow </Button> :
+                                    <Button variant="light" onClick={followUser} style={{borderRadius: "20px", padding: "5px 15px", fontWeight: "600"}} > Follow </Button>
+                                        
+                                
+                                }
+
+   
                                 
                             </Col>
                         </Row>

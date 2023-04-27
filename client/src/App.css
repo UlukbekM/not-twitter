@@ -29,6 +29,7 @@ body {
   margin-top: 3em;
   display: none;
 }
+
 @media screen and (max-width: 600px) {
 
   .footerC {
@@ -44,10 +45,24 @@ body {
     height: 100px;
   }
 
+  .mobileCol {
+    display: none;
+  }
+
   /* .tweetButton {
     width: 50px;
     padding: 0.5em 1em;
   } */
+}
+
+@media only screen and (max-height: 575.98px) and (orientation: landscape) {
+
+  .mobileCol {
+    display: none;
+  }
+  .footerC {
+    display: block;
+  }
 }
 
 

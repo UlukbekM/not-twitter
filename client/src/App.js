@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserFollow } from './Components/UserFollow';
 import { Status } from './Components/Status';
 import { S3Upload } from './AWS/S3Upload';
+import { People } from './Components/People'
 
 function App() {
   let backend = 'http://localhost:3001'
@@ -50,6 +51,7 @@ function App() {
             <Route path=":username/following" element={<UserFollow theme={theme}/>} />
             <Route path=":username/followers" element={<UserFollow theme={theme}/>} />
             <Route path=":username/status/:id" element={<Status theme={theme}/>} />
+            <Route path="people" element={<People theme={theme}/>} />
             <Route path="*" element={<ErrorPage/>} />
           </Routes>
         </BrowserRouter>

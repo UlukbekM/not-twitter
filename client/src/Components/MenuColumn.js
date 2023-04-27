@@ -38,7 +38,10 @@ export const MenuColumn = (props) => {
     }
 
     useEffect(() => {
-        checkLocation(username)
+        let token = window.sessionStorage.getItem("token");
+        let decoded = jwt_decode(token);
+        // console.log(decoded.profile)
+        checkLocation(decoded.username)
     }, [location]);
 
     useEffect(()=> {
@@ -48,10 +51,20 @@ export const MenuColumn = (props) => {
         }
 
         let decoded = jwt_decode(token);
+        // getProfile()
         if(decoded.profile) setProfilePicture(decoded.profile)
         setUsername(decoded.username)
         checkLocation(decoded.username)
     },[])
+
+
+    useEffect(() => {
+        // console.log(props.profilePicture)
+        getProfile()
+        // if(props.profilePicture) {
+        //     setProfilePicture(props.profilePicture)
+        // }
+    }, [props.profilePicture]);
     
 
     const logout = () => {
@@ -59,8 +72,14 @@ export const MenuColumn = (props) => {
         window.location.reload();
     }
 
+    const getProfile = () => {
+        let token = window.sessionStorage.getItem("token");
+        let decoded = jwt_decode(token);
+        if(decoded.profile) setProfilePicture(decoded.profile)
+    }
+
     return (<>
-        <Col style={{background: backgroundColor, minHeight: "100vh", position: "fixed", left: 0, userSelect: "none"}} className="mobileCol" lg={3}>
+        <Col style={{background: backgroundColor, minHeight: "100vh", position: "fixed", left: 0, userSelect: "none"}} className="mobileCol" lg={3} xs={0} sm={true} md={true}>
             <Row style={{height: "100vh"}}>
                 <Col lg={3}>
                 </Col>

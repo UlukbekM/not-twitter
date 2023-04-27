@@ -25,6 +25,12 @@ export const Landing = (props) => {
 
     const registerSubmit = async e => {
         e.preventDefault();
+        //PREVENT PEOPLE FROM PICKING 'PEOPLE' 'LANDING' AS USERNAME
+        if(username === "people" || username === "landing") {
+            alert("Cannot use this username")
+            return
+        }
+
         if(email && username && password) {
             Axios.post(`${api}/register`, {
                 email: email,

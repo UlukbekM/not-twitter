@@ -79,18 +79,18 @@ export const MiniUser = (user) => {
                 </Link>
             </Col>
 
-            <Col xs={6} lg={9}>
+            <Col xs={5} lg={9}>
                 <Row style={{fontWeight: "bold", display: "inline"}}>
                     <Link to={"../../" + user.username} className="userFollow" style={{padding: 0}}>
                         {user.username}
                     </Link>
                 </Row>
-                <Row style={{color: tweetTextColor}}>
-                    {profile.description ? profile.description : "Description"}
+                <Row style={{color: tweetTextColor,overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis"}}>
+                    {profile.description ? profile.description : "Descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
                 </Row>
             </Col>
 
-            <Col xs={4} lg={2} style={{textAlign: "center",color: tweetTextColor}}>
+            <Col xs={5} lg={2} style={{textAlign: "center",color: tweetTextColor}}>
                 { user.mainUser !== user.username ? <>
                 {status ? 
                     <button className="unfollowButton" onClick={unfollowUser}> <span> Following </span> </button>
