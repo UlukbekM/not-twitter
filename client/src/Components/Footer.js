@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 
 export const Footer = (props) => {
+    
+    const {paragraphColor,contentBackgroundColor, backgroundColor, api, fontColor, titleColor, borderColor, tweetBackground, tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = props.theme
+
     const [username, setUsername] = useState("")
     const [page, setPage] = useState("")
     const location = useLocation();
@@ -48,7 +51,20 @@ export const Footer = (props) => {
     }
 
     return(<div className="footerC">
-    <Row style={{position: "fixed", height: "50px", bottom: 0, width: "100%", textAlign: "center", backgroundColor: "#b8c1ec", margin: 0, alignItems: "center"}}>
+        {/* <Row style={{position: "fixed", height: "50px", bottom: 0, width: "100%", textAlign: "center", backgroundColor: "#b8c1ec", margin: 0, alignItems: "center"}}> */}
+        <Row
+        style={{
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+            height: "50px",
+            background: paragraphColor,
+            alignItems: "center",
+            textAlign: "center",
+            margin: 0
+        }}
+        >
             <Col>
                 {page === "home" ? 
                 <div onClick={scrollUp}>

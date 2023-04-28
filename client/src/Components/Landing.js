@@ -26,6 +26,7 @@ export const Landing = (props) => {
     const registerSubmit = async e => {
         e.preventDefault();
         //PREVENT PEOPLE FROM PICKING 'PEOPLE' 'LANDING' AS USERNAME
+        // console.log(username)
         if(username === "people" || username === "landing") {
             alert("Cannot use this username")
             return

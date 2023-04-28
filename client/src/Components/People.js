@@ -73,6 +73,6 @@ export const People = (props) => {
             </Row>
         </Container>
 
-        <Footer/>
+        <Footer theme={props.theme}/>
     </>)
 }

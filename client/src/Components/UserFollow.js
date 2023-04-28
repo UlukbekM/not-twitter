@@ -182,6 +182,6 @@ export const UserFollow = (props) => {
                 </Col>
             </Row>
         </Container>
-        <Footer/>
+        <Footer theme={props.theme}/>
     </>)
 }

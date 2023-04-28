@@ -28,6 +28,17 @@ export const Home = (props) => {
     const [suggestedUsers, setSuggestedUsers] = useState([])
     const [userFeed, setUserFeed] = useState([])
 
+    const [number, setNumber] = useState(0)
+
+    const showMore = () => {
+        // console.log(suggestedUsers)
+        if(number+5 < suggestedUsers.length) {
+            setNumber(number+5)
+        } else {
+            setNumber(suggestedUsers.length)
+        }
+    }
+
     const getSuggestedUsers = (username) => {
         Axios.get(`${api}/suggestedUsers`, {
             params: {
@@ -35,6 +46,12 @@ export const Home = (props) => {
             }
         })
         .then((response)=> {
+            // console.log(response.data.length)
+            if(response.data.length > 5) {
+                setNumber(5)
+            } else {
+                setNumber(response.data.length)
+            }
             setSuggestedUsers(response.data)
         })
     }
@@ -80,7 +97,6 @@ export const Home = (props) => {
 
     // }
 
-
     return(<>
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -124,18 +140,24 @@ export const Home = (props) => {
                 </Col>
 
                 <Col style={{background: backgroundColor, position: "fixed", right: 0, minHeight: "100vh",}} className="mobileCol" lg={3} xs={0}>
-                    <Container style={{background: contentBackgroundColor, borderRadius: "20px", marginTop: "10%", padding: "1em", color: fontColor}}>
+                    <Container style={{background: contentBackgroundColor, borderRadius: "20px", marginTop: "10%", padding: "1em ", color: fontColor}}>
                         <Row><h3>Who to follow</h3></Row>
                         {suggestedUsers.length > 0 &&
-                            suggestedUsers.map((tempUser) => (
+                            suggestedUsers.slice(0,number).map((tempUser) => (
                                 <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} theme={props.theme}/>
                         ))}
+                        {number % 5 === 0 && 
+                        <div className='showMoreButton' onClick={showMore}>
+                            {/* <button onClick={showMore}> Show More</button> */}
+                            Show More
+                        </div>
+                        }
                     </Container>
                     {/* <Button variant="primary" onClick={logout} style={{marginTop: "10%"}}>Log Out</Button> */}
                 </Col>
             </Row>
         </Container>
 
-        <Footer/>
+        <Footer theme={props.theme}/>
     </>)
 }

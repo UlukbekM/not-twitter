@@ -449,6 +449,6 @@ export const UserPage = (props) => {
             </Row>
         </Container>
 
-        <Footer/>
+        <Footer theme={props.theme}/>
     </>)
 }

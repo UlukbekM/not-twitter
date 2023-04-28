@@ -45,7 +45,7 @@ export const SuggestedUsers = (user) => {
     return (<>
         <Row style={{margin: "1em", borderRadius:"5px"}}>
             <Col xs={2} lg={2} style={{display: "grid", placeItems: "center"}}>
-                <Link to={username} className="userFollow" style={{padding: 0}}>
+                <Link to={"../../" + username} className="userFollow" style={{padding: 0}}>
                     { profilePicture ? 
                     <img src={profilePicture} 
                     style={{width: "32px", height: "32px", cursor: "pointer", borderRadius: "50%"}}/>:
@@ -55,7 +55,7 @@ export const SuggestedUsers = (user) => {
             </Col>
             <Col xs={5} lg={6} style={{display: "grid",}}>
                 <h4 style={{margin: "0", display: "flex", alignItems: "center"}}>
-                    <Link to={username} className="userFollow" style={{padding: 0, color: user.fontColor, fontWeight: "600", color: fontColor}}>
+                    <Link to={"../../" + username} className="userFollow" style={{padding: 0, color: user.fontColor, fontWeight: "600", color: fontColor}}>
                         @{username}
                     </Link>
                 </h4>
