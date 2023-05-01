@@ -149,7 +149,7 @@ export const Home = (props) => {
                         {number % 5 === 0 && 
                         <div className='showMoreButton' onClick={showMore}>
                             {/* <button onClick={showMore}> Show More</button> */}
-                            Show More
+                            Show more
                         </div>
                         }
                     </Container>

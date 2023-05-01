@@ -90,6 +90,18 @@ const UserSchema = new mongoose.Schema({
                 type: Number,
                 required: true
             },
+            postedBy: {
+                type: String,
+                required: true
+            },
+            imageURL: {
+                type: String,
+                required: false
+            },
+            imageKey: {
+                type: String,
+                required: false
+            },
         }]
     }]
 })

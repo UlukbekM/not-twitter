@@ -455,6 +455,61 @@ app.get("/test", (req,res) => {
     res.send('Hello World!')
 })
 
+app.post("/newComment", auth, async (req,res) => {
+    try {
+        // console.log(req.body)
+        const { tweeter , commenter , imageURL, imageKey, tweetId, comment} = req.body
+
+        // let com = ({
+        //     content: comment,
+        //     date: Date.now(),
+        //     likes:[],
+        //     postedBy: commenter,
+        //     imageURL: imageURL,
+        //     imageKey: imageKey
+        // })
+
+        // UserModel.updateOne(
+        //     { username: tweeter, 'tweets._id': tweetId },
+        //     { $push: { 'tweets.$.comments': com } },
+        //     (err, result) => {
+        //         if (err) {
+        //             console.error(err);
+        //         } else {
+        //             console.log(result);
+        //         }
+        //     }
+        // );
+
+        const newComment = {
+            content: comment,
+            date: new Date(),
+            likes: 0,
+            postedBy: commenter,
+            imageURL: imageURL,
+            imageKey: imageKey
+        };
+
+        UserModel.updateOne(
+        { username: tweeter, 'tweets._id': tweetId },
+        { $push: { 'tweets.$.comments': newComment } },
+        (err, result) => {
+            if (err) {
+            console.error(err);
+            } else {
+            console.log(result);
+            }
+        }
+        );
+
+        doc.save()
+
+        res.send('comment posted')
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 
 const port = process.env.PORT || 3001
 app.listen(port, () => {

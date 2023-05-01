@@ -69,7 +69,8 @@ export const MenuColumn = (props) => {
 
     const logout = () => {
         sessionStorage.removeItem('token');
-        window.location.reload();
+        // window.location.reload();
+            window.location = "/landing"
     }
 
     const getProfile = () => {

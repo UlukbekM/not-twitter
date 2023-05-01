@@ -259,6 +259,7 @@ export const UserPage = (props) => {
     const handleCloseTweetModal = () => setShowTweetModal(false);
     const handleShowTweetModal = () => {setShowTweetModal(true)};
 
+
     return(<>
         <Modal show={showTweetModal} onHide={handleCloseTweetModal}>
             <Modal.Header closeButton>
@@ -398,7 +399,6 @@ export const UserPage = (props) => {
                                 
                                 }
 
-   
                                 
                             </Col>
                         </Row>

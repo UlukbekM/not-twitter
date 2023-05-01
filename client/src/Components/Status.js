@@ -12,6 +12,7 @@ import jwt_decode from "jwt-decode";
 import Stack from 'react-bootstrap/Stack'
 import { useNavigate} from "react-router-dom";
 import { Link } from "react-router-dom";
+// import { TweetForm } from "./TweetForm";
 
 export const Status = (props) => {
     let {username, id} = useParams()
@@ -29,9 +30,11 @@ export const Status = (props) => {
     const [liked, setLiked] = useState(false)
     const [comments, setComments] = useState(0)
 
+
     useEffect(() => {
         let token = jwt_decode(window.sessionStorage.getItem("token"));
-        setUser(token.username)
+        // console.log(jwt_decode(window.sessionStorage.getItem("token")).username)
+        setUser(token)
 
         Axios.get(`${api}/getTweetInfo`, {
             params: {
@@ -40,7 +43,7 @@ export const Status = (props) => {
             }
         })
         .then((response)=> {
-            // console.log(response.data)
+            console.log(response.data)
             setTweet(response.data)
             setLikes(response.data.likes.length)
             convertTime(response.data.date)
@@ -50,18 +53,6 @@ export const Status = (props) => {
             }
         })
     },[])
-
-    // useEffect(()=> {
-    //     setLikes(tweet.likes.length)
-    //     setComments(tweet.comments.length)
-    //     if(tweet.likes.includes(tweet.username)) {
-    //         setLiked(true)
-    //     }
-    //     if(tweet.imageURL) {
-    //         setImageURL(tweet.imageURL)
-    //     }
-    //     getUserImage()
-    // },[])
 
     const convertTime = (item) => {
         let time = new Date(item)
@@ -87,7 +78,7 @@ export const Status = (props) => {
     const clickButton = () => {
         if(liked) {
             Axios.put(`${api}/unlikeTweet/${tweet._id}`, { 
-                username: user,
+                username: user.username,
                 token: window.sessionStorage.getItem("token"),
                 postedBy: tweet.postedBy
             })
@@ -100,7 +91,7 @@ export const Status = (props) => {
             })
         } else {
             Axios.put(`${api}/likeTweet/${tweet._id}`, { 
-                username: user,
+                username: user.username,
                 token: window.sessionStorage.getItem("token"),
                 postedBy: tweet.postedBy
             })
@@ -113,6 +104,7 @@ export const Status = (props) => {
             })
         }
     }
+
 
 
     return(<>
@@ -156,7 +148,7 @@ export const Status = (props) => {
                                 <Col xs={2} lg={1} style={{textAlign: "center"}}>
                                     <Link to={"../../" + tweet.postedBy} className="userFollow">
                                         {tweet.userImage? 
-                                        <img src={tweet.userImage} style={{width: "50px", height: "50px", borderRadius: "50%"}}/>:
+                                        <img src={tweet.userImage} style={{width: "48px", height: "48x", borderRadius: "50%"}}/>:
                                         <img src="https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png"  style={{width: "50px", height: "50px", borderRadius: "50%"}}/>
                                         }
                                     </Link>
@@ -222,6 +214,10 @@ export const Status = (props) => {
                                 {/* </Col> */}
                             </Row>
                         </Container>
+
+                        <Container style={{marginTop: "1em", paddingBottom: "0.5em",borderBottom: "1px black solid"}}>
+                            <TweetForm theme={props.theme} user={jwt_decode(window.sessionStorage.getItem("token")).username} mode="comment" tweeter={username} tweetId={id}/>
+                        </Container>
                     </Stack> : <></>}
                     
 
@@ -236,7 +232,7 @@ export const Status = (props) => {
             </Row>
         </Container>
 
-        <Footer username={user}/>
+        <Footer theme={props.theme}/>
 
     </>)
 }
