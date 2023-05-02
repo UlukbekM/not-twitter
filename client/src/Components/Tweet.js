@@ -24,7 +24,7 @@ export const Tweet = (tweet) => {
     // console.log(tweet)
     let navigate = useNavigate();
     const s3 = new AWS.S3();
-    const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor} = tweet
+    const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor, api} = tweet
     const location = useLocation();
     const [liked, setLiked] = useState(false)
     const [likes, setLikes] = useState(0)
@@ -79,7 +79,7 @@ export const Tweet = (tweet) => {
         getUserImage()
     },[])
 
-    const api = 'http://localhost:3001'
+    // const api = 'http://localhost:3001'
 
     const clickButton = () => {
         if(liked) {

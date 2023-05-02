@@ -68,7 +68,6 @@ app.post("/register", async (req,res) => {
     }
 })
 
-
 app.get("/login", async (req,res) => {
     try {
         UserModel.find({email: req.query.email}, (err, result) => {
@@ -460,27 +459,6 @@ app.post("/newComment", auth, async (req,res) => {
         // console.log(req.body)
         const { tweeter , commenter , imageURL, imageKey, tweetId, comment} = req.body
 
-        // let com = ({
-        //     content: comment,
-        //     date: Date.now(),
-        //     likes:[],
-        //     postedBy: commenter,
-        //     imageURL: imageURL,
-        //     imageKey: imageKey
-        // })
-
-        // UserModel.updateOne(
-        //     { username: tweeter, 'tweets._id': tweetId },
-        //     { $push: { 'tweets.$.comments': com } },
-        //     (err, result) => {
-        //         if (err) {
-        //             console.error(err);
-        //         } else {
-        //             console.log(result);
-        //         }
-        //     }
-        // );
-
         const newComment = {
             content: comment,
             date: new Date(),
@@ -502,10 +480,52 @@ app.post("/newComment", auth, async (req,res) => {
         }
         );
 
-        doc.save()
+        // doc.save()
 
         res.send('comment posted')
     } catch (error) {
+        res.send(error)
+    }
+})
+
+app.get("/getCommentsProfilePictures" , async (req,res) => {
+    try {
+        const {username, id} = req.query
+
+        let doc = await UserModel.findOne({username: username})
+        
+        let users = new Set()
+
+        doc.tweets.find((tweet) => {
+            if (tweet._id == id) {
+                tweet.comments.forEach(element => {
+                    users.add(element.postedBy)
+                })
+            }
+        });
+
+        // console.log(users)
+        // let item = []
+
+        // for(const element of users) {
+        //     let user = await UserModel.findOne({username: element})
+        //     item.push({username:element, profile: user.profilePicture})
+        // }
+
+        // res.send(item)
+
+        let item = {}
+        
+
+        for(const element of users) {
+            let user = await UserModel.findOne({username: element})
+            // item.push({username:element, profile: user.profilePicture})
+            item[element] = user.profilePicture
+        }
+
+        res.send(item)
+
+    } catch(error) {
         res.send(error)
     }
 })

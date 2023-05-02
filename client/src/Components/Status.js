@@ -12,6 +12,7 @@ import jwt_decode from "jwt-decode";
 import Stack from 'react-bootstrap/Stack'
 import { useNavigate} from "react-router-dom";
 import { Link } from "react-router-dom";
+import { Comment } from "./Comment";
 // import { TweetForm } from "./TweetForm";
 
 export const Status = (props) => {
@@ -28,7 +29,8 @@ export const Status = (props) => {
     const [likes, setLikes] = useState(0)
     const [date, setDate] = useState("")
     const [liked, setLiked] = useState(false)
-    const [comments, setComments] = useState(0)
+    const [comments, setComments] = useState([])
+    const [userImages, setUserImages] = useState([])
 
 
     useEffect(() => {
@@ -46,13 +48,27 @@ export const Status = (props) => {
             console.log(response.data)
             setTweet(response.data)
             setLikes(response.data.likes.length)
+            setComments(response.data.comments)
             convertTime(response.data.date)
 
             if(response.data.likes.includes(token.username)) {
                 setLiked(true)
             }
         })
+        getCommentsProfilePictures()
     },[])
+
+    const getCommentsProfilePictures = () => {
+        Axios.get(`${api}/getCommentsProfilePictures`, {
+            params: {
+                username: username,
+                id:id
+            }
+        }).then((response)=> {
+            setUserImages(response.data)
+            console.log(response.data)
+        })
+    }
 
     const convertTime = (item) => {
         let time = new Date(item)
@@ -193,7 +209,7 @@ export const Status = (props) => {
                                     style={{display: "flex", alignItems: "center", justifyContent: "center", width: "auto", cursor: "pointer", fontWeight: "bold"}}>
                                         <i className="bi bi-chat"/>
                                         {/* <i className="bi bi-chat-fill"></i> */}
-                                        { comments }
+                                        { comments.length }
                                     </div>
                                 {/* </Col>
 
@@ -217,6 +233,13 @@ export const Status = (props) => {
 
                         <Container style={{marginTop: "1em", paddingBottom: "0.5em",borderBottom: "1px black solid"}}>
                             <TweetForm theme={props.theme} user={jwt_decode(window.sessionStorage.getItem("token")).username} mode="comment" tweeter={username} tweetId={id}/>
+                        </Container>
+
+                        <Container style={{}}>
+                            {comments.length > 0 &&
+                            comments.map((tweet) => (
+                                <Comment {...tweet} key={tweet._id} theme={props.theme} userImages={userImages}/>
+                            ))}
                         </Container>
                     </Stack> : <></>}
                     
