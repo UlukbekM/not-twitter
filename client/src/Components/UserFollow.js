@@ -38,7 +38,7 @@ export const UserFollow = (props) => {
             }
         })
         .then((response)=> {
-            console.log(response)
+            // console.log(response)
             setUser(response.data)
         })
     }

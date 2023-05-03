@@ -127,12 +127,7 @@ export const Home = (props) => {
                     <Container>
                     {userFeed.length > 0 &&
                         userFeed.map((tweet) => (
-                            <Tweet {...tweet} key={tweet._id} username={user.username} 
-                            tweetBackground={tweetBackground} 
-                            tweetTitleColor={tweetTitleColor} 
-                            tweetTextColor={tweetTextColor}
-                            tweetButtonBackgroundColor={tweetButtonBackgroundColor}
-                            tweetButtonColor={tweetButtonColor}
+                            <Tweet {...tweet} key={tweet._id} username={user.username} theme={props.theme}
                             // userPictures={userImages}
                             />
                     ))}

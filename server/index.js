@@ -118,7 +118,7 @@ app.get("/suggestedUsers", async (req,res) => {
     })
 })
 
-app.put("/followUser", async (req,res) => {
+app.put("/followUser", auth, async (req,res) => {
     try {
         const { follower, following } = req.body
 
@@ -160,7 +160,7 @@ app.get("/checkFollowing", async (req,res) => {
     }
 })
 
-app.put("/unfollowUser", async (req,res) => {
+app.put("/unfollowUser", auth, async (req,res) => {
     try {
         const { unfollower, target } = req.body
 
@@ -187,7 +187,7 @@ app.put("/unfollowUser", async (req,res) => {
     }
 })
 
-app.put("/removeBanner", async (req,res) => {
+app.put("/removeBanner", auth, async (req,res) => {
     try {
         const { username } = req.body
 
@@ -370,9 +370,10 @@ app.put("/unlikeTweet/:id", auth, async (req,res) => {
 
 //auth
 
-app.delete("/deleteTweet/:username/:id", async (req,res) => {
+app.delete("/deleteTweet/:username/:id", auth, async (req,res) => {
     try {
         const {username, id} = req.params
+        console.log(req)
 
         // let doc = await UserModel.findOne({username: username})
         // console.log(username, id, doc)
@@ -404,7 +405,7 @@ app.delete("/deleteTweet/:username/:id", async (req,res) => {
     }
 })
 
-app.put("/uploadPicture", async (req,res) => {
+app.put("/uploadPicture", auth, async (req,res) => {
 
     const { username , profilePicture , bannerPicture, profileKey, bannerKey} = req.body
 
@@ -431,6 +432,21 @@ app.put("/uploadPicture", async (req,res) => {
 
     // res.send("images updated")
 })
+
+app.put("/changeDescription", auth, async (req,res) => {
+
+    const { username , newDescription} = req.body
+
+    let doc = await UserModel.findOne({username: username})
+    doc.description = newDescription
+    // console.log(doc)
+    await doc.save()
+    res.send('description updated')
+
+    // res.send("images updated")
+})
+
+
 
 app.get("/getUserProfile", async (req,res) => {
     try{

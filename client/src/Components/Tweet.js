@@ -24,7 +24,7 @@ export const Tweet = (tweet) => {
     // console.log(tweet)
     let navigate = useNavigate();
     const s3 = new AWS.S3();
-    const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor, api} = tweet
+    const {tweetBackground , tweetTitleColor, tweetTextColor, tweetButtonBackgroundColor, tweetButtonColor, api} = tweet.theme
     const location = useLocation();
     const [liked, setLiked] = useState(false)
     const [likes, setLikes] = useState(0)
@@ -133,8 +133,7 @@ export const Tweet = (tweet) => {
             })
         }
 
-
-        Axios.delete(`${api}/deleteTweet/${tweet.username}/${tweet._id}`)
+        Axios.delete(`${api}/deleteTweet/${tweet.username}/${tweet._id}/`, {data: {token: window.sessionStorage.getItem("token") }})
         .then((response)=> {
             console.log(response)
             if(response.data === "tweet deleted") {

@@ -24,10 +24,11 @@ export const MiniUser = (user) => {
 
     const followUser = () => {
         // let token = window.sessionStorage.getItem("token");
-        console.log(user.mainUser + " will follow " + user.username)
+        // console.log(user.mainUser + " will follow " + user.username)
         Axios.put(`${api}/followUser`, {
             follower: user.mainUser,
             following: user.username,
+            token: window.sessionStorage.getItem("token")
             // token: token
         }).then((response)=> {
             if(response.data === "user followed") {
@@ -38,11 +39,11 @@ export const MiniUser = (user) => {
 
     const unfollowUser = () => {
         // let token = window.sessionStorage.getItem("token");
-        console.log(user.mainUser + " will unfollow " + user.username)
+        // console.log(user.mainUser + " will unfollow " + user.username)
         Axios.put(`${api}/unfollowUser`, {
             unfollower: user.mainUser,
             target: user.username,
-            // token: token
+            token: window.sessionStorage.getItem("token")
         }).then((response)=> {
             if(response.data === "user unfollowed") {
                 setStatus(!status)
@@ -86,7 +87,7 @@ export const MiniUser = (user) => {
                     </Link>
                 </Row>
                 <Row style={{color: tweetTextColor,overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis"}}>
-                    {profile.description ? profile.description : "Descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaa"}
+                    {profile.description ? profile.description : "Description"}
                 </Row>
             </Col>
 

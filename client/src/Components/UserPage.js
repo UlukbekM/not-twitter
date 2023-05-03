@@ -31,10 +31,11 @@ export const UserPage = (props) => {
 
     const [profilePicture, setProfilePicture] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
     const [bannerPicture, setBannerPicture] = useState(defaultBanner)
+    const [description, setDescription] = useState("hey")
 
     const [newProfilePicture, setNewProfilePicture] = useState(null)
     const [newBannerPicture, setNewBannerPicture] = useState(null)
-    const [newDescription, setNewDescription] = useState(null)
+    const [newDescription, setNewDescription] = useState(description)
 
     const [following, setFollowing] = useState(false)
     const [userExists, setUserExists] = useState(true)
@@ -64,7 +65,7 @@ export const UserPage = (props) => {
             }
         })
         .then((response)=> {
-            console.log(response.data)
+            // console.log(response.data)
             if(response.data === "") {
                 setUserExists(false)
             } else {
@@ -76,6 +77,9 @@ export const UserPage = (props) => {
                 }
                 if(response.data.bannerKey) {
                     setBannerKey(response.data.bannerKey)
+                }
+                if(response.data.description) {
+                    setDescription(response.data.description)
                 }
                 response.data.tweets.sort((a,b) => new Date(b.date) - new Date(a.date))
                 setUser(response.data)
@@ -147,6 +151,7 @@ export const UserPage = (props) => {
     const handleClose = () => {
         setNewBannerPicture(null)
         setNewProfilePicture(null)
+        setNewDescription(description)
         setShow(false)
     };
     const handleShow = () => {
@@ -162,8 +167,8 @@ export const UserPage = (props) => {
     }
     
     const handleCloseAndUpload = async () => {
-
         if(newProfilePicture || newBannerPicture) {
+            console.log(newDescription)
             let profile = {Key: "", Location: ""}
             let banner = {Key: "", Location: ""}
 
@@ -202,8 +207,18 @@ export const UserPage = (props) => {
                 }
             })
         }
-        else {
-            console.log('nothing uploaded')
+
+        if (newDescription !== description) {
+            Axios.put(`${api}/changeDescription`, {
+                username: mainUser,
+                newDescription: newDescription,
+                token: window.sessionStorage.getItem("token"),
+            }).then((response) => {
+                if(response.data === "description updated") {
+                    setDescription(newDescription)
+                }
+                // console.log(response)
+            })
         }
 
 
@@ -215,7 +230,8 @@ export const UserPage = (props) => {
         let token = jwt_decode(window.sessionStorage.getItem("token"));
         Axios.put(`${api}/followUser`, {
             follower: token.username,
-            following: username
+            following: username,
+            token: window.sessionStorage.getItem("token"),
         }).then((response)=> {
             if(response.data === "user followed") {
                 setFollowing(!following)
@@ -228,7 +244,7 @@ export const UserPage = (props) => {
         Axios.put(`${api}/unfollowUser`, {
             unfollower: token.username,
             target: username,
-            // token: token
+            token: window.sessionStorage.getItem("token"),
         }).then((response)=> {
             if(response.data === "user unfollowed") {
                 setFollowing(!following)
@@ -241,7 +257,7 @@ export const UserPage = (props) => {
 
         Axios.put(`${api}/removeBanner`, {
             username: user.username,
-            // token: token
+            token: window.sessionStorage.getItem("token")
         }).then((response)=> {
             if(response.data === 'banner removed') {
                 deleteS3(bannerKey)
@@ -315,7 +331,7 @@ export const UserPage = (props) => {
                 <Form.Label>Username</Form.Label>
                 <Form.Control type="text" placeholder={'@' + mainUser} disabled readOnly/>
                 <Form.Label>Bio</Form.Label>
-                <Form.Control type="text" placeholder="Description"/>
+                <Form.Control type="text" placeholder={newDescription} onChange={({ target }) => setNewDescription(target.value)} maxLength={100}/>
 
             </Stack>
 
@@ -403,7 +419,7 @@ export const UserPage = (props) => {
                             </Col>
                         </Row>
                         {/* {user.tweets ? <h5>{user.tweets.length} Tweets</h5> : "temp"} */}
-                        <p>Description</p>
+                        <p style={{wordBreak: "break-all"}}>{description}</p>
                         <Row>
                             <Col xs={4} lg={2}>
                                 {user.following?
@@ -436,7 +452,7 @@ export const UserPage = (props) => {
                     <Container>
                         {tweets.length > 0 &&
                             tweets.map((tweet) => (
-                                <Tweet {...tweet} profilePicture={profilePicture} key={tweet._id} username={username} tweetBackground={tweetBackground} tweetTitleColor={tweetTitleColor} tweetTextColor={tweetTextColor}/>
+                                <Tweet {...tweet} profilePicture={profilePicture} key={tweet._id} username={username} theme={props.theme}/>
                         ))}
                     </Container>
                     </>

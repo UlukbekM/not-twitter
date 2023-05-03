@@ -22,7 +22,8 @@ export const SuggestedUsers = (user) => {
     const followUser = () => {
         Axios.put(`${api}/followUser`, {
             follower: currentUser,
-            following: username
+            following: username,
+            token: window.sessionStorage.getItem("token")
         }).then((response)=> {
             if(response.data === "user followed") {
                 setStatus(!status)
@@ -34,7 +35,7 @@ export const SuggestedUsers = (user) => {
         Axios.put(`${api}/unfollowUser`, {
             unfollower: currentUser,
             target: username,
-            // token: token
+            token: window.sessionStorage.getItem("token")
         }).then((response)=> {
             if(response.data === "user unfollowed") {
                 setStatus(!status)

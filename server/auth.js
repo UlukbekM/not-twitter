@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
+    // console.log(req)
     const token = req.body.token || req.params.token || req.query
 
     if (!token) {
