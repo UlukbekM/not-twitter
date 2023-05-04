@@ -58,6 +58,19 @@ export const Status = (props) => {
         getCommentsProfilePictures()
     },[])
 
+    const getComments = () => {
+        // console.log('hi')
+        Axios.get(`${api}/getComments`, {
+            params: {
+                username: username,
+                id:id
+            }
+        }).then((response)=> {
+            setComments(response.data)
+            getCommentsProfilePictures()
+        })
+    }
+
     const getCommentsProfilePictures = () => {
         Axios.get(`${api}/getCommentsProfilePictures`, {
             params: {
@@ -66,7 +79,7 @@ export const Status = (props) => {
             }
         }).then((response)=> {
             setUserImages(response.data)
-            console.log(response.data)
+            // console.log(response.data)
         })
     }
 
@@ -232,10 +245,10 @@ export const Status = (props) => {
                         </Container>
 
                         <Container style={{marginTop: "1em", paddingBottom: "0.5em",borderBottom: "1px black solid"}}>
-                            <TweetForm theme={props.theme} user={jwt_decode(window.sessionStorage.getItem("token")).username} mode="comment" tweeter={username} tweetId={id}/>
+                            <TweetForm theme={props.theme} user={jwt_decode(window.sessionStorage.getItem("token")).username} mode="comment" tweeter={username} tweetId={id} getComments={() => getComments()}/>
                         </Container>
 
-                        <Container style={{}}>
+                        <Container style={{padding: 0}}>
                             {comments.length > 0 &&
                             comments.map((tweet) => (
                                 <Comment {...tweet} key={tweet._id} theme={props.theme} userImages={userImages}/>

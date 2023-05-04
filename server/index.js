@@ -42,7 +42,7 @@ app.post("/register", async (req,res) => {
         }
 
         encryptedPassword = await bcrypt.hash(password, 10);
-        console.log(encryptedPassword)
+        // console.log(encryptedPassword)
 
         const user = {
             email: email.toLowerCase(),
@@ -261,7 +261,7 @@ app.put("/removeBanner", auth, async (req,res) => {
 
 app.post("/newTweet", auth, async (req,res) => {
     try {
-        console.log(req.body)
+        // console.log(req.body)
         const { username , tweet , imageURL, imageKey} = req.body
 
         let doc = await UserModel.findOne({username: username})
@@ -424,7 +424,7 @@ app.put("/unlikeTweet/:id", auth, async (req,res) => {
 app.delete("/deleteTweet/:username/:id", auth, async (req,res) => {
     try {
         const {username, id} = req.params
-        console.log(req)
+        // console.log(req)
 
         // let doc = await UserModel.findOne({username: username})
         // console.log(username, id, doc)
@@ -596,6 +596,33 @@ app.get("/getCommentsProfilePictures" , async (req,res) => {
         res.send(error)
     }
 })
+
+app.get("/getComments" , async (req,res) => {
+    try {
+        const {username, id} = req.query
+
+        let doc = await UserModel.findOne({username: username})
+        // const comments = doc.tweets.find(e => e._id == id).comments
+        
+        res.send(doc.tweets.find(e => e._id == id).comments)
+    } catch(error) {
+        res.send(error)
+    }
+})
+
+app.get("/getProfileTweets" , async (req,res) => {
+    try {
+        const {username} = req.query
+
+        let doc = await UserModel.findOne({username: username})
+        
+        res.send(doc.tweets)
+    } catch(error) {
+        res.send(error)
+    }
+})
+
+
 
 
 const port = process.env.PORT || 3001

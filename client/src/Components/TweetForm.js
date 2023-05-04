@@ -99,6 +99,9 @@ export const TweetForm = (props) => {
                 token: token
             }).then((response)=> {
                 console.log(response)
+                if(response.data === 'comment posted') {
+                    props.getComments()
+                }
                 // if(response && props.getFeed) {
                 //     props.getFeed()
                 // }
@@ -114,6 +117,8 @@ export const TweetForm = (props) => {
                 console.log(response)
                 if(response && props.getFeed) {
                     props.getFeed()
+                } else if(response && props.getTweets) {
+                    props.getTweets()
                 }
             })
         }

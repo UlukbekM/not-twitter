@@ -23,6 +23,7 @@ function App() {
   //userpage gettweets when tweet
   //suggestedusers add profile pic in api call
     //LOG OUT FOR MOBILE USERS
+    //link to users in comments
 
   let theme = {
     api: backend,

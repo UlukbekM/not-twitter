@@ -52,6 +52,7 @@ export const UserFollow = (props) => {
         })
         .then((response)=> {
             // console.log(response.data)
+            getProfileUser(username)
             setMainUser(response.data)
         })
     }
@@ -79,7 +80,7 @@ export const UserFollow = (props) => {
     }, [location]);
 
     useEffect(()=> {
-        getProfileUser(username)
+        // getProfileUser(username)
         getMainUser()
     },[])
 
@@ -162,7 +163,7 @@ export const UserFollow = (props) => {
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.following.length > 0 &&
                                 user.following.map((item) => (
-                                    <MiniUser {...item} theme={props.theme} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
+                                    <MiniUser {...item} getMainUser={()=>getMainUser()} theme={props.theme} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
                             </Stack> 
                         :<></> }
                         
@@ -170,7 +171,7 @@ export const UserFollow = (props) => {
                             ? <Stack gap={2} style={{padding: "0.5em 1em", alignItems: "center"}}>
                                 {user.followers.length > 0 &&
                                 user.followers.map((item) => (
-                                    <MiniUser {...item} theme={props.theme} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
+                                    <MiniUser {...item} getMainUser={()=>getMainUser()} theme={props.theme} key={item._id} array={mainUser.following} mainUser={mainUser.username}/>))}
                             </Stack>
                         :<></> }
                     </>

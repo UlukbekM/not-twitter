@@ -270,6 +270,19 @@ export const UserPage = (props) => {
 
     }
 
+
+    const getTweets = () => {
+        if(username === jwt_decode(window.sessionStorage.getItem("token")).username) {
+            Axios.get(`${api}/getProfileTweets`, {
+                params: {
+                    username: username
+                }
+            }).then((response)=> {
+                response.data.sort((a,b) => new Date(b.date) - new Date(a.date))
+                setTweets(response.data)
+            })
+        }
+    }
     
     const [showTweetModal, setShowTweetModal] = useState(false);
     const handleCloseTweetModal = () => setShowTweetModal(false);
@@ -283,7 +296,7 @@ export const UserPage = (props) => {
             </Modal.Header>
 
             <Modal.Body>
-                <TweetForm theme={props.theme} user={user.username} mode="modal" handleClose={()=>handleCloseTweetModal()}/>
+                <TweetForm theme={props.theme} user={user.username} mode="modal" handleClose={()=>handleCloseTweetModal()} getTweets={() => getTweets()}/>
             </Modal.Body>
         </Modal>
 

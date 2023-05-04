@@ -141,11 +141,16 @@ export const Home = (props) => {
                             suggestedUsers.slice(0,number).map((tempUser) => (
                                 <SuggestedUsers key={tempUser.email} {...tempUser} currentUser={user.username} theme={props.theme}/>
                         ))}
-                        {number % 5 === 0 && 
+                        {number % 5 === 0 && number > 0 && 
                         <div className='showMoreButton' onClick={showMore}>
                             {/* <button onClick={showMore}> Show More</button> */}
                             Show more
                         </div>
+                        }
+                        {number === 0 && 
+                            <div style={{textAlign: "center"}}>
+                                <h5>Empty!</h5>
+                            </div>
                         }
                     </Container>
                     {/* <Button variant="primary" onClick={logout} style={{marginTop: "10%"}}>Log Out</Button> */}

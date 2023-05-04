@@ -33,6 +33,7 @@ export const MiniUser = (user) => {
         }).then((response)=> {
             if(response.data === "user followed") {
                 setStatus(!status)
+                user.getMainUser()
             }
         })
     }
@@ -47,6 +48,7 @@ export const MiniUser = (user) => {
         }).then((response)=> {
             if(response.data === "user unfollowed") {
                 setStatus(!status)
+                user.getMainUser()
             }
         })
     }
