@@ -150,7 +150,7 @@ export const Tweet = (tweet) => {
     return(<>
     {deleted ? <></> :
         // <Link to={"../../" + tweet.postedBy + "/status/" + tweet._id} style={{textDecoration: "none"}}>
-            <Container lg={10} 
+            <Container lg={10}
             // onClick={openTweet}
             style={{backgroundColor: tweetBackground, margin: "1em 0", borderRadius: "5px", color: tweetTextColor}}>
 

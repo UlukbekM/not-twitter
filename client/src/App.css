@@ -4,6 +4,10 @@
 /* https://icons.getbootstrap.com/ */
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
+html {
+  background-color: #232946;
+}
+
 a {
   color: blue;
   text-decoration: none; /* no underline */
@@ -25,12 +29,38 @@ body {
   font-family: 'Varela Round', sans-serif;
 }
 
+/* #root {
+  height: 100vh;
+  width: 100vw;
+} */
+
+.landingPage {
+  min-height: 100vh;
+  width: 100vw;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='1920' height='1080' preserveAspectRatio='none' viewBox='0 0 1920 1080'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1144%26quot%3b)' fill='none'%3e%3crect width='1920' height='1080' x='0' y='0' fill='rgba(35%2c 41%2c 70%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c730.115C134.557%2c725.571%2c221.744%2c589.108%2c347.202%2c540.256C517.152%2c474.08%2c776.627%2c554.754%2c862.949%2c394.096C947.1%2c237.479%2c731.978%2c73.641%2c690.853%2c-99.33C654.932%2c-250.414%2c727.553%2c-425.931%2c637.843%2c-552.695C546.72%2c-681.456%2c370.963%2c-704.931%2c223.199%2c-760.146C63.585%2c-819.788%2c-100.862%2c-947.035%2c-260.894%2c-888.523C-421.677%2c-829.736%2c-449.9%2c-615.555%2c-550.703%2c-477.187C-640.858%2c-353.435%2c-771.289%2c-262.635%2c-822.086%2c-118.198C-879.681%2c45.569%2c-952.965%2c246.925%2c-856.009%2c390.926C-756.639%2c538.512%2c-528.016%2c498.686%2c-362.607%2c564.228C-236.483%2c614.204%2c-135.588%2c734.694%2c0%2c730.115' fill='%231b1f35'%3e%3c/path%3e%3cpath d='M1920 1814.935C2090.858 1823.921 2285.707 1964.2820000000002 2420.9139999999998 1859.438 2559.6369999999997 1751.868 2485.4610000000002 1525.185 2516.483 1352.405 2538.8540000000003 1227.806 2591.026 1111.32 2577.842 985.417 2564.304 856.134 2496.443 746.239 2440.709 628.803 2363.735 466.61199999999997 2345.226 252.98400000000004 2188.596 165.245 2031.193 77.07299999999998 1820.494 110.58100000000002 1658.929 190.87300000000005 1506.151 266.798 1430.187 434.543 1346.996 583.489 1277.9859999999999 707.0450000000001 1241.329 839.468 1218.647 979.1610000000001 1195.567 1121.306 1175.047 1263.775 1214.029 1402.406 1257.367 1556.53 1313.6100000000001 1727.6950000000002 1451.841 1808.469 1589.375 1888.836 1760.926 1806.568 1920 1814.935' fill='%232b3357'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1144'%3e%3crect width='1920' height='1080' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+}
+
+.landingPage h2 {
+  font-weight: bold;
+  font-size: 100px;
+  color: #fffffe;
+}
+
+
+
+
 .footerC {
   margin-top: 3em;
   display: none;
 }
 
 @media screen and (max-width: 600px) {
+
+  .landingPage h2 {
+    font-weight: bold;
+    font-size: 50px;
+    color: #fffffe;
+  }
 
   .footerC {
     display: block;
@@ -79,9 +109,9 @@ body {
   background-color: #eebbc3;
 }
 
-.formContainer {
+/* .formContainer {
   margin-top: 50%;
-}
+} */
 
 .containerOld {
   background-color: #DD5353;
@@ -133,7 +163,7 @@ body {
 }
 
 .tweetButtonSide {
-  border-radius: 40px;
+  border-radius: 30px;
   padding: 0.25em 0.5em;
   /* padding: 0.5em 1em; */
   /* font-weight: bold; */
@@ -409,4 +439,159 @@ textarea::placeholder {
 .showMoreButton:hover {
   background-color: rgba(63, 68, 93, 0.8);
 
+}
+
+.gitHub:hover {
+  text-decoration: underline;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ANIMATIONS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+.lineUp {
+  /* animation-delay: 5s; */
+  animation: 1.5s anim-lineUp ease-out 1;
+}
+@keyframes anim-lineUp {
+  0% {
+    opacity: 0;
+    transform: translateY(80%);
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+.fromtop {
+  /* animation-delay: 5s; */
+  animation: 1.5s anim-fromtop linear 1;
+}
+@keyframes anim-fromtop {
+  0% { opacity: 0; transform: translateY(-100%);}
+  25% { opacity: 1; transform: translateY(0%);}
+  50% {
+  }
+  100% {
+  }
+}
+
+.landingAnimation {
+  animation: 3s landing-animation linear 1;
+}
+@keyframes landing-animation {
+  0% { 
+    opacity: 0; 
+    /* transform: translateY(-100%); */
+    transform: translateY(-100%);
+  }
+  25% { 
+    opacity: 1; 
+    transform: translateY(0%);
+  }
+  50% {
+  }
+  100% {
+    opacity: 1; 
+  }
+}
+
+.titleAnimation {
+  animation-duration: 4s;
+  animation-name: title-animation;
+  animation-iteration-count: 1;
+}
+
+@keyframes title-animation {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+.logoAnimation {
+  animation-duration: 4s;
+  animation-name: logo-animation;
+  animation-iteration-count: 1;
+  animation-delay: 0.25s;
+}
+
+@keyframes logo-animation {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+
+.titleTextAnimation1 {
+  /* opacity: 0; */
+  animation-duration: 4s;
+  animation-name: title-text-animation;
+  animation-iteration-count: 1;
+  animation-delay: 0.05s;
+}
+
+.titleTextAnimation2 {
+  /* opacity: 0; */
+  animation-duration: 4s;
+  animation-name: title-text-animation;
+  animation-iteration-count: 1;
+  animation-delay: 0.1s;
+}
+
+.titleTextAnimation3 {
+  /* opacity: 0; */
+  animation-duration: 4s;
+  animation-name: title-text-animation;
+  animation-iteration-count: 1;
+  animation-delay: 0.15s;
+}
+
+
+@keyframes title-text-animation {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
 }

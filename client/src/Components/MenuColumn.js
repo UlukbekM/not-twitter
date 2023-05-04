@@ -153,7 +153,7 @@ export const MenuColumn = (props) => {
 
                             
                         <Dropdown drop="up-centered" >
-                            <Dropdown.Toggle style={{border: "none" ,backgroundColor: "inherit", display: "flex", width: "100%", padding: "0.5em 0.5em", justifyContent: "center", alignItems: "center", borderRadius: "40px"}}>
+                            <Dropdown.Toggle style={{border: "none" ,backgroundColor: "inherit", display: "flex", width: "100%", padding: "0.5em 0.5em", justifyContent: "center", alignItems: "center", borderRadius: "30px"}}>
                                 <Col lg={3}>
                                     <img src={profilePicture} alt="profile-picture"style={{width: "40px", height: "40px", borderRadius: "50%"}}/>
                                 </Col>
