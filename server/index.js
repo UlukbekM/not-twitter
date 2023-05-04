@@ -70,23 +70,74 @@ app.post("/register", async (req,res) => {
 
 app.get("/login", async (req,res) => {
     try {
-        UserModel.find({email: req.query.email}, (err, result) => {
-            if(result.length > 0) {
-                if(bcrypt.compare(req.query.password, result[0].password)) {
-                // if(req.query.password === result[0].password) {
+        // UserModel.find({email: req.query.email}, (err, result) => {
+        //     // console.log(result[0].password, req.query.password)
+        //     if(result.length > 0) {
+        //         // if(bcrypt.compare(req.query.password, result[0].password)) {
+        //         //     // if(req.query.password === result[0].password) {
+        //         //     console.log(bcrypt.compare(req.query.password, result[0].password))
+        //         //     const token = jwt.sign(
+        //         //         {email:  result[0].email, username: result[0].username, profile: result[0].profilePicture},
+        //         //         process.env.JWT_TOKEN_KEY,
+        //         //         { expiresIn: "2h" }
+        //         //     )
+        //         //     res.send(token)
+        //         // }
+        //         // else {
+        //         //     res.send('incorrect password!')
+        //         // }
+
+        //         let check = bcrypt.compare(req.query.password, result[0].password, function(err, res) {
+        //             // console.log(err,res)
+        //             if (err){
+        //                 res.send(err)
+        //             }
+        //             if (res) {
+        //                 const token = jwt.sign(
+        //                     {email:  result[0].email, username: result[0].username, profile: result[0].profilePicture},
+        //                     process.env.JWT_TOKEN_KEY,
+        //                     { expiresIn: "2h" }
+        //                 )
+        //                 res.send(token)
+        //                 // return token
+        //             } else {
+        //             }
+        //         });
+
+        //         console.log(check)
+
+        //     } else {
+        //         res.send("incorrect email!")
+        //     }
+        // })
+
+        const {email, password} = req.query
+
+        UserModel.findOne({ email })
+        .then(user => {
+            if (!user) return res.send('incorrect email!')
+
+            bcrypt.compare(password, user.password, (err, data) => {
+                if (err) throw err
+
+                if (data) {
+                    // return res.status(200).json({ msg: "Login success" })
+                    // console.log(data)
+                    
                     const token = jwt.sign(
-                        {email:  result[0].email, username: result[0].username, profile: result[0].profilePicture},
+                        {email:  user.email, username: user.username, profile: user.profilePicture},
                         process.env.JWT_TOKEN_KEY,
                         { expiresIn: "2h" }
                     )
-                    res.send(token)
+
+                    return res.send(['right pass', token])
+                } else {
+                    // return res.status(401).json({ msg: "Invalid credencial" })
+                    return res.send('wrong pass')
                 }
-                else {
-                    res.send('incorrect password!')
-                }
-            } else {
-                res.send("incorrect email!")
-            }
+
+            })
+
         })
     } catch (err) {
         res.send(err)

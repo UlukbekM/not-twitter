@@ -67,19 +67,25 @@ export const Landing = (props) => {
     const logInSubmit = async e => {
         e.preventDefault();
         if(email && password) {
+            // console.log(email, password)
             Axios.get(`${api}/login`, {
                 params: {
                     email: email,
                     password: password
                 }
             }).then((response)=> {
-                if(response.data == "incorrect email!") {
+                console.log(response)
+                if(response.data === "incorrect email!") {
                     alert("Email not found")
-                } else if(response.data == "incorrect password!") {
+                    setEmail("")
+                    setPassword("")
+                } 
+                else if(response.data === "wrong pass") {
                     alert("Incorrect password")
                     setPassword("")
-                } else {
-                    window.sessionStorage.setItem("token", response.data);
+                } 
+                else if(response.data.length === 2 && response.data[0] === "right pass") {
+                    window.sessionStorage.setItem("token", response.data[1]);
                     window.location = "/"
                 }
             })
@@ -210,14 +216,21 @@ export const Landing = (props) => {
                             A project by Ulukbek Mambetov
                         </h4>
 
-                        <button className='tweetButtonSide logoAnimation' onClick={handleShow} style={{fontSize: "20px"}}>Log In / Sign Up</button>
+                        <div className='mobileButton'>
+                            <button className='tweetButtonSide logoAnimation' onClick={handleShow} style={{fontSize: "20px"}}>Log In / Sign Up</button>
+                        </div>
                         {/* <div onClick={handleShow} style={{cursor: "pointer", color: "#fff", padding: "1em", fontWeight: "bold"}}>Log In/Sign Up</div> */}
                     </div>
                     <h4 className='titleTextAnimation2' style={{marginTop: "1em"}}>
                         Built with React, Node.js, Express.js, Bootstrap, MongoDB, and AWS S3
                     </h4>
 
-                    <h4 style={{marginTop: "1em"}} className="titleTextAnimation3 gitHub"><a style={{textDecoration: "none", color: "inherit"}} target="_blank" rel="noopener noreferrer" href="https://github.com/UlukbekM/not-twitter">GitHub <i class="bi bi-box-arrow-up-right"/></a></h4>
+                    <h4 style={{marginTop: "1em", display: "inline-block"}} className="titleTextAnimation3 gitHub"><a style={{textDecoration: "none", color: "inherit"}} target="_blank" rel="noopener noreferrer" href="https://github.com/UlukbekM/not-twitter">GitHub <i className="bi bi-box-arrow-up-right"/></a></h4>
+                
+
+                    <div className='mobileButtonShow' style={{marginTop: "2em", textAlign: "center"}}>
+                        <button className='tweetButtonSide logoAnimation' onClick={handleShow} style={{fontSize: "20px"}}>Log In / Sign Up</button>
+                    </div>
                 </div>
             </div>
 

@@ -31,7 +31,7 @@ export const UserPage = (props) => {
 
     const [profilePicture, setProfilePicture] = useState("https://img.icons8.com/external-becris-lineal-becris/256/external-user-mintab-for-ios-becris-lineal-becris.png")
     const [bannerPicture, setBannerPicture] = useState(defaultBanner)
-    const [description, setDescription] = useState("hey")
+    const [description, setDescription] = useState("Description")
 
     const [newProfilePicture, setNewProfilePicture] = useState(null)
     const [newBannerPicture, setNewBannerPicture] = useState(null)
