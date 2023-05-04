@@ -1,4 +1,4 @@
-# Not Twitter
+# [Not Twitter](https://not-twitter-ulu.vercel.app/)
 
 Not Twitter is a simple social media application that allows users to post short messages, follow other users, and view their feeds. It is built using the MERN stack, which stands for MongoDB, Express, React, and Node.js.
 
