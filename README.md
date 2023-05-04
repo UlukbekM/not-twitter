@@ -1,5 +1,3 @@
-Sure, here's a README file for the project:
-
 # Not Twitter
 
 Not Twitter is a simple social media application that allows users to post short messages, follow other users, and view their feeds. It is built using the MERN stack, which stands for MongoDB, Express, React, and Node.js.
@@ -20,15 +18,20 @@ git clone https://github.com/UlukbekM/not-twitter.git
 npm install
 ```
 
-3. Create a `.env` file in the project root directory with the following variables:
+3. Create `.env` files in the project client and server directory with the following variables:
+```
+REACT_APP_AWS_ACCESSKEY_ID = awsaccesskey
+REACT_APP_AWS_SECRET_ACCESSKEY = awssecretkey
+REACT_APP_BUCKET_NAME = awsbucketname
+REACT_APP_REGION = awsregion
+REACT_APP_BACKEND_API = apilink
+```
+
 
 ```
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/not-twitter
-JWT_SECRET=mysecret
+REACT_APP_MONGODB=mongodbsecret
+JWT_TOKEN_KEY=jwtsecret
 ```
-
-Replace `not-twitter` with the name of your MongoDB database, and choose a secure value for `JWT_SECRET`.
 
 4. Start the development server by running the following command:
 
