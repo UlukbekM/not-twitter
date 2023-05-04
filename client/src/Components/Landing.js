@@ -214,7 +214,7 @@ export const Landing = (props) => {
                         {/* <div onClick={handleShow} style={{cursor: "pointer", color: "#fff", padding: "1em", fontWeight: "bold"}}>Log In/Sign Up</div> */}
                     </div>
                     <h4 className='titleTextAnimation2' style={{marginTop: "1em"}}>
-                        Built using React, Node.js, Express.js, Bootstrap, MongoDB, and AWS S3
+                        Built with React, Node.js, Express.js, Bootstrap, MongoDB, and AWS S3
                     </h4>
 
                     <h4 style={{marginTop: "1em"}} className="titleTextAnimation3 gitHub"><a style={{textDecoration: "none", color: "inherit"}} target="_blank" rel="noopener noreferrer" href="https://github.com/UlukbekM/not-twitter">GitHub <i class="bi bi-box-arrow-up-right"/></a></h4>
